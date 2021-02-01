@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+		<record id="wizard_pos_sale_outlet_report" model="ir.ui.view">
+			<field name="name">POS Sale Outlet Report</field>
+			<field name="model">pos.sale.outlet.report</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>	
+						<group>											
+            				<field name="start_date"/>						
+            				<field name="end_date"/>
+            			</group>
+						<group>						
+            				<field name="print_by_sales"/>						
+            				<field name="salesman_ids" attrs="{'invisible': [('print_by_sales', '=', False)],'required': [('print_by_sales', '=', True)]}" widget="many2many_tags"/>
+            			</group>
+					</group>
+					<group string="Outlet(s)">
+						<field name="outlet_ids" nolabel="1"/>
+					</group>
+					<footer>
+						<button name="print_report" string="Print Report" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_wizard_pos_sale_outlet_report" model="ir.actions.act_window">
+			<field name="name">POS Outlet Salet Report</field>
+			<field name="res_model">pos.sale.outlet.report</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="wizard_pos_sale_outlet_report"/>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem id="menu_pos_outlet_report" name="POS Report by Outlet" action="action_wizard_pos_sale_outlet_report" parent="point_of_sale.menu_point_rep" sequence="11"/> 
+	</data>
+</odoo>

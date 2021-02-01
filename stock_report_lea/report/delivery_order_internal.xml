@@ -1,0 +1,470 @@
+<odoo>
+  <data>
+    <report
+       id="report_stock_picking_new_id2"
+       string="DO Internal"
+       model="stock.picking"
+       report_type="qweb-pdf"
+       file="stock_report_lea.report_stock_picking_new2"
+       name="stock_report_lea.report_stock_picking_new2"
+    />
+
+    <template id="report_stock_picking_new2">
+      <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+          <t t-call="stock_report_lea.report_stock_picking_new_document2"/>
+          <t t-call="stock_report_lea.header_picking2"/>
+        </t>
+      </t>
+    </template>
+
+    <template id="header_picking2">
+      <div class="header">
+        <br/><br/>
+        <center><b>Internal Transfer</b></center>
+        <table width="100%">
+          <tbody>
+            <tr>
+              <td colspan="2"  style="text-align:left;margin-left:10px" width="40%">
+                  <div style="border-radius:5%;border-right:0px solid black;border-left:0px solid black;border-top:0px solid black;border-bottom:0px solid black;vertical-align:middle;font-size:12px">
+                      <strong>From</strong>
+                      <br/>
+                      <span t-field="o.location_id.location_id.name"/>
+                      <br/>
+                      <span t-field="o.location_id.address"/>
+                </div>
+              </td>
+              <td colspan="2"  style="text-align:left;margin-left:10px">
+                  <table>
+                      <tr>
+                          <td style="font-size:12px">
+                            Page
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <span class="page"/> / <span class="topage"/>
+                          </td>
+                      </tr>
+                       <tr>
+                          <td style="font-size:12px">
+                            DO
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <div style="margin-left:5px"><span t-field="o.name"/></div>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            Date
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <div style="margin-left:5px"><span t-field="o.min_date" t-field-options='{"format": "MM/dd/yyyy"}'/></div>
+                          </td>
+                      </tr>
+
+                  </table>
+              </td>
+              <td width="10%">
+
+              </td>
+              <td colspan="2" width="40%">
+                <div style="border-radius:5%;border-right:0px solid black;border-left:0px solid black;border-top:0px solid black;border-bottom:0px solid black;vertical-align:middle;font-size:12px">
+                    <strong>To</strong>
+                    <br/>
+                   <strong><span t-field="o.location_final_id.location_id.name"/></strong>
+                    <br/>
+                    <span t-field="o.location_final_id.address"/>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+          <br/>
+      </div>
+    </template>
+
+    <template id="report_stock_picking_new_document2">
+      <div class="page">
+        <table style="margin-top:10px;" width="100%">
+          <tr>
+            <td rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>No</center></strong>
+            </td>
+            <td rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Article Code</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>24</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>25</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>26</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>27</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>28</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>29</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>30</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>31</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>32</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>33</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>34</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>35</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>36</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>38</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>40</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>42</center></strong>
+            </td>
+
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>XS</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>S</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>M</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>L</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>XL</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>XXL</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>AL</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>X</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Y</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Z</center></strong>
+            </td>
+            <td width="3%" rowspan="1" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Total</center></strong>
+            </td>
+
+          </tr>
+
+          <tr t-foreach="o.article_code_ids.sorted(key=lambda b: b.article_code)" t-as="f">
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px">
+              <div style="margin-left:5px"><span t-esc="f_index+1"/></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px">
+              <div style="margin-left:5px"><span t-field="f.article_code"/></div>
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+                <span t-if="f.size24 !=0"> <span t-field="f.size24" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size25 !=0"> <span t-field="f.size25" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size26 !=0"> <span t-field="f.size26" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size27 !=0"> <span t-field="f.size27" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size28 !=0"> <span t-field="f.size28" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size29 !=0"> <span t-field="f.size29" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size30 !=0"> <span t-field="f.size30" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size31 !=0"> <span t-field="f.size31" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size32 !=0"> <span t-field="f.size32" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size33 !=0"> <span t-field="f.size33" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size34 !=0"> <span t-field="f.size34" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size35 !=0"> <span t-field="f.size35" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size36 !=0"> <span t-field="f.size36" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size38 !=0"> <span t-field="f.size38" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size40 !=0"> <span t-field="f.size40" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.size42 !=0"> <span t-field="f.size42" /></span>
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.sizexs !=0"> <span t-field="f.sizexs" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.sizes !=0"> <span t-field="f.sizes" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.sizem !=0"> <span t-field="f.sizem" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.sizel !=0"> <span t-field="f.sizel" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.sizexl !=0"> <span t-field="f.sizexl" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.sizexxl !=0"> <span t-field="f.sizexxl" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.sizeal !=0"> <span t-field="f.sizeal" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.sizex !=0"> <span t-field="f.sizex" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.sizey !=0"> <span t-field="f.sizey" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.sizez !=0"> <span t-field="f.sizez" /></span>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;text-align:right;font-size:12px">
+              <span t-if="f.total_qty !=0"> <span t-field="f.total_qty" /></span>
+            </td>
+          </tr>
+          <tr>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px">
+              <div style="margin-left:5px"></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px">
+              <div style="margin-left:5px"></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+                <div style="margin-left:5px"><span t-if="sum(l.size24 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size24 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size25 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size25 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size26 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size26 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size27 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size27 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size28 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size28 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size29 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size29 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size30 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size30 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size31 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size31 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size32 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size32 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size33 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size33 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size34 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size34 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size35 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size35 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size36 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size36 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size38 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size38 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size40 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size40 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.size42 for l in o.article_code_ids) !=0 "><span t-esc="sum(l.size42 for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.sizexs for l in o.article_code_ids) !=0 "><span t-esc="sum(l.sizexs for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.sizes for l in o.article_code_ids) !=0 "><span t-esc="sum(l.sizes for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.sizem for l in o.article_code_ids) !=0 "><span t-esc="sum(l.sizem for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.sizel for l in o.article_code_ids) !=0 "><span t-esc="sum(l.sizel for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.sizexl for l in o.article_code_ids) !=0 "><span t-esc="sum(l.sizexl for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.sizexxl for l in o.article_code_ids) !=0 "><span t-esc="sum(l.sizexxl for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.sizeal for l in o.article_code_ids) !=0 "><span t-esc="sum(l.sizeal for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.sizex for l in o.article_code_ids) !=0 "><span t-esc="sum(l.sizex for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.sizey for l in o.article_code_ids) !=0 "><span t-esc="sum(l.sizey for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.sizez for l in o.article_code_ids) !=0 "><span t-esc="sum(l.sizez for l in o.article_code_ids)"/></span></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;font-size:12px;text-align:right">
+              <div style="margin-left:5px"><span t-if="sum(l.total_qty for l in o.article_code_ids) !=0 "><span t-esc="sum(l.total_qty for l in o.article_code_ids)"/></span></div>
+            </td>
+
+          </tr>
+        </table>
+      </div>
+
+      <div class="footer">
+          <div style="bottom:-500px;">
+               <table width="100%">
+                  <tr>
+                    <td style="font-size:12px" width="20%" align="center">
+                        Warehouse From
+                    </td>
+                    <td style="font-size:12px" width="20%" align="center">
+                        Warehouse To
+                    </td>
+                    <td style="font-size:12px" width="20%" align="center">
+                        Approver
+                    </td>
+                    <td style="font-size:12px" width="20%" align="center">
+                        Requestor/Security
+                    </td>
+                    <td style="font-size:12px" width="20%" align="center">
+                        Pembawa
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:16px" width="20%" align="center">
+                        <div style="font-size:12px">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </td>
+                    <td style="font-size:16px" width="20%" align="center">
+                        <div style="font-size:12px">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </td>
+                    <td style="font-size:16px" width="20%" align="center">
+                        <div style="font-size:12px">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </td>
+                    <td style="font-size:16px" width="20%" align="center">
+                        <div style="font-size:12px">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </td>
+                    <td style="font-size:16px" width="20%" align="center">
+                        <div style="font-size:12px">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </td>
+                  </tr>
+
+               </table>
+              <br/>
+
+          </div>
+        </div>
+    </template>
+
+
+
+    <record id="stock_picking_new_paperformat2" model="report.paperformat">
+            <field name="name">Delivery Order Internal Paper Format</field>
+            <field name="default" eval="False" />
+            <field name="format">custom</field>
+            <field name="page_height">200</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">35</field>
+            <field name="margin_bottom">55</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="report_stock_picking_new_id2" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="stock_report_lea.stock_picking_new_paperformat2"/>
+        </record>
+  </data>
+</odoo>

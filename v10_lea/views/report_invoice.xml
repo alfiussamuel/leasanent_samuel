@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_invoice_document_lea" inherit_id="account.report_invoice_document">            
+            <xpath expr="//div[@class='page']" position="replace">            	               	                
+                <div class="page">                        	        
+                	<div style="position: absolute; top: 50; left: 650; text-align:left;font-size:14px">
+					   	<span t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+					</div>                    		                   
+	                <br/>   
+					<div style="position: absolute; top: 165; left: 725; text-align:left;font-size:13px">
+					   	<span t-field="o.origin"/>
+					</div>					        					       
+					<div style="position: absolute; top: 185; left: 725; text-align:left;font-size:13px">
+						<span t-field="o.date_invoice"/>
+					</div>  					 
+					<div style="position: absolute; top: 165; left: 460; text-align:left;font-size:13px">					    
+					</div>
+					<div style="position: absolute; top: 185; left: 460;text-align:left; font-size:13px">
+					    <span t-field="o.partner_id.customer_code"/>
+					</div>
+					<div style="position: absolute; top: 760; left: 20;text-align:left; font-size:14px">
+            			Dibuat oleh :
+					</div>        					
+					<div style="position: absolute; top: 760; left: 180; text-align:left; font-size:14px">
+						Disetujui oleh :
+	    	  		</div>			     
+					<div style="position: absolute; top: 760; left: 700;text-align:left; font-size:14px">
+	           			<span id="header-content">Salesman :</span>
+	    	  		</div>                
+               		<h4 style="text-align:center;margin-top:210;">
+                		<strong>
+                			NOTA NO :  <span t-field="o.number"/>
+                		</strong>
+                	</h4>  		
+                	<br/>                	  		           		          
+                	<table>
+          				<tr>
+          					<td width="40px" style="padding:3px;border:1px solid black;text-align:center;">
+          						No.
+          					</td>
+          					<td width="150px" style="padding:3px;border:1px solid black;text-align:center;">
+          						Banyaknya (PCS)
+          					</td>
+          					<td width="150px" style="padding:3px;border:1px solid black;text-align:center;">
+          						Article No.
+          					</td>
+          					<td width="400px" style="padding:3px;border:1px solid black;text-align:center;">
+          						Nama Barang
+          					</td>
+          					<td width="150px" style="padding:3px;border:1px solid black;text-align:center;">
+          						(Rp) Harga
+          					</td>
+          					<td width="150px" style="padding:3px;border:1px solid black;text-align:center;">
+          						(Rp) Jumlah
+          					</td>
+          				</tr>    
+          				<t t-set="i" t-value="1"/>  	
+          				<tr t-foreach="o.article_code_ids" t-as="l">
+          					<td width="40px" style="padding:3px;border:1px solid black;text-align:center;">
+                                <span t-esc="i"/>.
+                               	<t t-set="i" t-value="i+1"/>
+                            </td>
+          					<td width="150px" style="padding:3px;border:1px solid black;text-align:center;">
+	                        	<span t-field="l.qty"/>
+	                        </td>
+	                        <td width="150px" style="padding:3px;border:1px solid black;text-align:left;">
+          						<span t-field="l.article_code"/>
+          					</td>
+          					<td width="400px" style="padding:3px;border:1px solid black;text-align:left;">
+          						<span t-field="l.product_id.product_desc"/>
+          					</td>
+          					<td width="150px" style="padding:3px;border:1px solid black;text-align:right;">
+          						<span t-field="l.price_unit"/>
+          					</td>
+          					<td width="150px" style="padding:3px;border:1px solid black;text-align:right;">
+          						<span t-field="l.price_subtotal"/>
+          					</td>
+          				</tr>
+                	</table> 
+                	<div> 
+                    	<div style="height:10%; position:absolute; bottom:100px;">
+                    		bottom
+                    	</div>
+                        <span id="header-content">Terbilang :</span>
+	                </div> 
+		        </div>				        				                   		          
+            </xpath>
+        </template>                
+
+    </data>
+</openerp>

@@ -1,0 +1,10 @@
+<odoo>
+
+    <template id="pos_sync_stock_assets" name="pos_sync_stock assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_sync_stock/static/src/js/pos_sync_stock.js"/>
+            <link rel="stylesheet" href="/pos_sync_stock/static/src/css/pos_sync_stock.css"/>
+        </xpath>
+    </template>
+
+</odoo>

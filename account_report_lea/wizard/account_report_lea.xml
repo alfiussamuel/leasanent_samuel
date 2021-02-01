@@ -1,0 +1,336 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+        <!-- General Ledger -->
+		<record id="general_ledger_lea_wizard_view_forms" model="ir.ui.view">
+            <field name="name">general.ledger.lea.wizard.view.form</field>
+            <field name="model">general.ledger.lea.wizard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="period_id" options="{'no_create_edit': True, 'no_open': True}" required="1"/>
+                            <label for="date_from"/>
+                            <div>
+                                <field name="date_from" required="1" class="oe_inline"/> - <field name="date_to" required="1" class="oe_inline"/>
+                            </div>
+                            <field name="target" widget="radio"/>
+                            <field name="area_lks_id" options="{'no_create': True}" widget="many2many_tags"/>
+                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+
+                        </group>
+                        <group string="Account">
+                            <field name="account" options="{'no_create_edit': True, 'no_open': True}" nolabel="1"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_general_ledger_excel" string="Excel General Ledger" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_general_ledger_lea_wizard" model="ir.actions.act_window">
+            <field name="name">General Ledger</field>
+            <field name="res_model">general.ledger.lea.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="general_ledger_lea_wizard_view_forms"/>
+            <field name="target">new</field>
+        </record>
+        <!-- Trial Balance -->
+
+        <record id="trial_balance_lea_report_wizard" model="ir.ui.view">
+            <field name="name">trial.balance.report.lea.wizard.view.form</field>
+            <field name="model">trial.balance.report.lea.wizard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+
+                        <group>
+                            <field name="state_position" invisible="1" class="oe_inline"/>
+                            <field name="account_report_id" required="1" domain="[('name','in',['NERACA','LABA RUGI'])]" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                            <field name="target" widget="radio"/>
+                            <field name="fiscalyear_id" required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                            <field name="period_id" required="1" domain="[('fiscalyear_id','=',fiscalyear_id)]" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+
+                            <label for="date_from"/>
+                            <div>
+                                <field name="date_from" required="1" class="oe_inline"/> - <field name="date_to" required="1" class="oe_inline"/>
+                            </div>
+                            <field name="area_lks_id" widget="many2many_tags"/>
+                            <field name="company_id"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+
+
+                        </group>
+
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_report" string="Excel Trial Balance" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_trial_balance_lea_report_wizard" model="ir.actions.act_window">
+            <field name="name">Trial Balance</field>
+            <field name="res_model">trial.balance.report.lea.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="trial_balance_lea_report_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Rekap Buku Besar -->
+		<record id="rekap_buku_besar_lea_wizard_view_forms" model="ir.ui.view">
+            <field name="name">rekap.buku.besar.wizard.view.form</field>
+            <field name="model">rekap.buku.besar.wizard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="period_id" options="{'no_create_edit': True, 'no_open': True}" required="1"/>
+                            <label for="date_from"/>
+                            <div>
+                                <field name="date_from" required="1" class="oe_inline"/> - <field name="date_to" required="1" class="oe_inline"/>
+                            </div>
+                            <field name="target" widget="radio"/>
+                            <field name="area_lks_id" options="{'no_create': True}" widget="many2many_tags"/>
+                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+
+                        </group>
+                        <group string="Account">
+                            <field name="account" options="{'no_create_edit': True, 'no_open': True}" nolabel="1"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_excel" string="Excel General Ledger" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_rekap_buku_besar_lea_wizard" model="ir.actions.act_window">
+            <field name="name">Rekap Buku Besar</field>
+            <field name="res_model">rekap.buku.besar.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="rekap_buku_besar_lea_wizard_view_forms"/>
+            <field name="target">new</field>
+        </record>
+
+         <!-- Laporan Cash Flow/Arus Kas -->
+        <record id="cf_lea_report_wizard" model="ir.ui.view">
+            <field name="name">cf.report.lea.wizard.view.form</field>
+            <field name="model">cf.report.lea.wizard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+
+                        <group>
+                            <field name="state_position" invisible="1" class="oe_inline"/>
+                            <field name="account_report_id" required="1" domain="[('name','in',['LAPORAN ARUS KAS'])]" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                            <field name="target" widget="radio"/>
+                            <field name="fiscalyear_id" required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                            <field name="period_id" required="1" domain="[('fiscalyear_id','=',fiscalyear_id)]" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+
+                            <label for="date_from"/>
+                            <div>
+                                <field name="date_from" required="1" class="oe_inline"/> - <field name="date_to" required="1" class="oe_inline"/>
+                            </div>
+                            <field name="area_lks_id" widget="many2many_tags" invisible="1"/>
+                            <field name="company_id"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+
+
+                        </group>
+
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_report" string="Generate Data" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_cf_lea_report_wizard" model="ir.actions.act_window">
+            <field name="name">Cash Flow</field>
+            <field name="res_model">cf.report.lea.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="cf_lea_report_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <!-- Laporan Transaksi AP -->
+        <record id="report_transaksi_ap_lea_wizard" model="ir.ui.view">
+            <field name="name">report.transaksi.ap.lea.wizard.view.form</field>
+            <field name="model">report.transaksi.ap.lea</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                        <group>
+                            <field name="state_position" invisible="1" class="oe_inline"/>
+                            <field name="target" class="oe_inline" required="1"/>
+                            <label for="date_from"/>
+                            <div>
+                                <field name="date_from" required="1" class="oe_inline"/> - <field name="date_to" required="1" class="oe_inline"/>
+                            </div>
+                            <field name="vendor_ids" widget="many2many_tags" class="oe_inline"/>
+                            <field name="company_id"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                        </group>
+
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_report" string="Generate Data" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_transaksi_ap_lea_wizard" model="ir.actions.act_window">
+            <field name="name">Transaksi AP</field>
+            <field name="res_model">report.transaksi.ap.lea</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_transaksi_ap_lea_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <!-- Laporan Transaksi AP OS -->
+        <record id="report_transaksi_os_lea_wizard" model="ir.ui.view">
+            <field name="name">report.transaksi.os.lea.wizard.view.form</field>
+            <field name="model">report.transaksi.os.lea</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                        <group>
+                            <field name="state_position" invisible="1" class="oe_inline"/>
+                            <label for="date_from"/>
+                            <div>
+                                <field name="date_from" required="1" class="oe_inline"/> - <field name="date_to" required="1" class="oe_inline"/>
+                            </div>
+                            <field name="vendor_ids" widget="many2many_tags" class="oe_inline"/>
+                            <field name="company_id"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                        </group>
+
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_report" string="Generate Data" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_transaksi_os_lea_wizard" model="ir.actions.act_window">
+            <field name="name">Transaksi OS</field>
+            <field name="res_model">report.transaksi.os.lea</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_transaksi_os_lea_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <record id="general_ledger_lea_cf_wizard_view_forms" model="ir.ui.view">
+            <field name="name">general.ledger.lea.cf.wizard.view.form</field>
+            <field name="model">general.ledger.lea.cf.wizard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="period_id" options="{'no_create_edit': True, 'no_open': True}" required="1"/>
+                            <label for="date_from"/>
+                            <div>
+                                <field name="date_from" required="1" class="oe_inline"/> - <field name="date_to" required="1" class="oe_inline"/>
+                            </div>
+                            <field name="target" widget="radio"/>
+                            <field name="area_lks_id" options="{'no_create': True}" widget="many2many_tags"/>
+                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+
+                        </group>
+                        <group string="Account">
+                            <field name="account" options="{'no_create_edit': True, 'no_open': True}" nolabel="1"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_general_ledger_excel" string="Excel General Ledger" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_general_ledger_lea_cf_wizard" model="ir.actions.act_window">
+            <field name="name">Mutasi Transaksi CF</field>
+            <field name="res_model">general.ledger.lea.cf.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="general_ledger_lea_cf_wizard_view_forms"/>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu Accounting Report -->
+        <menuitem id="menu_excel_report_lea" name="Excel Reports" parent="account.menu_finance_reports"/>
+        <menuitem id="menu_excel_report_lea_general_ledger"  name="General Ledger" action="action_general_ledger_lea_wizard" parent="menu_excel_report_lea"/>
+        <menuitem id="menu_excel_report_trial_balance"  name="Trial Balance" action="action_trial_balance_lea_report_wizard" parent="menu_excel_report_lea"/>
+        <menuitem id="menu_excel_report_rekap_buku_besar"  name="Rekap Buku Besar" action="action_rekap_buku_besar_lea_wizard" parent="menu_excel_report_lea"/>
+
+
+        <!-- Menu Purchase Accounting Report -->
+        <menuitem id="menu_excel_purchase_accounting_report_lea" name="Purchase" parent="account.menu_finance_reports"/>
+        <menuitem id="menu_excel_transaksi_ap" name="Transaksi AP" action="action_report_transaksi_ap_lea_wizard" parent="menu_excel_purchase_accounting_report_lea"/>
+        <menuitem id="menu_excel_transaksi_os" name="Transaksi OS" action="action_report_transaksi_os_lea_wizard" parent="menu_excel_purchase_accounting_report_lea"/>
+        <menuitem id="menu_excel_mutasi_cf" name="Mutasi CF" action="action_general_ledger_lea_cf_wizard" parent="menu_excel_purchase_accounting_report_lea"/>
+        <menuitem id="menu_excel_report_cf" name="Arus Kas" action="action_cf_lea_report_wizard" parent="menu_excel_purchase_accounting_report_lea"/>
+
+	</data>
+</odoo>

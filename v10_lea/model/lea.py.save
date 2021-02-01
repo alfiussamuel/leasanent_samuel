@@ -1,0 +1,1049 @@
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError, except_orm, Warning, RedirectWarning, ValidationError
+from datetime import datetime, time
+from dateutil.relativedelta import relativedelta
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+from odoo.osv import expression
+from odoo.tools.float_utils import float_compare
+import odoo.addons.decimal_precision as dp
+import re
+    
+class LeaReplenishmentLine(models.Model):
+    _name = 'lea.replenishment.line'
+            
+    reference = fields.Many2one('lea.replenishment', 'Reference')    
+    product_id = fields.Many2one('product.product', 'Barcode')
+    column_from = fields.Many2one('lea.rack.level.column', 'From')
+    column_to = fields.Many2one('lea.rack.level.column', 'To')
+    qty = fields.Float('Qty', digits=dp.get_precision('Product Unit of Measure'))
+    
+class LeaReplenishment(models.Model):
+    _name = 'lea.replenishment'
+            
+    name = fields.Char('Replenishment No.')    
+    date = fields.Date('Created Date')    
+    line_ids = fields.One2many('lea.replenishment.line', 'reference', 'Lines')
+    state = fields.Selection([('Draft','Draft'),('Progress','Progress'),('Done','Done')], string='Status', default='Draft')
+
+    @api.multi
+    def button_confirm(self):
+        for res in self:
+            res.state = "Progress"
+        
+    @api.multi
+    def button_done(self):
+        for res in self:
+            res.state = "Done"
+                
+    @api.model
+    def create(self, vals):        
+        vals['name'] = self.env['ir.sequence'].next_by_code('lea.replenishment') or '/'
+        return super(LeaReplenishment, self).create(vals)
+    
+class LeaProductColumn(models.Model):
+    _name = 'lea.product.column'
+        
+    reference = fields.Many2one('product.template', 'Reference')        
+    column_id = fields.Many2one('lea.rack.level.column', 'Rack')
+    type = fields.Char('Type')    
+    available_stock = fields.Integer(related='column_id.available_stock', string='Available Stock', digits=dp.get_precision('Product Unit of Measure'))
+    
+    
+class LeaPutawayLine(models.Model):
+    _name = 'lea.putaway.line'
+        
+    reference = fields.Many2one('lea.putaway', 'Reference')    
+    product_id = fields.Many2one('product.product', 'Barcode')
+    column_id = fields.Many2one('lea.rack.level.column', 'Rack')
+    qty = fields.Float('Qty', digits=dp.get_precision('Product Unit of Measure'))        
+    
+        
+class LeaPutaway(models.Model):
+    _name = 'lea.putaway'
+    
+    name = fields.Char('Putaway No.')  
+    date = fields.Date('Created Date')  
+    type = fields.Selection([('Receipt','Receipt'),('Adjustment','Adjustment')])
+    picking_id = fields.Many2one('stock.picking', 'Receipt No.')
+    inventory_id = fields.Many2one('stock.inventory', 'Adjustment No.')    
+    line_ids = fields.One2many('lea.putaway.line', 'reference', 'Lines')
+    state = fields.Selection([('Draft','Draft'),('Progress','Progress'),('Done','Done')], string='Status', default='Draft')
+
+    @api.multi
+    def button_cancel(self):
+        for res in self:                            
+            created_lines = self.env['lea.rack.level.column.line'].search([('putaway_id','=',res.id)])
+            if created_lines:
+                for line in created_lines:
+                    line.unlink()
+            res.state = "Draft"
+                
+    @api.multi
+    def button_confirm(self):
+        self.state = "Progress"
+        
+    @api.multi
+    def button_done(self):
+        for res in self:
+            for line in res.line_ids:
+                self.env['lea.rack.level.column.line'].create({
+                                                               'reference': line.column_id.id,
+                                                               'qty': line.qty,
+                                                               'type': "Putaway",
+                                                               'date': fields.Date.today(),
+                                                               'putaway_id': res.id,
+                                                               'putaway_line_id': line.id,
+                                                               })
+            res.state = "Done"
+                
+    @api.model
+    def create(self, vals):        
+        vals['name'] = self.env['ir.sequence'].next_by_code('lea.putaway') or '/'
+        return super(LeaPutaway, self).create(vals)
+    
+        
+class LeaPackingListLine(models.Model):
+    _name = 'lea.packing.list.line'
+        
+    reference = fields.Many2one('lea.packing.list', 'Reference')    
+    product_id = fields.Many2one('product.product', 'Barcode')
+    qty_picked = fields.Integer('Qty Picked', digits=dp.get_precision('Product Unit of Measure'))
+    qty_remaining = fields.Integer('Remaining Qty', digits=dp.get_precision('Product Unit of Measure'))
+    qty_packed = fields.Integer('Qty Packed Scan', digits=dp.get_precision('Product Unit of Measure'))
+    coli = fields.Char('Coli No.')
+    
+
+class LeaPackingListColiProduct(models.Model):
+    _name = 'lea.packing.list.coli.product'
+        
+    reference = fields.Many2one('lea.packing.list.coli', 'Reference')
+    product_id = fields.Many2one('product.product', 'Barcode')
+    categ_id = fields.Many2one('product.category', 'Article')            
+    qty = fields.Integer('Quantity')
+    total_qty = fields.Integer(compute="_get_total_qty", string='Total Qty')    
+    qty_al = fields.Char('AL')
+    qty_xs = fields.Char('XS')
+    qty_s = fields.Char('S')
+    qty_m = fields.Char('M')
+    qty_l = fields.Char('L')
+    qty_xl = fields.Char('XL')
+    qty_x = fields.Char('X')
+    qty_y = fields.Char('Y')
+    qty_z = fields.Char('Z')
+    qty_25 = fields.Char('25')
+    qty_26 = fields.Char('26')
+    qty_27 = fields.Char('27')
+    qty_28 = fields.Char('28')
+    qty_29 = fields.Char('29')
+    qty_30 = fields.Char('30')
+    qty_31 = fields.Char('31')
+    qty_32 = fields.Char('32')
+    qty_33 = fields.Char('33')
+    qty_34 = fields.Char('34')
+    qty_35 = fields.Char('35')
+    qty_36 = fields.Char('36')
+    qty_38 = fields.Char('38')
+    qty_40 = fields.Char('40')
+    qty_42 = fields.Char('42')
+    
+    @api.depends('qty_al','qty_xs','qty_s','qty_m','qty_l','qty_xl','qty_x','qty_y','qty_z','qty_25','qty_26','qty_27','qty_28','qty_29','qty_30','qty_31','qty_32','qty_33','qty_34','qty_35','qty_36','qty_38','qty_40','qty_42',)
+    def _get_total_qty(self):
+        for res in self:
+            total_product = 0
+            if res.qty_al != '':
+                total_product += int(res.qty_al)
+            if res.qty_xs != '':
+                total_product += int(res.qty_xs)
+            if res.qty_s != '':
+                total_product += int(res.qty_s)
+            if res.qty_m != '':
+                total_product += int(res.qty_m)
+            if res.qty_l != '':
+                total_product += int(res.qty_l)
+            if res.qty_xl != '':
+                total_product += int(res.qty_xl)
+            if res.qty_x != '':
+                total_product += int(res.qty_x)
+            if res.qty_y != '':
+                total_product += int(res.qty_y)
+            if res.qty_z != '':
+                total_product += int(res.qty_z)
+            if res.qty_25 != '':
+                total_product += int(res.qty_25)
+            if res.qty_26 != '':
+                total_product += int(res.qty_26)
+            if res.qty_27 != '':
+                total_product += int(res.qty_27)
+            if res.qty_28 != '':
+                total_product += int(res.qty_28)
+            if res.qty_29 != '':
+                total_product += int(res.qty_29)
+            if res.qty_30 != '':
+                total_product += int(res.qty_30)
+            if res.qty_31 != '':
+                total_product += int(res.qty_31)
+            if res.qty_32 != '':
+                total_product += int(res.qty_32)
+            if res.qty_33 != '':
+                total_product += int(res.qty_33)
+            if res.qty_34 != '':
+                total_product += int(res.qty_34)
+            if res.qty_35 != '':
+                total_product += int(res.qty_35)
+            if res.qty_36 != '':
+                total_product += int(res.qty_36)
+            if res.qty_38 != '':
+                total_product += int(res.qty_38)
+            if res.qty_40 != '':
+                total_product += int(res.qty_40)
+            if res.qty_42 != '':
+                total_product += int(res.qty_42)
+
+            res.total_qty = total_product   
+        
+class LeaPackingListColi(models.Model):
+    _name = 'lea.packing.list.coli'
+    _order = 'coli asc'
+        
+    reference = fields.Many2one('lea.packing.list', 'Reference')            
+    coli = fields.Char('Coli No.')
+    total_qty = fields.Integer(compute="_get_total_qty", string='Total Qty', digits=dp.get_precision('Product Unit of Measure'))
+    weight = fields.Float('Weight (Kg)')    
+    product_ids = fields.One2many('lea.packing.list.coli.product', 'reference', 'Products')
+    
+    @api.depends('product_ids')
+    def _get_total_qty(self):
+        for res in self:
+            total_qty = 0
+            if res.product_ids:
+                total_qty = 0
+                for line in res.product_ids:
+                    total_qty += line.qty
+            res.total_qty = total_qty
+            
+    @api.multi
+    def unlink(self):
+        for res in self:
+            for product in res.product_ids:
+                line = self.env['lea.packing.list.line'].search([('reference','=',res.reference.id),('product_id','=',product.product_id.id)])
+                if line:
+                    line.qty_remaining += product.qty                                        
+                                    
+        return super(LeaPackingListColi, self).unlink()
+                
+class LeaPackingList(models.Model):
+    _name = 'lea.packing.list'
+    
+    name = fields.Char('Packing No.')
+    date = fields.Date('Packing Date')
+    coli = fields.Char('Coli')
+    barcode = fields.Char('Scan Barcode')    
+    picking_id = fields.Many2one('stock.picking', 'DO No.')
+    picking_date = fields.Date('DO Date')
+    sale_id = fields.Many2one('sale.order', 'SO No.')
+    sale_date = fields.Date('SO Date')
+    partner_id = fields.Many2one('res.partner', 'Customer')    
+    line_ids = fields.One2many('lea.packing.list.line', 'reference', 'Lines')
+    coli_ids = fields.One2many('lea.packing.list.coli', 'reference', 'Summary per Coli')
+    coli_qty = fields.Integer(compute="_get_coli_qty", string="Qty Coli")
+    total_scanned = fields.Integer("Total Scanned")
+    total_qty_coli = fields.Integer("Total Qty Coli")
+    total_weight = fields.Float(compute="_get_total_weight", string="Total Weight")    
+    total_picked = fields.Integer(compute='_get_total_picked', string='Total Picked Qty', digits=dp.get_precision('Product Unit of Measure'))
+    total_packed = fields.Integer(compute='_get_total_packed', string='Total Packed Qty', digits=dp.get_precision('Product Unit of Measure'))
+    total_coli = fields.Integer(compute='_get_total_coli', string='Total Coli', digits=dp.get_precision('Product Unit of Measure'))
+    total_article = fields.Integer(compute='_get_total_article', string='Total Article', digits=dp.get_precision('Product Unit of Measure'))
+    state = fields.Selection([('Draft','Draft'),('Done','Done')], string='Status', default='Draft')
+
+    @api.onchange('coli')
+    def onchange_coli(self):
+        for res in self:
+            if res.coli:
+                res.total_qty_coli = res.coli_qty
+            else:
+                res.total_qty_coli = 0
+    
+    @api.depends('coli')
+    def _get_coli_qty(self):
+        for res in self:
+            total = 0
+            for coli in res.coli_ids:
+                if coli.coli == res.coli:
+                    total = coli.total_qty                    
+            res.coli_qty = total
+            
+    @api.depends('coli_ids')
+    def _get_total_weight(self):
+        for res in self:
+            total_weight = 0
+            for line in res.coli_ids:
+                total_weight += line.weight
+            res.total_weight = total_weight
+            
+    @api.depends('line_ids.qty_picked')
+    def _get_total_picked(self):
+        for res in self:
+            total_picked = 0
+            for line in res.line_ids:
+                total_picked += line.qty_picked
+            res.total_picked = total_picked
+            
+    @api.depends('line_ids')
+    def _get_total_article(self):
+        for res in self:            
+            article_ids = []
+            for line in res.line_ids:
+                if line.qty_remaining != line.qty_picked:
+                    if line.product_id.categ_id.id not in article_ids:                    
+                        article_ids.append(line.product_id.categ_id.id)            
+            res.total_article = len(article_ids)            
+            
+    @api.depends('line_ids.qty_picked', 'line_ids.qty_remaining')
+    def _get_total_packed(self):
+        for res in self:
+            total_packed = 0
+            for line in res.line_ids:
+                total_packed += (line.qty_picked - line.qty_remaining)
+            res.total_packed = total_packed
+
+    @api.depends('coli_ids')
+    def _get_total_coli(self):
+        for res in self:
+            total_coli = 0
+            if res.coli_ids:
+                total_coli = len(res.coli_ids)            
+            res.total_coli = total_coli
+            
+    @api.onchange('barcode')
+    def barcode_scanning(self):
+        match = False
+        product_obj = self.env['product.product']
+        product_id = product_obj.search([('barcode', '=', self.barcode)])        
+        coli_ids = []
+        value = {}
+                
+        print "Coli IDS Awal ", coli_ids
+        if not self.coli and self.barcode:
+            self.barcode = False
+            return {'warning': {
+                    'title': "Warning",
+                    'message': "Please Input Coli Number",
+                    }
+                }    
+            
+        if self.barcode and not product_id:
+            self.barcode = False
+            return {'warning': {
+                    'title': "Warning",
+                    'message': "No product is available for this barcode",
+                    }
+                }    
+                    
+        if self.barcode and self.line_ids:            
+            for line in self.line_ids:
+                if line.product_id.barcode == self.barcode:
+                    if line.qty_remaining == 0:
+                        self.barcode = False
+                        return {'warning': {
+                            'title': "Warning",
+                            'message': "Cannot Scan more than Qty",
+                            }
+                        }                        
+                    else: 
+                        line.qty_packed += 1      
+                        line.qty_remaining -= 1
+                        self.total_scanned += 1  
+                        self.total_qty_coli += 1                                                                                                                                                    
+                        self.barcode = False                        
+                        match = True
+                        
+        if self.barcode and not match:
+            self.barcode = False
+            if product_id:
+                return {'warning': {
+                    'title': "Warning",
+                    'message': "This product is not available in the order.",
+                    }
+                }            
+                                                
+        return {'value':value}    
+                                
+    @api.multi
+    def create_coli(self):
+        for res in self:
+            coli_id = False
+            qty_al = 0
+            qty_xs = 0
+            qty_s = 0
+            qty_m = 0
+            qty_l = 0
+            qty_xl = 0
+            qty_x = 0
+            qty_y = 0
+            qty_z = 0
+            qty_25 = 0
+            qty_26 = 0
+            qty_27 = 0
+            qty_28 = 0
+            qty_29 = 0
+            qty_30 = 0
+            qty_31 = 0
+            qty_32 = 0
+            qty_33 = 0
+            qty_34 = 0
+            qty_35 = 0
+            qty_36 = 0
+            qty_38 = 0
+            qty_40 = 0
+            qty_42 = 0
+            
+            str_qty_al = ''
+            str_qty_xs = ''
+            str_qty_s = ''
+            str_qty_m = ''
+            str_qty_l = ''
+            str_qty_xl = ''
+            str_qty_x = ''
+            str_qty_y = ''
+            str_qty_z = ''
+            str_qty_25 = ''
+            str_qty_26 = ''
+            str_qty_27 = ''
+            str_qty_28 = ''
+            str_qty_29 = ''
+            str_qty_30 = ''
+            str_qty_31 = ''
+            str_qty_32 = ''
+            str_qty_33 = ''
+            str_qty_34 = ''
+            str_qty_35 = ''
+            str_qty_36 = ''
+            str_qty_38 = ''
+            str_qty_40 = ''
+            str_qty_42 = ''  
+                                                                              
+            if not res.coli:
+                raise Warning('Please Input Coli Number')
+            elif res.coli:
+                current_coli = self.env['lea.packing.list.coli'].search([('coli','=',res.coli),('reference','=',res.id)])
+                if current_coli:
+                    coli_id = current_coli[0]                    
+                else:
+                    coli_id = self.env['lea.packing.list.coli'].create({
+                                                                        'reference': res.id,
+                                                                        'coli': res.coli,                                                                                                          
+                                                                        })
+                
+                for line in res.line_ids:
+                    if line.qty_packed > 0:
+                        qty = 0
+                        current_product = self.env['lea.packing.list.coli.product'].search([('categ_id','=',line.product_id.categ_id.id),('reference.reference','=',res.id),('reference','=',coli_id.id)])
+                        if current_product:
+                            if line.product_id.product_size_id.name == "AL":
+                                qty = current_product[0].qty_al           
+                                current_product[0].write({'qty_al' : (qty or 0) + line.qty_packed})                           
+                            elif line.product_id.product_size_id.name == "XS":
+                                qty = current_product[0].qty_xs
+                                current_product[0].write({'qty_xs' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "S":
+                                qty = current_product[0].qty_s
+                                current_product[0].write({'qty_s' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "M":
+                                qty = current_product[0].qty_m                                
+                                current_product[0].write({'qty_m' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "L":
+                                qty = current_product[0].qty_l
+                                current_product[0].write({'qty_l' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "XL":
+                                qty = current_product[0].qty_xl
+                                current_product[0].write({'qty_xl' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "X":
+                                qty = current_product[0].qty_x
+                                current_product[0].write({'qty_x' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "Y":
+                                qty = current_product[0].qty_y
+                                current_product[0].write({'qty_y' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "Z":
+                                qty = current_product[0].qty_z
+                                current_product[0].write({'qty_z' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "25":
+                                qty = current_product[0].qty_25
+                                current_product[0].write({'qty_25' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "26":
+                                qty = current_product[0].qty_26
+                                current_product[0].write({'qty_26' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "27":
+                                qty = current_product[0].qty_27
+                                current_product[0].write({'qty_27' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "28":
+                                qty = current_product[0].qty_28
+                                current_product[0].write({'qty_28' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "29":
+                                qty = current_product[0].qty_29
+                                current_product[0].write({'qty_29' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "30":
+                                qty = current_product[0].qty_30
+                                current_product[0].write({'qty_30' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "31":
+                                qty = current_product[0].qty_31
+                                current_product[0].write({'qty_31' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "32":
+                                qty = current_product[0].qty_32
+                                current_product[0].write({'qty_32' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "33":
+                                qty = current_product[0].qty_33
+                                current_product[0].write({'qty_33' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "34":
+                                qty = current_product[0].qty_34
+                                current_product[0].write({'qty_34' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "35":
+                                qty = current_product[0].qty_35
+                                current_product[0].write({'qty_35' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "36":
+                                qty = current_product[0].qty_36
+                                current_product[0].write({'qty_36' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "38":
+                                qty = current_product[0].qty_38
+                                current_product[0].write({'qty_38' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "40":
+                                qty = current_product[0].qty_40
+                                current_product[0].write({'qty_40' : (qty or 0) + line.qty_packed})
+                            elif line.product_id.product_size_id.name == "42":
+                                qty = current_product[0].qty_42                             
+                                current_product[0].write({'qty_42' : (qty or 0) + line.qty_packed})                                                                                                                                     
+                        else:
+                            if line.product_id.product_size_id.name == "AL":
+                                qty_al += line.qty_packed
+                            elif line.product_id.product_size_id.name == "XS":
+                                qty_xs += line.qty_packed
+                            elif line.product_id.product_size_id.name == "S":
+                                qty_s += line.qty_packed
+                            elif line.product_id.product_size_id.name == "M":
+                                qty_m += line.qty_packed
+                            elif line.product_id.product_size_id.name == "L":
+                                qty_l += line.qty_packed
+                            elif line.product_id.product_size_id.name == "XL":
+                                qty_xl += line.qty_packed
+                            elif line.product_id.product_size_id.name == "X":
+                                qty_x += line.qty_packed
+                            elif line.product_id.product_size_id.name == "Y":
+                                qty_y += line.qty_packed
+                            elif line.product_id.product_size_id.name == "Z":
+                                qty_z += line.qty_packed
+                            elif line.product_id.product_size_id.name == "25":
+                                qty_25 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "26":
+                                qty_26 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "27":
+                                qty_27 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "28":
+                                qty_28 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "29":
+                                qty_29 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "30":
+                                qty_30 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "31":
+                                qty_31 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "32":
+                                qty_32 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "33":
+                                qty_33 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "34":
+                                qty_34 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "35":
+                                qty_35 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "36":
+                                qty_36 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "38":
+                                qty_38 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "40":
+                                qty_40 += line.qty_packed
+                            elif line.product_id.product_size_id.name == "42":
+                                qty_42 += line.qty_packed
+                            
+                            if qty_al > 0:
+                                str_qty_al = str(qty_al)
+                            elif qty_xs > 0:
+                                str_qty_xs = str(qty_xs)
+                            elif qty_s > 0:
+                                str_qty_s = str(qty_s)
+                            elif qty_m > 0:
+                                str_qty_m = str(qty_m)
+                            elif qty_l > 0:
+                                str_qty_l = str(qty_l)
+                            elif qty_xl > 0:
+                                str_qty_xl = str(qty_xl)
+                            elif qty_x > 0:
+                                str_qty_x = str(qty_x)
+                            elif qty_y > 0:
+                                str_qty_y = str(qty_y)
+                            elif qty_z > 0:
+                                str_qty_z = str(qty_z)
+                            elif qty_25 > 0:
+                                str_qty_25 = str(qty_25)
+                            elif qty_26 > 0:
+                                str_qty_26 = str(qty_26)
+                            elif qty_27 > 0:
+                                str_qty_27 = str(qty_27)
+                            elif qty_28 > 0:
+                                str_qty_28 = str(qty_28)
+                            elif qty_29 > 0:
+                                str_qty_29 = str(qty_29)
+                            elif qty_30 > 0:
+                                str_qty_30 = str(qty_30)
+                            elif qty_31 > 0:
+                                str_qty_31 = str(qty_31)
+                            elif qty_32 > 0:
+                                str_qty_32 = str(qty_32)
+                            elif qty_33 > 0:
+                                str_qty_33 = str(qty_33)
+                            elif qty_34 > 0:
+                                str_qty_34 = str(qty_34)
+                            elif qty_35 > 0:
+                                str_qty_35 = str(qty_35)
+                            elif qty_36 > 0:
+                                str_qty_36 = str(qty_36)
+                            elif qty_38 > 0:
+                                str_qty_38 = str(qty_38)
+                            elif qty_40 > 0:
+                                str_qty_40 = str(qty_40)
+                            elif qty_42 > 0:
+                                str_qty_42 = str(qty_42)
+                                
+                            self.env['lea.packing.list.coli.product'].create({
+                                                                              'reference': coli_id.id,
+                                                                              'categ_id': line.product_id.categ_id.id,
+                                                                              'qty': line.qty_packed,
+                                                                              'qty_al': str_qty_al,
+                                                                              'qty_xs': str_qty_xs,
+                                                                              'qty_s': str_qty_s,
+                                                                              'qty_m': str_qty_m,
+                                                                              'qty_l': str_qty_l,
+                                                                              'qty_xl': str_qty_xl,
+                                                                              'qty_x': str_qty_x,
+                                                                              'qty_y': str_qty_y,
+                                                                              'qty_z': str_qty_z,
+                                                                              'qty_25': str_qty_25,
+                                                                              'qty_26': str_qty_26,
+                                                                              'qty_27': str_qty_27,
+                                                                              'qty_28': str_qty_28,
+                                                                              'qty_29': str_qty_29,
+                                                                              'qty_30': str_qty_30,
+                                                                              'qty_31': str_qty_31,
+                                                                              'qty_32': str_qty_32,
+                                                                              'qty_33': str_qty_33,
+                                                                              'qty_34': str_qty_34,
+                                                                              'qty_35': str_qty_35,
+                                                                              'qty_36': str_qty_36,
+                                                                              'qty_38': str_qty_38,
+                                                                              'qty_40': str_qty_40,
+                                                                              'qty_42': str_qty_42,                                                                                                                                                                                      
+                                                                              })
+                    
+                    line.qty_packed = 0
+                    
+                res.coli = False       
+                res.total_scanned = 0
+                res.total_qty_coli = 0                
+        
+    @api.multi
+    def button_done(self):
+        for res in self:
+            if res.total_packed <> res.total_picked:
+                raise Warning('Total Picked Qty and Packed Qty need to be same')
+            res.state = 'Done'
+            
+    @api.multi
+    def button_draft(self):
+        for res in self:
+            res.state = 'Draft'
+            
+    @api.multi
+    def unlink(self):
+        for res in self:
+            if res.state == "Done":
+                raise Warning('Cannot delete Packing List which already in Done State')
+            else:                                        
+                res.picking_id.write({
+                                    'is_packing_list': False,
+                                    'packing_list_id': False,
+                                    })               
+                                    
+        return super(LeaPackingList, self).unlink()
+            
+    @api.model
+    def create(self, vals):        
+        vals['name'] = self.env['ir.sequence'].next_by_code('lea.packing.list') or '/'
+        return super(LeaPackingList, self).create(vals)
+                
+            
+class LeaPickingList(models.Model):
+    _name = 'lea.picking.list'
+    
+    name = fields.Char('Picking List No.')
+    barcode = fields.Char('Scan Barcode')
+    barcode_summary = fields.Char('Scan Barcode')
+    message = fields.Text('Error Message')
+    date = fields.Date('Date')
+    warehouse_id = fields.Many2one('stock.warehouse', compute="_get_warehouse_id", string='Warehouse')
+    location_id = fields.Many2one('stock.location', compute="_get_location_id", string='Location')
+    gate_id = fields.Many2one('lea.gate', 'Gate')
+    picker_id = fields.Many2one('lea.picker', 'Picker')
+    total_qty = fields.Integer(compute='_get_total_qty', string='Total Qty', digits=dp.get_precision('Product Unit of Measure'))
+    total_do = fields.Integer(compute='_get_total_do', string='Total DO', digits=dp.get_precision('Product Unit of Measure'))
+    total_picked = fields.Integer(compute='_get_total_picked', string='Total Picked', digits=dp.get_precision('Product Unit of Measure'))
+    line_ids = fields.One2many('lea.picking.list.line', 'reference', 'Lines')
+    summary_ids = fields.One2many('lea.picking.list.summary', 'reference', 'Summary')
+    state = fields.Selection([('Draft','Draft'),('Done','Done')], string='Status', default='Draft')
+
+    @api.onchange('barcode','barcode_summary')
+    def barcode_scanning(self):
+        match = False
+        product_obj = self.env['product.product']
+        product_id = product_obj.search([('barcode', '=', self.barcode)])
+        if self.barcode and not product_id:
+            self.barcode = False
+            return {'warning': {
+                    'title': "Warning",
+                    'message': "No product is available for this barcode",
+                    }
+                }            
+        if self.barcode and self.line_ids:
+            for line in self.line_ids:
+                if line.product_id.barcode == self.barcode:
+                    if line.qty_scan == line.qty:
+                        self.barcode = False
+                        return {'warning': {
+                            'title': "Warning",
+                            'message': "Cannot Scan more than Qty",
+                            }
+                        }                        
+                    else: 
+                        line.qty_scan += 1
+                        self.barcode = False
+                        self.message = False
+                        match = True
+        if self.barcode and not match:
+            self.barcode = False
+            if product_id:
+                return {'warning': {
+                    'title': "Warning",
+                    'message': "This product is not available in the order.",
+                    }
+                }            
+                
+    @api.depends('gate_id')
+    def _get_warehouse_id(self):
+        for res in self:
+            if res.gate_id:                        
+                res.warehouse_id = res.gate_id.warehouse_id.id
+                
+    @api.depends('gate_id')
+    def _get_location_id(self):
+        for res in self:
+            if res.gate_id:                        
+                res.location_id = res.gate_id.location_id.id
+            
+    @api.depends('line_ids.qty')
+    def _get_total_qty(self):
+        for res in self:
+            total_qty = 0
+            for line in res.line_ids:
+                total_qty += line.qty 
+            res.total_qty = total_qty
+            
+    @api.depends('line_ids.qty_scan')
+    def _get_total_picked(self):
+        for res in self:
+            total_picked = 0
+            for line in res.line_ids:
+                total_picked += line.qty_scan
+            res.total_picked = total_picked            
+            
+    @api.depends('line_ids')
+    def _get_total_do(self):
+        for res in self:
+            do_ids = []
+            total_do = 0
+            for line in res.line_ids:
+                if line.delivery_id.id not in do_ids:
+                    do_ids.append(line.delivery_id.id)
+                    total_do += 1 
+            res.total_do = total_do
+
+    @api.multi
+    def button_done(self):
+        for res in self:     
+            if res.total_picked > res.total_qty:
+                raise Warning('Qty Picked cannot more than Qty Order')
+            res.state = 'Done'
+            
+    @api.multi
+    def button_draft(self):
+        for res in self:
+            res.state = 'Draft'
+    
+    @api.multi
+    def unlink(self):
+        for res in self:
+            if res.state == "Done":
+                raise Warning('Cannot delete Picking List which already in Done State')
+            else:                        
+                for line in res.line_ids:
+                    line.delivery_id.write({
+                                            'is_picking_list': False,
+                                            'picking_list_id': False,
+                                            })               
+                res.line_ids.unlink()            
+        return super(LeaPickingList, self).unlink()
+    
+    @api.model
+    def create(self, vals):        
+        vals['name'] = self.env['ir.sequence'].next_by_code('lea.picking.list') or '/'
+        return super(LeaPickingList, self).create(vals)            
+
+
+class LeaPickingListLine(models.Model):
+    _name = 'lea.picking.list.line'
+    _order = 'product_id asc, delivery_id asc'
+        
+    reference = fields.Many2one('lea.picking.list', 'Reference')
+    rack_id = fields.Many2one('lea.rack.level.column', 'Rack')
+    product_id = fields.Many2one('product.product', 'Barcode')
+    qty = fields.Float('Qty Pick', digits=dp.get_precision('Product Unit of Measure'))
+    qty_scan = fields.Float('Qty Scan', digits=dp.get_precision('Product Unit of Measure'))
+    delivery_id = fields.Many2one('stock.picking', 'DO No.')
+    
+
+class LeaPickingListSummary(models.Model):
+    _name = 'lea.picking.list.summary'
+    _order = 'product_id asc'
+        
+    reference = fields.Many2one('lea.picking.list', 'Reference')    
+    product_id = fields.Many2one('product.product', 'Barcode')
+    qty = fields.Float('Qty Pick', digits=dp.get_precision('Product Unit of Measure'))
+    qty_scan = fields.Float('Qty Scan', digits=dp.get_precision('Product Unit of Measure'))    
+    
+                        
+class LeaGate(models.Model):
+    _name = 'lea.gate'
+    
+    name = fields.Char('Gate')
+    warehouse_id = fields.Many2one('stock.warehouse', 'Warehouse')
+    location_id = fields.Many2one('stock.location', 'Location')
+    
+    
+class LeaPicker(models.Model):
+    _name = 'lea.picker'
+    
+    name = fields.Char('Picker Name')
+    
+    
+class LeaRack(models.Model):
+    _name = 'lea.rack'
+    
+    name = fields.Char('Rack')        
+
+        
+class LeaRackLevel(models.Model):
+    _name = 'lea.rack.level'
+    
+    rack_id = fields.Many2one('lea.rack', 'Rack')
+    name = fields.Char('Level')
+    type = fields.Selection([('Stock','Stock'),('Reserved','Reserved')], string='Type', default='Stock')
+
+
+
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        res = []
+        if name:
+            res = self.search([('name', operator, name)] + args, limit=limit)
+        if not res:
+            res = self.search([('name', operator, name)] + args, limit=limit)
+        return res.name_get()
+
+    @api.multi
+    @api.depends('rack_id','name')
+    def name_get(self):
+        result = []
+        for level in self:
+            name =  level.rack_id.name + '-' + level.name 
+            result.append((level.id, name))
+        return result
+    
+
+class LeaRackLevelColumn(models.Model):
+    _name = 'lea.rack.level.column'
+    
+    rack_id = fields.Many2one('lea.rack', 'Rack')
+    level_id = fields.Many2one('lea.rack.level', 'Level')
+    name = fields.Char('Column')
+    product_id = fields.Many2one('product.product', 'Product')
+    min_stock = fields.Float('Minimum', digits=dp.get_precision('Product Unit of Measure'))
+    max_stock = fields.Float('Maximum', digits=dp.get_precision('Product Unit of Measure'))    
+    type = fields.Char(compute='_get_type', string='Type')
+    available_stock = fields.Integer(compute='_get_available_stock', string='Available Stock')
+    line_ids = fields.One2many('lea.rack.level.column.line', 'reference', 'Lines')    
+
+    @api.multi
+    def create_column_product(self):
+        for res in self:            
+            current_id = self.env['lea.product.column'].search([('reference','=',res.product_id.product_tmpl_id.id),('column_id','=',res.id)])
+            if not current_id:
+                self.env['lea.product.column'].create({
+                                                       'reference': res.product_id.product_tmpl_id.id,
+                                                       'column_id': res.id,
+                                                       'type': res.type,
+                                                       })
+    
+    @api.multi
+    @api.depends('name','type')
+    def name_get(self):
+        result = []
+        for column in self:
+            name =  column.name + ' (' + column.type + ')'
+            result.append((column.id, name))
+        return result
+    
+    @api.depends('line_ids.qty')
+    def _get_available_stock(self):
+        for res in self:
+            available_stock = 0
+            for line in res.line_ids:                            
+                if line.type == "Incoming" or line.type == "Putaway":
+                    available_stock += line.qty
+                elif line.type == "Outgoing":
+                    available_stock -= line.qty
+            res.available_stock = available_stock
+                
+    @api.depends('level_id')
+    def _get_type(self):
+        for res in self:
+            if res.level_id:
+                res.type = res.level_id.type                    
+    
+    @api.onchange('level_id')
+    def onchange_level_id(self):
+        for res in self:
+            if res.level_id:
+                name =  res.level_id.rack_id.name + '-' + res.level_id.name + '-'
+                res.name = name
+
+
+    @api.onchange('product_id')
+    def onchange_product_id(self):
+        result = {}
+        result['domain'] = {'product_id': [('id', '=', self.product_id.id), ('is_rack', '=', False)]}
+        return result
+
+
+class LeaRackLevelColumnLine(models.Model):
+    _name = 'lea.rack.level.column.line'
+    
+    reference = fields.Many2one('lea.rack.level.column', 'Reference')
+    type = fields.Selection([('Incoming','Incoming'),('Outgoing','Outgoing'),('Putaway','Putaway')], string='Movement Type')
+    qty = fields.Integer('Qty')
+    date = fields.Date('Date')
+    putaway_id = fields.Many2one('lea.putaway', 'Putaway ID')
+    putaway_line_id = fields.Many2one('lea.putaway.line', 'Putaway Line ID')
+    mutation_id = fields.Many2one('lea.rack.mutation', 'Mutation No.')
+    
+            
+class LeaRackMutation(models.Model):
+    _name = 'lea.rack.mutation'
+    
+    name = fields.Char('No.')
+    picking_id = fields.Many2one('stock.picking', 'Origin')    
+    created_by = fields.Many2one('res.users', 'Created by', default=lambda self:self.env.user)
+    created_date = fields.Date('Created Date', default=fields.Date.today())
+    line_ids = fields.One2many('lea.rack.mutation.line', 'reference', 'Lines')
+    state = fields.Selection([('Draft','Draft'),('Confirmed','Confirmed'),('Approved','Approved')], string='Status', default='Draft')
+    
+    @api.model
+    def create(self, vals):        
+        vals['name'] = self.env['ir.sequence'].next_by_code('lea.rack.mutation') or '/'
+        return super(LeaRackMutation, self).create(vals)
+
+    @api.multi
+    def button_confirm(self):
+        for res in self:
+            for line in res.line_ids:
+                if line.column_from.product_id.id == line.product_id.id and line.column_from.available_stock < line.qty:
+                    raise Warning('Stock not Available')                    
+                if line.column_from.type == "Stock" and line.column_to.type == "Reserved":
+                    if line.column_from.product_id.id <> line.product_id.id:
+                        raise Warning('Selected Product are not Configured in Selected Source Location')
+                elif line.column_from.type == "Reserved" and line.column_to.type == "Stock":
+                    if line.column_to.product_id.id <> line.product_id.id:
+                        raise Warning('Selected Product are not Configured in Selected Destination Location')
+                elif line.column_from.type == "Stock" and line.column_to.type == "Stock":
+                    if line.column_from.product_id.id <> line.product_id.id and line.column_to.product_id.id <> line.product_id.id:
+                        raise Warning('Selected Product are not Configured in Selected Source/Destination Location')
+                               
+            res.state = 'Confirmed'
+            
+    @api.multi
+    def button_set_to_draft(self):
+        for res in self:                    
+            res.state = 'Draft'            
+            
+    @api.multi
+    def button_approve(self):
+        for res in self:
+            for line in res.line_ids:
+                if line.column_from.product_id.id == line.product_id.id and line.column_from.available_stock < line.qty:
+                    raise Warning('Stock not Available')         
+                
+                if line.column_from.available_stock < line.qty:
+                    raise Warning('Stock not Available')                    
+                if line.column_from.type == "Stock" and line.column_to.type == "Reserved":
+                    if line.column_from.product_id.id <> line.product_id.id:
+                        raise Warning('Selected Product are not Configured in Selected Source Location')
+                elif line.column_from.type == "Reserved" and line.column_to.type == "Stock":
+                    if line.column_to.product_id.id <> line.product_id.id:
+                        raise Warning('Selected Product are not Configured in Selected Destination Location')
+                elif line.column_from.type == "Stock" and line.column_to.type == "Stock":
+                    if line.column_from.product_id.id <> line.product_id.id and line.column_to.product_id.id <> line.product_id.id:
+                        raise Warning('Selected Product are not Configured in Selected Source/Destination Location')
+                           
+                self.env['lea.rack.level.column.line'].create({
+                                                               'reference': line.column_from.id,
+                                                               'type': 'Outgoing',
+                                                               'qty': line.qty,
+                                                               'mutation_id': res.id
+                                                               })
+                
+                self.env['lea.rack.level.column.line'].create({
+                                                               'reference': line.column_to.id,
+                                                               'type': 'Incoming',
+                                                               'qty': line.qty,
+                                                               'mutation_id': res.id
+                                                               })
+                
+            res.state = 'Approved'     
+            
+    @api.multi
+    def button_cancel(self):
+        for res in self:            
+            mutation_ids = self.env['lea.rack.level.column.line'].search([('mutation_id','=',res.id)])
+            if mutation_ids:
+                for mutation in mutation_ids:
+                    mutation.unlink()                                                     
+            res.state = 'Cancelled'                        
+            
+
+class LeaRackMutationLine(models.Model):
+    _name = 'lea.rack.mutation.line'
+    
+    reference = fields.Many2one('lea.rack.mutation', 'Reference')
+    product_id = fields.Many2one('product.product', 'Product')
+    column_from = fields.Many2one('lea.rack.level.column', 'From Column')
+    column_to = fields.Many2one('lea.rack.level.column', 'To Column')
+    qty = fields.Integer('Qty')
+    type = fields.Char(compute="_get_type", string="Mutation Type")
+    
+    @api.depends('column_from','column_to')    
+    def _get_type(self):
+        for res in self:            
+            if res.column_from.type == "Stock" and res.column_to.type == "Reserved":

@@ -1,0 +1,426 @@
+<odoo>
+  <data>
+    <report
+       id="report_mass_payment_id"
+       string="Bank Voucher Payment Vendor"
+       model="mass.payment"
+       report_type="qweb-pdf"
+       file="mass_payment_lea.report_mass_payment_new"
+       name="mass_payment_lea.report_mass_Payment_new"
+    />
+
+    <template id="report_mass_Payment_new">
+      <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+          <t t-call="mass_payment_lea.report_mass_payment_new_document"/>
+          <t t-call="mass_payment_lea.header_mass_payment"/>
+        </t>
+      </t>
+    </template>
+
+    <template id="header_mass_payment">
+      <div class="header">
+        <br/><br/>
+        <table width="100%">
+          <tbody>
+            <tr>
+               <td colspan="4" align="center">
+                   <b>Bank Payment Voucher</b>
+               </td>
+            </tr>
+            <tr>
+              <td colspan="2"  style="text-align:left;margin-left:10px" width="40%">
+                  <table>
+                      <tr>
+                          <td style="font-size:12px">
+                            Paid To
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px" width="60%">
+                            <span t-field="o.partner_id.name"/>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            Bank
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <span t-field="o.journal_id.name"/>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            A/C No
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <span t-field="o.journal_id.bank_acc_number"/>
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+                <td width="30%">
+
+                </td>
+
+              <td colspan="2" width="40%">
+                 <table>
+                      <tr>
+                          <td style="font-size:12px">
+                            Voucher No
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <span t-field="o.name"/>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            Date
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <span t-field="o.payment_date" t-field-options='{"format": "MM/dd/yyyy"}'/>
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+          <br/>
+      </div>
+    </template>
+
+    <template id="report_mass_payment_new_document">
+      <div class="page">
+        <table style="margin-top:10px;" width="100%">
+          <tr>
+            <td width="5%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>No</center></strong>
+            </td>
+
+            <td width="65%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Nomor Invoice</center></strong>
+            </td>
+
+            <td width="30%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Payment Amount</center></strong>
+            </td>
+          </tr>
+          <tr t-foreach="o.line_ids" t-as="f">
+              <td width="5%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+               <div style="margin-left:5px"><span t-esc="f_index+1"/></div>
+            </td>
+
+            <td width="65%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <div style="margin-left:5px"><span t-field="f.invoice_id.number"/></div>
+            </td>
+
+            <td width="30%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+                <div style="margin-left:5px"> <t t-esc="'{0:,.0f}'.format(f.payment_amount)"/></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="footer">
+          <div style="bottom:-500px;">
+               <table width="100%">
+                  <tr>
+                    <td rowspan="2" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        Prepared By
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        Anastasia
+                    </td>
+                    <td rowspan="2" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        Check By
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                    </td>
+                    <td colspan="2" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        Approved By
+
+                    </td>
+                    <td rowspan="2" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        Received By
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                    </td>
+                  </tr>
+                   <tr>
+                    <td style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        Approved
+                        <br/>
+                        <br/>
+                        <br/>
+                        SINHEN
+
+                    </td>
+                    <td style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+
+                    </td>
+                  </tr>
+               </table>
+              <br/>
+          </div>
+        </div>
+    </template>
+
+    <record id="mass_payment_new_paperformat" model="report.paperformat">
+            <field name="name">Mass Payment Format</field>
+            <field name="default" eval="False" />
+            <field name="format">custom</field>
+            <field name="page_height">150</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">35</field>
+            <field name="margin_bottom">55</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="report_mass_payment_id" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="mass_payment_lea.mass_payment_new_paperformat"/>
+        </record>
+
+     <report
+       id="report_mass_payment_id2"
+       string="Bank Voucher Payment Customer"
+       model="mass.payment"
+       report_type="qweb-pdf"
+       file="mass_payment_lea.report_mass_payment_new2"
+       name="mass_payment_lea.report_mass_payment_new2"
+    />
+
+    <template id="report_mass_payment_new2">
+      <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+          <t t-call="mass_payment_lea.report_mass_payment_new_document2"/>
+          <t t-call="mass_payment_lea.header_mass_payment2"/>
+        </t>
+      </t>
+    </template>
+
+    <template id="header_mass_payment2">
+      <div class="header">
+        <br/><br/>
+        <table width="100%">
+          <tbody>
+            <tr>
+
+               <td colspan="4" align="center">
+                   <b>Bank Payment Voucher</b>
+               </td>
+            </tr>
+            <tr>
+              <td colspan="2"  style="text-align:left;margin-left:10px" width="40%">
+                  <table>
+                      <tr>
+                          <td style="font-size:12px">
+                            Received From
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px" width="60%">
+                            <span t-field="o.partner_id.name"/>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            Bank
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <span t-field="o.journal_id.name"/>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            A/C No
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <span t-field="o.journal_id.bank_acc_number"/>
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+                <td width="30%">
+
+                </td>
+
+              <td colspan="2" width="40%">
+                 <table>
+                      <tr>
+                          <td style="font-size:12px">
+                            Voucher No
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <span t-field="o.name"/>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            Date
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <span t-field="o.payment_date" t-field-options='{"format": "MM/dd/yyyy"}'/>
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+          <br/>
+      </div>
+    </template>
+
+    <template id="report_mass_payment_new_document2">
+      <div class="page">
+        <table style="margin-top:10px;" width="100%">
+          <tr>
+            <td width="5%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>No</center></strong>
+            </td>
+
+            <td width="65%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Nomor Invoice</center></strong>
+            </td>
+
+            <td width="30%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Payment Amount</center></strong>
+            </td>
+          </tr>
+          <tr t-foreach="o.line_ids" t-as="f">
+              <td width="5%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+               <div style="margin-left:5px"><span t-esc="f_index+1"/></div>
+            </td>
+
+            <td width="65%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <div style="margin-left:5px"><span t-field="f.invoice_id.number"/></div>
+            </td>
+
+            <td width="30%" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+                <div style="margin-left:5px"> <t t-esc="'{0:,.0f}'.format(f.payment_amount)"/></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="footer">
+          <div style="bottom:-500px;">
+               <table width="100%">
+                  <tr>
+                    <td rowspan="2" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        Prepared By
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+
+                    </td>
+                    <td rowspan="2" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        Check By
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+
+                    </td>
+                    <td colspan="2" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        Approved By
+
+                    </td>
+                    <td rowspan="2" style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        Received By
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+
+                    </td>
+                  </tr>
+                   <tr>
+                    <td style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        Approved
+                        <br/>
+                        <br/>
+                        <br/>
+
+                    </td>
+                    <td style="padding:3px;border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px" width="20%" align="center">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+
+                    </td>
+                  </tr>
+               </table>
+              <br/>
+          </div>
+        </div>
+    </template>
+
+    <record id="mass_payment_new_paperformat2" model="report.paperformat">
+            <field name="name">Mass Payment Format Customer</field>
+            <field name="default" eval="False" />
+            <field name="format">custom</field>
+            <field name="page_height">150</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">35</field>
+            <field name="margin_bottom">55</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+    </record>
+     <record id="report_mass_payment_id2" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="mass_payment_lea.mass_payment_new_paperformat2"/>
+     </record>
+
+
+  </data>
+</odoo>

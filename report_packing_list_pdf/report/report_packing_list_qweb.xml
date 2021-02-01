@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_packing_list_qweb_document">
+    <t t-set="doc" t-value="doc.with_context({'lang':doc.env.user.lang})" />
+    <div class="header">
+        <div class="row">            
+            <div class="col-xs-9">
+                <tr>
+                    <h2><td>PT. LEA SANENT</td></h2>
+                </tr>
+            </div>
+            <div class="col-xs-3">
+                <tr>
+                    <td>PAGE : <span class="page" /> of <span class="topage" /></td>
+                </tr>
+            </div>
+        </div>
+    </div>
+    <div class="page" style="margin-top: 30px; font-size: 11px;">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3><center><span>PACKING LIST</span></center></h3>
+            </div>
+            <div class="col-xs-12" style="margin-top:20px;">
+            	<span>To : <span t-field="doc.picking_id.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/></span>                                
+            </div>
+            <div class="col-xs-12" style="margin-top:20px; margin-left:-15px;">
+            	<table style="margin-left:15px;">
+            		<tr>
+            			<td width="150px">
+            				<span>Packing No.</span>
+            			</td>
+            			<td width="200px">
+            				<span>: <span t-field="doc.name"/></span>
+            			</td>
+            			<td width="350px"/>
+            			<td width="150px">
+            				<span>Packing Date</span>
+            			</td>
+            			<td width="200px">
+            				<span>: <span t-field="doc.date"/></span>
+            			</td>            			
+            		</tr>
+            		<tr>
+            			<td width="150px">
+            				<span>DO No.</span>
+            			</td>
+            			<td width="200px">
+            				<span>: <span t-field="doc.picking_id.name"/></span>
+            			</td>
+            			<td width="350px"/>
+            			<td width="150px">
+            				<span>DO Date</span>
+            			</td>
+            			<td width="200px">
+            				<span>: <span t-field="doc.picking_date"/></span>
+            			</td>            			
+            		</tr>
+            		<tr>
+            			<td width="150px">
+            				<span>SO No.</span>
+            			</td>
+            			<td width="200px">
+            				<span>: <span t-field="doc.sale_id.name"/></span>
+            			</td>
+            			<td width="350px"/>
+            			<td width="150px">
+            				<span>SO Date</span>
+            			</td>
+            			<td width="200px">
+            				<span>: <span t-field="doc.sale_date"/></span>
+            			</td>            			
+            		</tr>
+            	</table>
+            	            	
+            </div>
+            <div class="col-xs-12" style="margin-top: 24px;">
+                <table width="100%">
+                    <thead style="border: 1px solid black;">
+                        <tr>
+                            <td rowspan='2' width="30px" style="padding:2px;border: 1px solid black;"><center>No. Koli</center></td>
+                            <td rowspan='2' width="30px" style="padding:2px;border: 1px solid black;"><center> Weight (Kg) </center></td>
+                            <td rowspan='2' width="30px" style="padding:2px;border: 1px solid black;"><center>Qty per Koli</center></td>
+                            <td rowspan='2' width="30px" style="padding:2px;border: 1px solid black;"><center>Article</center></td>
+                            <td colspan='24' style="padding:2px;border: 1px solid black;"><center>Qty per Size</center></td>
+                            <td rowspan='2' width="30px" style="padding:2px;border: 1px solid black;"><center>Qty Shipped</center></td>
+                            <td rowspan='2' width="30px" style="padding:2px;border: 1px solid black;"><center>Qty Order</center></td>
+                        </tr>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>AL</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>XS</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>S</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>M</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>L</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>XL</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>X</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>Y</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>Z</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>25</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>26</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>27</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>28</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>29</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>30</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>31</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>32</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>33</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>34</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>35</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>36</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>38</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>40</center></td>
+                            <td width="15px" style="padding:2px; border: 1px solid black;"><center>42</center></td>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody style="border: 1px solid black;">                    	
+                    	<t t-foreach="doc.coli_ids" t-as="coli">                    		
+	                        <tr>
+	                            <td width="30px" height="15px" style="padding:2px;text-align:center;padding:2px; border: 1px solid black;"><span t-field="coli.coli"/></td>
+	                            <td width="30px" height="15px" style="padding:2px;text-align:center;padding:2px; border: 1px solid black;"><span t-field="coli.weight"/></td>
+	                            <td width="30px" height="15px" style="padding:2px;text-align:center;padding:2px; border: 1px solid black;"><span t-field="coli.total_qty"/></td>
+	                            <td width="810px" colspan="27" height="15px" style="padding:2px;text-align:center;padding:2px; border: 1px solid black;"></td>
+	                        </tr>	                        
+	                    	<t t-foreach="coli.product_ids" t-as="coli_product">
+	                    		<t t-set="i" t-value="1"/>         		
+	                    		<tr>
+	                    			<t t-if="coli_product.reference.id == coli.id">
+	                    				<td width="30px" height="15px" style="text-align:center;padding:2px; border: 1px solid black;">
+	                    					<t t-set="i" t-value="i+1"/>
+	                    				</td>
+	                            		<td width="30px" height="15px" style="text-align:center;padding:2px; border: 1px solid black;"></td>
+	                            		<td width="30px" height="15px" style="text-align:center;padding:2px; border: 1px solid black;"></td>
+	                    				<td width="30px" height="15px" style="text-align:center;padding:2px; border: 1px solid black;"><span t-field="coli_product.categ_id.name"/></td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">			                            	
+			                            	<span t-field="coli_product.qty_al"></span>
+			                            </td>			                            
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_xs"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_s"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_m"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_l"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_xl"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_x"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_y"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_z"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_25"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_26"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_27"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_28"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_29"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_30"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_31"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_32"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_33"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_34"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_35"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_36"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_38"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_40"></span>
+			                            </td>
+			                            <td style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.qty_42"></span>
+			                            </td>
+			                            <td width="30px" height="15px" style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	<span t-field="coli_product.total_qty"></span>
+			                            </td>
+			                            <td width="30px" height="15px" style="text-align:center;padding:2px; border: 1px solid black;">
+			                            	
+			                            </td>
+	                    			</t>        		                            
+	                        	</tr>
+	                        </t>
+                    	</t>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-12" style="margin-top: 20px;">
+                <table width="100%">
+                    <tr>
+                        <td width="100px" style="padding:2px; border: 1px solid black;"><center>Total Koli</center></td>
+                        <td width="10px"></td>
+                        <td width="100px" style="padding:2px; border: 1px solid black;"><center>Total Weight (Kg)</center></td>
+                        <td width="10px"></td>
+                        <td width="100px" style="padding:2px; border: 1px solid black;"><center>Total Article</center></td>
+                        <td width="10px"></td>
+                        <td width="100px" style="padding:2px; border: 1px solid black;"><center>Total Qty Shipped</center></td>
+                        <td width="10px"></td>
+                        <td width="5px" style="padding:2px; border-left: 1px solid black; border-top: 1px solid black;"></td>
+                        <td style="padding:2px; border-right: 1px solid black; border-top: 1px solid black;">NOTES :</td>
+                    </tr>
+                    <tr>
+                        <td width="100px" height="25px" style="text-align:center;padding:2px; border: 1px solid black;"><span t-field="doc.total_coli"/></td>
+                        <td width="10px"></td>
+                        <td width="100px" style="text-align:center;padding:2px; border: 1px solid black;"><span t-field="doc.total_weight"/></td>
+                        <td width="10px"></td>
+                        <td width="100px" style="text-align:center;padding:2px; border: 1px solid black;"><span t-field="doc.total_article"/></td>
+                        <td width="10px"></td>
+                        <td width="100px" style="text-align:center;padding:2px; border: 1px solid black;"><span t-field="doc.total_packed"/></td>
+                        <td width="10px"></td>
+                        <td width="5px" style="padding:2px; border-left: 1px solid black; border-bottom: 1px solid black;"></td>
+                        <td style="padding:2px; border-right: 1px solid black; border-bottom: 1px solid black;"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="footer" style="font-size: 12px;">
+        <div class="row">
+            <div class="col-xs-12">
+                <table width="100%">
+                    <tr>
+                        <td width="250px">Packager :</td>
+                        <td width="50px"></td>
+                        <td width="250px">Warehouse Head :</td>
+                        <td width="50px"></td>
+                        <td width="250px">Receive Date :</td>
+                        <td width="350px">Receiver :</td>
+                        <td width="50px"></td>
+                    </tr>
+                    <tr>
+                        <td height="80px"></td>
+                    </tr>
+                    <tr>
+                        <td width="250px" style="border-top: 1px solid black;">name &amp; sign.</td>
+                        <td width="50px"></td>
+                        <td width="250px" style="border-top: 1px solid black;">name &amp; sign.</td>
+                        <td width="50px"></td>
+                        <td width="250px"></td>
+                        <td width="350px" style="border-top: 1px solid black;">name, sign &amp; company stamp.</td>
+                        <td width="50px"></td>
+                    </tr>
+                </table>  
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<template id="file_packing_list_qweb">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="report_packing_list_pdf.report_packing_list_qweb_document" t-lang="doc.env.user.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>

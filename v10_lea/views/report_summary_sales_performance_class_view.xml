@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_summary_sales_performance_class">
+            <t t-call="report.html_container">              
+                <t t-call="report.internal_layout">
+                    <div class="page">                  
+
+                        <h2 style="text-align:center;">Summary Sales Performance per Class</h2>
+                        <!-- <h4 style="text-align:center;"><strong> Period : <span t-esc="start_date"/> until <span t-esc="end_date"/> </strong></h4>
+                        <h4 style="text-align:center;"><strong> Salesman : <span t-esc="salesman_info"/></strong></h4> -->
+                        <br/>
+
+                            <!-- <h3><span>Outlet : </span><span t-esc="o['outlet']"/></h3> -->
+                            <table class="table table-condensed" style="margin-top:20px;">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%;">No.</th>
+                                        <th style="width:25%;">Channel</th>
+                                        <th style="width:10%;">Total Qty</th>
+                                        <th style="width:25%;">Total Sales Value</th>
+                                        <th style="width:25%;">Total Target Sales Value</th>
+                                        <th style="width:10%;">Achieve (%)</th>
+                                    </tr>
+                                </thead>
+                                    
+                                <tbody style="font-size:11px;">
+                                    <t t-set="index" t-value="1"/>
+                                    <t t-set="total_qty" t-value="0"/>
+                                    <t t-set="total_sales_value" t-value="0"/>
+                                    <t t-set="total_target_sales_value" t-value="0"/>
+                                    <t t-set="achieve" t-value="0"/>
+                                    <tr t-foreach="channel_ids" t-as="l">
+                                        <td><t t-esc="index"/>.</td>
+                                        <td><t t-esc="l['channel']"/></td>
+                                        <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(l['total_qty'])"/></td>
+                                        <td style="text-align:right;">Rp. <t t-esc="'{0:,.2f}'.format(l['total_sales_value'])"/></td>
+                                        <td style="text-align:right;">Rp. <t t-esc="'{0:,.2f}'.format(l['total_target_sales_value'])"/></td>
+                                        <td style="text-align:right;"><t t-esc="'{0:,.2f}'.format(l['achieve'])"/> %</td>
+
+                                        <t t-set="index" t-value="index+1"/>
+                                        <t t-set="total_qty" t-value="total_qty+l['total_qty']"/>
+                                        <t t-set="total_sales_value" t-value="total_sales_value+l['total_sales_value']"/>
+                                        <t t-set="total_target_sales_value" t-value="total_target_sales_value+l['total_target_sales_value']"/>
+                                        <t t-set="achieve" t-value="achieve+l['achieve']"/>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(total_qty)"/></td>
+                                        <td style="text-align:right;">Rp. <t t-esc="'{0:,.2f}'.format(total_sales_value)"/></td>
+                                        <td style="text-align:right;">Rp. <t t-esc="'{0:,.2f}'.format(total_target_sales_value)"/></td>
+                                        <td style="text-align:right;"><t t-esc="'{0:,.2f}'.format(achieve/index)"/> %</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                </t>
+            </t>            
+        </template>
+
+
+    </data>
+</odoo>

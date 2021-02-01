@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="pos_receipt_report" model="ir.actions.report.xml">
+            <field name="name">Receipt</field>
+            <field name="model">pos.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">point_of_sale.report_receipts</field>
+        </record>
+        <record model="ir.ui.view" id="view_pos_config_form">
+            <field name="name">pos.config.form.view.inherit</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"></field>
+            <field name="arch" type="xml">
+                <field name="iface_display_categ_images" position="after">
+                    <field name='pos_order_reprint' />
+                    <field name='wv_order_date' attrs="{'invisible':[('pos_order_reprint','=',False)]}"/>
+                    <field name='order_reprint' attrs="{'invisible':[('pos_order_reprint','=',False)]}"/>
+                    <field name='pos_reorder' attrs="{'invisible':[('pos_order_reprint','=',False)]}"/>
+                    <field name='allow_order_return' attrs="{'invisible':[('pos_order_reprint','=',False)]}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

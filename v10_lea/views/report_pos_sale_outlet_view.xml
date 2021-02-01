@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_pos_sale_outlet">
+            <t t-call="report.html_container">              
+                <t t-call="report.internal_layout">
+                    <div class="page">                  
+
+                        <h2 style="text-align:center;">POS Sale Order Report by Outlet</h2>
+                        <h4 style="text-align:center;"><strong> Period : <span t-esc="start_date"/> until <span t-esc="end_date"/> </strong></h4>
+                        <h4 style="text-align:center;"><strong> Salesman : <span t-esc="salesman_info"/></strong></h4>
+                        <br/>
+
+                        <t t-set="grand_total_sale" t-value="0"/>
+                        <t t-set="grand_total_qty" t-value="0"/>
+                        <t t-foreach="order_ids" t-as="o">
+                            <h3><span>Outlet : </span><span t-esc="o['outlet']"/></h3>
+
+                            <table class="table table-condensed" style="margin-top:20px;">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%;">No.</th>
+                                        <th style="width:8%;">Date</th>
+                                        <th style="width:12%;">Order Ref</th>
+                                        <th style="width:12%;">Customer</th>
+                                        <th style="width:8%;">Salesman</th>
+                                        <th style="width:25%;">Product</th>
+                                        <th style="width:10%;">Discount</th>
+                                        <th style="width:5%;">Qty</th>
+                                        <th style="width:15%;">Total</th>
+                                    </tr>
+                                </thead>
+                                    
+                                <tbody style="font-size:11px;">
+                                    <t t-set="index" t-value="1"/>
+                                    <t t-set="total_qty" t-value="0"/>
+                                    <t t-set="total_discount" t-value="0"/>
+                                    <t t-set="total_sale" t-value="0"/>
+                                    <tr t-foreach="o['order_list']" t-as="l">
+                                        <td><t t-esc="index"/>.</td>
+                                        <td><t t-esc="l['date']"/></td>
+                                        <td><t t-esc="l['ref']"/></td>
+                                        <td><t t-esc="l['customer']"/></td>
+                                        <td><t t-esc="l['salesman']"/></td>
+                                        <td><t t-esc="l['product']"/></td>
+                                        <td><t t-esc="'{0:,.2f}'.format(l['discount'])"/> %</td>
+                                        <td><t t-esc="'{0:,.0f}'.format(l['qty'])"/> Pcs</td>
+                                        <td style="text-align:right;">Rp. <t t-esc="'{0:,.2f}'.format(l['total'])"/></td>
+                                        <t t-set="index" t-value="index+1"/>
+                                        <t t-set="total_qty" t-value="total_qty+l['qty']"/>
+                                        <t t-set="total_discount" t-value="total_discount+l['discount']"/>
+                                        <t t-set="total_sale" t-value="total_sale+l['total']"/>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><t t-esc="'{0:,.0f}'.format(total_qty)"/> Pcs</td>
+                                        <td style="text-align:right;">Rp. <t t-esc="'{0:,.2f}'.format(total_sale)"/></td>
+                                        <t t-set="grand_total_qty" t-value="grand_total_qty+total_qty"/>
+                                        <t t-set="grand_total_sale" t-value="grand_total_sale+total_sale"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="table table-condensed" style="margin-top:20px;width:40%">
+                                <thead>
+                                    <tr>
+                                        <th style="width:40%;">Payment Method</th>
+                                        <th style="width:60%;">Total</th>
+                                    </tr>
+                                </thead>
+                                <t t-set="p_total" t-value="0"/>
+                                <tbody style="font-size:11px;">
+                                    <tr t-foreach="o['payment_list']" t-as="p">
+                                        <td><t t-esc="p['name']"/></td>
+                                        <td style="text-align:right;">Rp. <t t-esc="'{0:,.2f}'.format(p['total'])"/></td>
+                                        <t t-set="p_total" t-value="p_total+p_total"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        
+                        <h3 style="text-align:right;"><span>Grand Total Quantity : <t t-esc="'{0:,.0f}'.format(grand_total_qty)"/> Pcs</span></h3>
+                        <h3 style="text-align:right;"><span>Grand Total Sale : Rp. </span>  <t t-esc="'{0:,.2f}'.format(grand_total_sale)"/></h3>
+
+                    </div>
+                </t>
+            </t>            
+        </template>
+
+
+    </data>
+</odoo>

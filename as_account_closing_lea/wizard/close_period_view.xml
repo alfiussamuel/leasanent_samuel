@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	
+    <record id="as_close_period_view" model="ir.ui.view">
+        <field name="name">Close Period</field>
+        <field name="model">close.period</field>
+        <field name="arch" type="xml">
+			<form string="Close Period">
+				<p class="oe_grey">
+					Form ini digunakan untuk menutup periode akuntansi pada bulan terpilih.
+					Anda tidak dapat menutup kembali periode yang sudah ditutup. Lanjutkan ?
+				</p>
+				<group col="4">
+					<field name="fiscalyear_id" required="1" options="{'no_create':1,'no_open':1}" domain="[('state','=','draft')]"/>
+					<field name="period_id" required="1" options="{'no_create':1,'no_open':1}" domain="[('fiscalyear_id','=',fiscalyear_id),('state','=','draft')]"/>
+					<field name="company_id" required="1" options="{'no_create':1,'no_open':1}"/>
+				</group>
+				<newline/>
+				<footer>
+					<button name="close_period" string="Confirm" type="object" default_focus="1" class="oe_highlight" confirm="Apakah Anda yakin ingin menutup periode ini?"/>
+					or
+					<button string="Cancel" class="oe_link" special="cancel" />
+				</footer>
+			</form>
+        </field>
+    </record>
+
+
+    <record id="action_close_period" model="ir.actions.act_window">
+        <field name="name">Close Period</field>
+        <field name="res_model">close.period</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+	</data>
+</odoo>

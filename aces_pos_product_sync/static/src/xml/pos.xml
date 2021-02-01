@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="ProductCategoriesWidget">
+        <t t-jquery="div.searchbox" t-operation="after">
+            <t t-if="widget.pos.config.enable_product_sync">
+                <i id="syncbutton" class="fa fa-refresh" aria-hidden="true" style="font-size: 26px;position: absolute;right: 180px;top:10px; cursor: pointer;"></i>
+            </t>
+    	</t>
+    </t>
+    
+</templates>

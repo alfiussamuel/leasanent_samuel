@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <report 
+            id="report_mass_payment"
+            string="Mass Payment"
+            model="mass.payment"
+            report_type="qweb-pdf"
+            file="mass_payment.report_mass_payment_temp"
+            name="mass_payment.report_mass_payment_temp"
+        />
+
+    </data>
+</openerp>

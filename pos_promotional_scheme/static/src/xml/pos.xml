@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+	<t t-extend="Chrome">
+		<t t-jquery=".placeholder-UsernameWidget" t-operation="before">
+			<span class="placeholder-CheckSchemeWidget"/>
+        </t>
+	</t>
+	<t t-name="CheckSchemeWidget">
+		<div id="scheme" class="username">
+        	<span id="check-scheme-button">Check Scheme</span>
+        </div>
+	</t>
+
+</templates>

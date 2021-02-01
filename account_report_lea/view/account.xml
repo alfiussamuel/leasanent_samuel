@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="as_account_financial_report_form_view">
+            <field name="name">as.account.financial.report.form.view</field>
+            <field name="model">account.financial.report</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.view_account_financial_report_form"/>
+            <field name="arch" type="xml">
+            	<form position="inside">
+            		<header>
+            			<button name="button_accounts" type="object" string="Get Accounts"/>
+            		</header>
+            	</form>
+                <field name="style_overwrite" position="after">
+                    <field name="code_number"/>
+                    <field name="is_detail"/>
+                    <field name="is_consolidation"/>
+                    <field name="side"/>
+                    <field name="company_id" required="1"/>
+                    <field name="report_group"/>
+                    <field name="balance_sheet_type" attrs="{'invisible':[('report_group','!=','Balance Sheet')]}"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="as_account_financial_report_tree_view">
+            <field name="name">as.account.financial.report.tree.view</field>
+            <field name="model">account.financial.report</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.view_account_financial_report_tree"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//field[@name='parent_id']" positions="attributes">
+                        <attribute name="invisible">0</attribute>
+                    </xpath>
+                    <field name="parent_id" position="after">
+                        <field name="is_detail"/>
+                        <field name="side"/>
+                        <field name="company_id" required="1"/>
+                        <field name="report_group"/>
+                        <field name="balance_sheet_type"/>
+                    </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="as_account_financial_report_search_view">
+            <field name="name">as.account.financial.report.search.view</field>
+            <field name="model">account.financial.report</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.view_account_financial_report_search"/>
+            <field name="arch" type="xml">
+                    <field name="account_report_id" position="after">
+                        <field name="parent_id"/>
+                        <field name="is_detail"/>
+                        <field name="side"/>
+                        <field name="company_id" required="1"/>
+                        <field name="report_group"/>
+                        <field name="balance_sheet_type"/>
+                    </field>
+            </field>
+        </record>
+
+        <record id="view_company_form_re_view" model="ir.ui.view">
+			<field name="name">Company</field>
+          	<field name="model">res.company</field>
+          	<field name="inherit_id" ref="base.view_company_form"/>
+          	<field name="arch" type="xml">
+              	<field name="parent_id" position="after">
+                   	<field name="re_account_id"/>
+                    <field name="re_account_id2"/>
+              	</field>
+          	</field>
+      	</record>
+
+
+    </data>
+</odoo>

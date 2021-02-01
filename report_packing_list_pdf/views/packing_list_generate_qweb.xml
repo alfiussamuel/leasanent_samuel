@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="paperformat_packing_list" model="report.paperformat">
+        <field name="name">Format Packing List QWEB</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">240</field>
+        <field name="page_width">280</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">38</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+    </record> 
+    <report 
+        id="packing_list_qweb"
+        string="Packing List PDF"
+        model="lea.packing.list" 
+        report_type="qweb-pdf"
+        paperformat="report_packing_list_pdf.paperformat_packing_list"
+        file="report_packing_list_pdf.file_packing_list_qweb" 
+        name="report_packing_list_pdf.file_packing_list_qweb" 
+    />
+    
+</odoo>

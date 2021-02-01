@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+		<record id="generate_raw_data_stock_wizard" model="ir.ui.view">
+            <field name="name">generate.raw.data.stock.wizard</field>
+            <field name="model">generate.raw.data.stock</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="warehouse_type" required="1"/>
+                            <field name="warehouse_id" domain="[('wh_type','=',warehouse_type)]" required="1"/>
+                            <field name="date_from" required="1"/>
+                            <field name="date_to" required="1"/>
+                            <field name="company_id" invisible="0" required="1"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+
+                       <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="action_generate_date" string="Generate" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_generate_raw_data_stock_wizard" model="ir.actions.act_window">
+            <field name="name">Raw Data Stock</field>
+            <field name="res_model">generate.raw.data.stock</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="generate_raw_data_stock_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+         <record id="generate_raw_data_stock_line_tree" model="ir.ui.view">
+			<field name="name">generate.raw.data.stock.line.tree</field>
+			<field name="model">generate.raw.data.stock.line</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="List Raw Data" editable="Top">
+                    <field name="warehouse_type"/>
+                    <field name="warehouse_id"/>
+                    <field name="location_id"/>
+                    <field name="product_category_id"/>
+                    <field name="categ_id"/>
+                    <field name="product_id"/>
+                    <field name="qty_begining"/>
+                    <field name="qty_receive"/>
+                    <field name="qty_sales"/>
+                    <field name="qty_int_transfer"/>
+                    <field name="qty_adjustment"/>
+                    <field name="qty_ending"/>
+				</tree>
+			</field>
+		</record>
+
+        <record id="generate_raw_data_stock_line_pivot" model="ir.ui.view">
+	        <field name="name">generate.raw.data.stock.line.pivot</field>
+	        <field name="model">generate.raw.data.stock.line</field>
+	        <field name="arch" type="xml">
+	            <pivot string="Raw Stock Data">
+                    <field name="qty_begining" type="measure"/>
+                    <field name="qty_receive" type="measure"/>
+                    <field name="qty_sales" type="measure"/>
+                    <field name="qty_int_transfer" type="measure"/>
+                    <field name="qty_adjustment" type="measure"/>
+                    <field name="qty_ending" type="measure"/>
+	            </pivot>
+	        </field>
+	    </record>
+
+        <menuitem id="menu_raw_data_stock_root"  name="Raw Data Stock" action="action_generate_raw_data_stock_wizard" parent="stock.menu_warehouse_report" sequence="8"/>
+
+	</data>
+</odoo>

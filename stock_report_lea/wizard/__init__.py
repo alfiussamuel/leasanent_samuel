@@ -1,0 +1,2 @@
+import generate_raw_data_stock
+

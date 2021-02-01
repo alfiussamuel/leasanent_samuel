@@ -1,0 +1,534 @@
+<odoo>
+	<data>
+		<!-- Kas Pelaksana -->
+		<record model="ir.ui.view" id="pengeluaran_biaya_form_view">
+			<field name="name">Pengeluaran Biaya</field>
+			<field name="model">pengeluaran.biaya</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button name="button_post" string="Post" type="object" states="Approved" class="oe_highlight"/>
+						<button name="button_approved" string="Approval 1" type="object" states="Draft" class="oe_highlight"/>
+						<button name="button_approved2" string="Approval 2" type="object" states="Approved2" class="oe_highlight"/>
+						<button name="button_cancel" string="Cancel" type="object" states="Posted,Approved,Approved2" class="oe_highlight"/>
+						<field name="state" readonly="1" widget="statusbar"/>
+					</header>
+					<sheet>
+                        <div name="button_box" class="oe_button_box">
+		                    <button class="oe_stat_button" name="action_view_journal" type="object" icon="fa-files-o">
+		                        <field string="Journal" name="journal_count" widget="statinfo" />
+		                    </button>
+		                </div>
+						<label for="name" class="oe_edit_only" />
+						<h1>
+							<field name="name" readonly="1"/>
+						</h1>
+						<group>
+							<group>
+								<field name="created_by" readonly="1"/>
+								<field name="date" required="1"
+									attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
+								<field name="department_id" options="{'no_create': True, 'no_create_edit': True,'no_quick_create': True}" attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
+								<field name="company_id"
+									required="1" readonly="1"
+									options="{'no_create': True, 'no_create_edit': True,'no_quick_create': True}"/>
+								<field name="journal_id" required="1"
+									attrs="{'readonly': [('state', '!=', 'Draft')]}"
+									options="{'no_create': True, 'no_create_edit': True,'no_quick_create': True}"
+									domain="[('type', 'in', ['cash','bank'])]"/>
+								<field name="total_amount"/>
+							</group>
+						</group>
+						<group>
+							<notebook>
+								<page string="Detail Pengeluaran">
+									<group>
+										<field name="line_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'Draft')]}">
+											<tree editable="bottom">
+												<field name="account_biaya_id" required="1" options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+												<field name="account_id" required="1" domain="[('user_type_id', 'in', ['Expenses'])]"
+													options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+												<field name="name"/>
+												<field name="amount" required="1" sum="Total"/>
+											</tree>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="pengeluaran_biaya_tree_view">
+			<field name="name">Pengeluaran Biaya</field>
+			<field name="model">pengeluaran.biaya</field>
+			<field name="arch" type="xml">
+				<tree string="Pengeluaran Biaya">
+					<field name="name"/>
+					<field name="date"/>
+					<field name="company_id" invisible="1"/>
+					<field name="journal_id"/>
+					<field name="total_amount"/>
+					<field name="created_by"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_pengeluaran_biaya" model="ir.actions.act_window">
+			<field name="name">Pengeluaran Biaya</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">pengeluaran.biaya</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a Contact Center
+				</p>
+				<p>klik tombol create untuk membuat data baru</p>
+
+			</field>
+		</record>
+
+
+        <menuitem id="menu_keuangan_operasional"  name="Operasional"  parent="account.menu_finance" sequence="7"/>
+        <menuitem id="menu_pengeluaran_biaya"  name="Pengeluaran Biaya" action="action_pengeluaran_biaya" parent="menu_keuangan_operasional" sequence="1"/>
+
+		<record id="seq_pengeluaran_biaya" model="ir.sequence">
+	        <field name="name">Pengeluaran Biaya</field>
+	        <field name="code">pengeluaran.biaya</field>
+	        <field name="prefix">PB/%(year)s-%(month)s/</field>
+	        <field name="padding">4</field>
+    	</record>
+
+		<!-- Transaksi Bank -->
+		<record model="ir.ui.view" id="transaksi_bank_form_view">
+			<field name="name">Transfer Bank/Kas</field>
+			<field name="model">transaksi.bank</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button name="button_post" type="object" class="oe_highlight" string="Post" states="Draft"/>
+						<button name="button_cancel" string="Cancel" type="object" states="Posted" class="oe_highlight"/>
+						<field name="state" widget="statusbar" readonly="1"/>
+					</header>
+					<sheet>
+                        <div name="button_box" class="oe_button_box">
+		                    <button class="oe_stat_button" name="action_view_journal" type="object" icon="fa-files-o">
+		                        <field string="Journal" name="journal_count" widget="statinfo" />
+		                    </button>
+		                </div>
+
+						<label for="name" class="oe_edit_only" />
+						<h1>
+							<field name="name" readonly="1"/>
+						</h1>
+						<group>
+							<field name="date" attrs="{'readonly': [('state', '!=', 'Draft')]}" class="oe_inline"/>
+							<field name="company_id"
+								options="{'no_create_edit': True,'no_quick_create': True}"
+								class="oe_inline" readonly="1"/>
+							<field name="journal_bank_id" required="1" class="oe_inline"
+								attrs="{'readonly': [('state', '!=', 'Draft')]}"
+								options="{'no_create': True, 'no_create_edit': True,'no_quick_create': True}"
+								domain="[('company_id', '=', company_id),('type', 'in', ['bank','cash'])]"/>
+							<field name="journal_cash_id" required="1" class="oe_inline"
+								attrs="{'readonly': [('state', '!=', 'Draft')]}"
+								options="{'no_create': True, 'no_create_edit': True,'no_quick_create': True}"
+								domain="[('company_id', '=', company_id),('type', 'in', ('bank','cash'))]"/>
+							<field name="amount" attrs="{'readonly': [('state', '!=', 'Draft')]}" class="oe_inline"/>
+							<field name="no_cek" attrs="{'readonly': [('state', '!=', 'Draft')]}" class="oe_inline"/>
+							<field name="keterangan" attrs="{'readonly': [('state', '!=', 'Draft')]}" class="oe_inline"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_company_form_ayat_silang_view" model="ir.ui.view">
+			<field name="name">Company</field>
+          	<field name="model">res.company</field>
+          	<field name="inherit_id" ref="base.view_company_form"/>
+          	<field name="arch" type="xml">
+              	<field name="parent_id" position="after">
+                   	<field name="ayat_silang_id"/>
+              	</field>
+          	</field>
+      	</record>
+
+		<record model="ir.ui.view" id="transaksi_bank_tree_view">
+			<field name="name">Transfer Bank/Kas</field>
+			<field name="model">transaksi.bank</field>
+			<field name="arch" type="xml">
+				<tree string="Transaksi Bank">
+					<field name="name"/>
+					<field name="date"/>
+					<field name="company_id"/>
+					<field name="journal_bank_id"/>
+					<field name="journal_cash_id"/>
+					<field name="amount"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_transaksi_bank_form" model="ir.actions.act_window">
+			<field name="name">Transfer Antar Bank/Kas</field>
+			<field name="res_model">transaksi.bank</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a Contact Center
+				</p>
+				<p>klik tombol create untuk membuat data baru</p>
+			</field>
+		</record>
+
+		<menuitem id="menu_pengeluaran_transaksi_bank"  name="Transfer Antar Bank/Kas" action="action_transaksi_bank_form" parent="menu_keuangan_operasional" sequence="2"/>
+
+		<record id="seq_transaksi_bank" model="ir.sequence">
+	        <field name="name">Transfer Antar Bank/Kas</field>
+	        <field name="code">transaksi.bank</field>
+	        <field name="prefix">TRANS-BANK/%(year)s-%(month)s/</field>
+	        <field name="padding">4</field>
+    	</record>
+
+		<record id="view_journal_entries_lea_form" model="ir.ui.view">
+            <field name="name">Journal Entries Form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+				<button name="post" position="after">
+                    <button name="button_print" type="object" string="Print Excel"/>
+                </button>
+                <field name="ref" position="after">
+                    <field name="no_bukti"/>
+					<field name="area_lks"/>
+                </field>
+				<xpath expr="//field[@name='line_ids']//tree//field[@name='account_id']" position="after">
+            		<field name="cif_code"/>
+            	</xpath>
+            </field>
+        </record>
+
+
+		<record id="view_journal_entries_lea_tree" model="ir.ui.view">
+            <field name="name">Journal Entries Tree</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_tree"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="no_bukti"/>
+					<field name="area_lks"/>
+                </field>
+            </field>
+        </record>
+
+
+		<record model="ir.ui.view" id="account_area_location_tree">
+			<field name="name">Account Area Location</field>
+			<field name="model">account.area.location</field>
+			<field name="arch" type="xml">
+				<tree string="Account Area Location" editable="Top">
+					<field name="name" required="1"/>
+					<field name="keterangan"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_account_area_location" model="ir.actions.act_window">
+			<field name="name">Account Area Location</field>
+			<field name="res_model">account.area.location</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a Contact Center
+				</p>
+				<p>klik tombol create untuk membuat data baru</p>
+			</field>
+		</record>
+
+		<menuitem id="menu_account_area_location"  name="Account Area Location" action="action_account_area_location" parent="account.account_account_menu"/>
+
+		<record id="view_journal_item_lea_tree" model="ir.ui.view">
+            <field name="name">Journal Items Tree</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_move_line_tree"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <field name="move_id" position="after">
+					<field name="area_lks"/>
+					<field name="no_bukti"/>
+                </field>
+				 <field name="account_id" position="after">
+					<field name="cif_code"/>
+                </field>
+            </field>
+        </record>
+
+		<record id="wizard_print_journal" model="ir.ui.view">
+            <field name="name">wizard.print.journal.form</field>
+            <field name="model">wizard.print.journal</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <newline/>
+                        <field name="state_position" invisible="1"/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+
+                       <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="print_excel" string="Print" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+		<record id="seq_invoice_reconcilement" model="ir.sequence">
+	        <field name="name">Invoice Reconcilement</field>
+	        <field name="code">invoice.reconcilement</field>
+	        <field name="prefix">CUST-INV-REC/%(year)s-%(month)s/</field>
+	        <field name="padding">4</field>
+    	</record>
+
+		<record id="seq_vendor_invoice_reconcilement" model="ir.sequence">
+	        <field name="name">Vendor Invoice Reconcilement</field>
+	        <field name="code">vendor.invoice.reconcilement</field>
+	        <field name="prefix">VENDOR-INV-REC/%(year)s-%(month)s/</field>
+	        <field name="padding">4</field>
+    	</record>
+
+		<!-- Kas Pelaksana -->
+		<record model="ir.ui.view" id="invoice_reconcilement_form_view">
+			<field name="name">Invoice Reconcilement</field>
+			<field name="model">invoice.reconcilement</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button name="button_post" string="Post" type="object" states="Draft" class="oe_highlight"/>
+						<button name="button_cancel" string="Cancel" type="object" states="Posted" class="oe_highlight"/>
+						<field name="state" readonly="1" widget="statusbar"/>
+					</header>
+					<sheet>
+
+						<label for="name" class="oe_edit_only" />
+						<h1>
+							<field name="name" readonly="1"/>
+						</h1>
+						<group>
+							<group>
+								<field name="created_by" readonly="1"/>
+								<field name="date" required="1"
+									attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
+								<field name="company_id"
+									required="1" readonly="1"
+									options="{'no_create': True, 'no_create_edit': True,'no_quick_create': True}"/>
+								<field name="type" invisible="1"/>
+								<field name="invoice_id" required="1" domain="[('type', '=', type),('state', '=', 'open')]"/>
+								<field name="partner_id" required="1"/>
+								<field name="account_id" required="1"/>
+								<field name="total_amount"/>
+								<field name="total_paid"/>
+
+							</group>
+						</group>
+						<group>
+							<notebook>
+								<page string="Journal Items Pembayaran">
+									<group>
+										<field name="move_line_ids" nolabel="1" options="{'no_create': True}" domain="[('account_id', '=', account_id)]">
+											<tree>
+												<field name="date"/>
+												<field name="partner_id"/>
+												<field name="move_id"/>
+												<field name="no_bukti"/>
+												<field name="account_id"/>
+												<field name="debit" sum="Total Debit"/>
+												<field name="credit" sum="Total Credit"/>
+											</tree>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="invoice_reconcilement_tree_view">
+			<field name="name">Invoice Reconcilement</field>
+			<field name="model">invoice.reconcilement</field>
+			<field name="arch" type="xml">
+				<tree string="Invoice Reconcilement" colors="blue:state == 'Draft';">
+					<field name="name"/>
+					<field name="date"/>
+					<field name="partner_id"/>
+					<field name="invoice_id"/>
+					<field name="company_id" invisible="1"/>
+					<field name="total_amount"/>
+					<field name="total_paid"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_invoice_reconcilement_customer" model="ir.actions.act_window">
+			<field name="name">Journal Reconcilement</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">invoice.reconcilement</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('type','=','out_invoice')]</field>
+			<field name="context">{'default_type': 'out_invoice'}</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a Contact Center
+				</p>
+				<p>klik tombol create untuk membuat data baru</p>
+			</field>
+		</record>
+
+		<record id="action_invoice_reconcilement_vendor" model="ir.actions.act_window">
+			<field name="name">Journal Reconcilement</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">invoice.reconcilement</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('type','=','in_invoice')]</field>
+			<field name="context">{'default_type': 'in_invoice'}</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a Contact Center
+				</p>
+				<p>klik tombol create untuk membuat data baru</p>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="account_department_tree">
+			<field name="name">Departemen</field>
+			<field name="model">account.department</field>
+			<field name="arch" type="xml">
+				<tree string="Department" editable="Top">
+					<field name="name" required="1"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_account_department" model="ir.actions.act_window">
+			<field name="name">Account Department</field>
+			<field name="res_model">account.department</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a Contact Center
+				</p>
+				<p>klik tombol create untuk membuat data baru</p>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="account_biaya_tree">
+			<field name="name">Biaya</field>
+			<field name="model">account.biaya</field>
+			<field name="arch" type="xml">
+				<tree string="Biaya" editable="Top">
+					<field name="code"/>
+					<field name="name" required="1"/>
+					<field name="account_id" required="1"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_account_biaya" model="ir.actions.act_window">
+			<field name="name">Biaya</field>
+			<field name="res_model">account.biaya</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a Contact Center
+				</p>
+				<p>klik tombol create untuk membuat data baru</p>
+			</field>
+		</record>
+
+		<record id="view_account_account_inherit_view" model="ir.ui.view">
+			<field name="name">Account Inherit</field>
+          	<field name="model">account.account</field>
+          	<field name="inherit_id" ref="account.view_account_form"/>
+          	<field name="arch" type="xml">
+              	<field name="name" position="after">
+                   	<field name="cif_code"/>
+					<field name="cif_name"/>
+              	</field>
+          	</field>
+      	</record>
+
+		<record id="view_account_account_inherit_tree" model="ir.ui.view">
+            <field name="name">Account Inherit</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_list"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="cif_code"/>
+					<field name="cif_name"/>
+                </field>
+            </field>
+        </record>
+
+		<record id="action_invoice_retur_customer" model="ir.actions.act_window">
+			<field name="name">Invoice Retur</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.invoice</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('type','=','out_refund')]</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a Contact Center
+				</p>
+				<p>klik tombol create untuk membuat data baru</p>
+			</field>
+		</record>
+
+		<menuitem id="menu_account_department2"  name="Departemen" action="action_account_department" parent="account.account_account_menu"/>
+		<menuitem id="menu_account_biaya"  name="Biaya" action="action_account_biaya" parent="account.account_account_menu"/>
+
+
+
+
+        <menuitem id="menu_keuangan_operasional"  name="Operasional"  parent="account.menu_finance" sequence="7"/>
+        <menuitem id="menu_pengeluaran_biaya"  name="Pengeluaran Biaya" action="action_pengeluaran_biaya" parent="menu_keuangan_operasional" sequence="1"/>
+		<menuitem id="menu_customer_journal_recon"  name="Journal Reconcilement" action="action_invoice_reconcilement_customer" parent="account.menu_finance_receivables"/>
+		<menuitem id="menu_vendor_journal_recon"  name="Journal Reconcilement" action="action_invoice_reconcilement_vendor" parent="account.menu_finance_payables"/>
+
+		<record id="action_invoice_tree1_view33" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="account.invoice_tree"/>
+            <field name="act_window_id" ref="action_invoice_retur_customer"/>
+        </record>
+
+        <record id="action_invoice_tree1_view44" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_form"/>
+            <field name="act_window_id" ref="action_invoice_retur_customer"/>
+        </record>
+
+
+		<menuitem id="menu_invoice_retur"  name="Invoice Retur" action="action_invoice_retur_customer" parent="account.menu_finance_receivables"/>
+
+
+	</data>
+</odoo>
+

@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="mrp_production_line_inherit">
+            <field name="name">mrp.production.line.inherit</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='move_raw_ids']/tree//field[@name='location_id']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                    <attribute name="context">{'default_location_id': parent.product_id.product_tmpl_id.default_location, 'default_location_dest_id': location_dest_id}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

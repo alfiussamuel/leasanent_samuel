@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_stock_closing_group_tree" model="ir.ui.view">
+            <field name="name">stock.closing.group.tree</field>
+            <field name="model">stock.closing.group</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Closing">
+                    <field name="name" string="No. Dokumen"/>
+                    <field name="period_id"/>
+                    <field name="date"/>
+                    <field name="date_end"/>
+                    <field name="location_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_closing_group_form_view" model="ir.ui.view">
+		    <field name="name">Stock Closing</field>
+		    <field name="model">stock.closing.group</field>
+		    <field name="auto_refresh">10</field>
+		    <field name="arch" type="xml">
+		        <form>
+		        	<header>
+                        <button name="button_post" string="Post" type="object" class="oe_highlight" states="draft"/>
+                        <field name="state" widget="statusbar" readonly="True"/>
+                    </header>
+		            <sheet>
+		            	<label for="name" class="oe_edit_only" />
+						<h1>
+							<field name="name" readonly="1"/>
+						</h1>
+                        <group>
+                            <field name="period_id" attrs="{'readonly': [('state', '!=', 'draft')]}" class="oe_inline"/>
+							<field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}" class="oe_inline"/>
+                            <field name="date_end" attrs="{'readonly': [('state', '!=', 'draft')]}" class="oe_inline"/>
+                            <field name="location_id" options="{'no_create_edit': True,'no_quick_create': True}" class="oe_inline" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+							<field name="company_id" options="{'no_create_edit': True,'no_quick_create': True}" class="oe_inline" readonly="1"/>
+						</group>
+                        <group>
+                            <field name="closing_lines" nolabel="1">
+                                <tree editable="Top">
+                                    <field name="product_id"/>
+                                    <field name="location_id"/>
+                                    <field name="initial_qty"/>
+                                    <field name="in_qty"/>
+                                    <field name="out_qty"/>
+                                    <field name="final_qty"/>
+                                </tree>
+                            </field>
+                        </group>
+
+
+		            </sheet>
+		        </form>
+	        </field>
+	    </record>
+
+        <record id="view_stock_closing_tree" model="ir.ui.view">
+            <field name="name">stock.closing.tree</field>
+            <field name="model">stock.closing</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Closing">
+                    <field name="name" string="No. Dokumen"/>
+                    <field name="period_id"/>
+                    <field name="date"/>
+                    <field name="period_id"/>
+                    <field name="product_id"/>
+                    <field name="location_id"/>
+                    <field name="initial_qty"/>
+                    <field name="in_qty"/>
+                    <field name="out_qty"/>
+                    <field name="final_qty"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_view_stock_closing" model="ir.actions.act_window">
+            <field name="name">Stock Closing</field>
+            <field name="res_model">stock.closing</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_stock_closing_tree"/>
+        </record>
+
+        <record id="action_view_stock_closing_group" model="ir.actions.act_window">
+            <field name="name">Stock Closing Group</field>
+            <field name="res_model">stock.closing.group</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_stock_closing_group_tree"/>
+        </record>
+
+        <record id="wizard_closing_stock_form" model="ir.ui.view">
+            <field name="name">wizard.closing.stock.form</field>
+            <field name="model">wizard.closing.stock</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="product_id" required="1" widget="many2many_tags"/>
+                            <field name="period_id" required="1"/>
+                            <field name="date_from" required="1"/>
+                            <field name="date_to" required="1"/>
+                            <field name="location_id" required="1"/>
+                            <field name="company_id" invisible="0" required="1"/>
+                        </group>
+                        <newline/>
+                       <footer>
+                            <button name="action_close" string="Close" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_closing_stock_form" model="ir.actions.act_window">
+            <field name="name">Closing Stock</field>
+            <field name="res_model">wizard.closing.stock</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_closing_stock_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="location_form_view_inherit" model="ir.ui.view">
+            <field name="name">location.stock.form.inherit</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <field name="return_location" position="after">
+                	 <field name="is_main_wh_location"/>
+                     <field name="address"/>
+                </field>
+            </field>
+        </record>
+
+         <record id="stock_warehouse_form_view_inherit" model="ir.ui.view">
+            <field name="name">stock.warehouse.inherit</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                	 <field name="tipe_penjualan_toko"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="stock_warehouse_tree_view_inherit" model="ir.ui.view">
+            <field name="name">stock.warehouse.tree.inherit</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse_tree"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                	 <field name="tipe_penjualan_toko"/>
+                </field>
+            </field>
+        </record>
+
+
+
+        <menuitem action="action_view_stock_closing" id="menu_inventory_closing" parent="stock.menu_stock_root" name="Closing"/>
+        <menuitem action="action_wizard_closing_stock_form" id="menu_inventory_wizard_stock_closing" parent="menu_inventory_closing" name="Close Period Stock"/>
+        <menuitem action="action_view_stock_closing_group" id="menu_inventory_stock_closing" parent="menu_inventory_closing" name="Stock Period"/>
+
+    </data>
+</openerp>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--Account Move lines-->
+        <record id="wizard_create_job_packing_view" model="ir.ui.view">
+            <field name="name">Create Job Packing</field>
+            <field name="model">wizard.create.job.packing</field>
+            <field name="arch" type="xml">
+                <form string="Create Job Packing">                	
+                    <label string="Are you sure you want to generate Job Packing from all this Delivery Order?"/>                    
+                    <footer>
+                        <button string="Create Job Packing" name="button_create" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_create_job_packing" model="ir.actions.act_window">
+            <field name="name">Create Job Packing</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.create.job.packing</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_create_job_packing_view"/>
+            <field name="context">{}</field>
+            <field name="target">new</field>            
+        </record>
+
+        <record model="ir.values" id="wizard_create_job_packing_values">
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="name">Create Job Packing</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_wizard_create_job_packing'))" />
+            <field name="key">action</field>
+            <field name="model">stock.picking</field>
+        </record>
+
+    </data>
+</odoo>

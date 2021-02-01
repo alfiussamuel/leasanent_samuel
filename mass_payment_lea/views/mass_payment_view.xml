@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_mass_supplier_payment_tree" model="ir.ui.view">
+            <field name="name">mass.payment.tree.view</field>
+            <field name="model">mass.payment</field>
+            <field name="arch" type="xml">
+                <tree string="Pembayaran Vendor">
+                    <field name="name" string="No. Dokumen"/>
+                    <field name="partner_id"/>
+                    <field name="company_id"/>
+                    <field name="total" sum="Total Amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_mass_customer_payment_tree" model="ir.ui.view">
+            <field name="name">mass.payment.tree</field>
+            <field name="model">mass.payment</field>
+            <field name="arch" type="xml">
+                <tree string="Pembayaran Customer">
+                    <field name="name" string="No. Dokumen"/>
+                    <field name="partner_id"/>
+                    <field name="company_id"/>
+                    <field name="total" sum="Total Amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_customer_mass_payment_form" model="ir.ui.view">
+            <field name="name">mass.payment.form</field>
+            <field name="model">mass.payment</field>
+            <field name="arch" type="xml">
+                <form string="TTHT">
+                    <header>
+                        <button name="post" class="oe_highlight" states="draft" string="Confirm" type="object"/>
+                        <button name="button_cancel" string="Cancel" type="object" states="posted" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                    </header>
+                    <sheet>
+                    	<div name="button_box" class="oe_button_box">		                    
+		                    <button class="oe_stat_button" name="action_view_journal" type="object" icon="fa-files-o">
+		                        <field string="Journal" name="journal_count" widget="statinfo" />
+		                    </button>
+		                </div>
+                        <div class="oe_title" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <h1><field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/></h1>
+                        </div>
+                        <group>
+                            <field name="partner_type" invisible="1"/>                            
+                            <field name="company_id" required="1" readonly="1"
+                                options="{'no_create': True}"/>
+                            <field name="payment_date" attrs="{'readonly': [('state', '!=', 'draft')]}" required="1"/>
+                           	<field name="partner_id" required="1"
+                                options="{'no_create': True}"/>
+                            <field name="partner_ids" widget="many2many_tags" invisible="1"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                context="{'default_supplier': partner_type == 'customer',
+                                          'default_customer': partner_type == 'supplier'}"
+                                options="{'no_create': True, 'no_open': True}"/>                            
+                            <field name="total" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="total_paid" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="is_residual" readonly="0" invisible="1"/>
+                            <field name="residual" readonly="0"/>
+                            <field name="account_residual_id" attrs="{'readonly': [('state', '!=', 'draft')],'invisible': [('is_residual', '=', False)]}" domain="[('company_id', '=', company_id)]"/>
+
+                        </group>
+                        <group style="margin-top:-18px;">
+                            <group>
+                            	<field name="journal_id" widget="selection" required="1"  
+                            		domain="[('type', 'in', ('bank', 'cash'))]"
+                            		attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group invisible="1"><field name="no_of_day" attrs="{'readonly': [('state', '!=', 'draft')]}"/><br/></group>
+                        </group>
+                        <div style="margin-top:-30px;">
+                        <button name="create_draft_payment" class="oe_highlight" states="draft" string="Create Payment" type="object"/>
+                        </div>
+                        
+                        <group>
+                        	<notebook>
+                                <page string="List Invoice">
+                                <field name="invoice_ids" domain="[('partner_id','=',partner_id),('state','=','open')]" context="{'tree_view_ref':'account.invoice_tree','form_view_ref':'account.invoice_form'}">
+                                    <tree>
+                                        <field name="state" invisible="1"/>
+                                        <field name="number"/>
+                                        <field name="date_invoice"/>
+                                        <field name="partner_id" string="Partner"/>
+                                        <field name="amount_total"/>
+                                        <field name="residual"/>
+                                    </tree>
+                                </field>
+                               </page>
+                        		<page string="Payments">
+                        			<group>
+                        				<field name="line_ids" nolabel="1">
+                        					<tree editable="top" create="false">
+                        						<field name="date" required="1"/>
+                        						<field name="invoice_id" readonly="1"/>
+                                                <field name="nomor_faktur" readonly="1"/>
+                        						<field name="partner_id" readonly="1"/>                        						
+                        						<field name="due_date" readonly="1"/>
+                        						<field name="due_amount" readonly="1" sum="Total Due Amount"/>
+                        						<field name="payment_amount" required="1" sum="Total Paid"/>
+                        					</tree>
+                        				</field>
+                        			</group>
+                        		</page>
+                                <page string="Biaya">
+                        			<group>
+                        				<field name="line_biaya_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                        					<tree editable="Bottom">
+                        						<field name="account_id"/>
+                                                <field name="amount"/>
+                        					</tree>
+                        				</field>
+                        			</group>
+                        		</page>
+                        	</notebook>
+                        </group>
+                        <!-- 
+                        <div style="margin-top:30px;">
+                            <h3>
+                                <label for="account_payment_ids"/>
+                            </h3>
+                            <field name="account_payment_ids" attrs="{'readonly': ['|',('state', '!=', 'draft'), ('journal_id', '=', False)]}"
+                                context="{'default_payment_type': context.get('default_payment_type'), 'default_journal_id': journal_id}">
+                                <tree string="Payments" editable="top">
+                                    <field name="payment_date" readonly="1"/>
+                                    <field name="name" readonly="1"/>
+                                    <field name="invoice_id" required="1" readonly="1"/>
+                                    <field name="journal_id" context="{'mass_payment_journal_id': parent.journal_id}" invisible="1"/>
+                                    <field name="payment_method_id" invisible="1"/>
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="residual" string="Due Amount" sum="Total Due" readonly="1"/>
+                                    <field name="amount" sum="Total Amount"/>
+                                    <field name="company_id" groups="base.group_multi_company" invisible="1"/>
+                                    <field name="state" readonly="1"/>
+                                </tree>
+                                <form string="Register Payment">
+                                    <sheet>
+                                        <div class="oe_title">
+                                            <h4><field name="name"/></h4>
+                                        </div>
+                                        <group>
+                                            <group>
+                                                <field name="payment_type" widget="radio" invisible="1"/>
+                                                <field name="partner_type" nolabel="0" widget="selection" invisible="1" string="" 
+                                                        attrs="{'required': [('payment_type', 'in', ('inbound', 'outbound'))], 
+                                                                'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))]}"/>
+                                                <field name="partner_id" nolabel="0" options="{'no_create': True, 'no_open': True}"
+                                                        attrs="{'required': [('payment_type', 'in', ('inbound', 'outbound'))],
+                                                                'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))]}"
+                                                        context="{'default_is_company': True, 'default_supplier': payment_type == 'outbound',
+                                                                    'default_customer': payment_type == 'inbound',
+                                                                    'from_mass_payment':True, 'partner_ids': parent.partner_ids}"/>
+                                                <field name="journal_id" widget="selection" context="{'mass_payment_journal_id': parent.journal_id}" invisible="1"/>
+                                                <field name="destination_journal_id" widget="selection" attrs="{'required': [('payment_type', '=', 'transfer')], 'invisible': [('payment_type', '!=', 'transfer')]}"/>
+                                                <field name="hide_payment_method" invisible="1"/>
+                                                <field name="payment_method_id" string=" " widget="radio" attrs="{'invisible': [('hide_payment_method', '=', True)]}"/>
+                                                <field name="payment_method_code" invisible="1"/>
+                                                <label for="amount"/>
+                                                <div name="amount_div" class="o_row">
+                                                    <field name="amount"/>
+                                                    <field name="currency_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency" />
+                                                </div>
+                                            </group>
+                                            <group>
+                                                <field name="payment_date" readonly="1"/>
+                                                <field name="communication" attrs="{'invisible': [('communication', '=', False)]}"/>
+                                                <field name="invoice_id" required="1" attrs="{'invisible': [('partner_id', '=', False)]}"
+                                                    options="{'no_create': True}"
+                                                    context="{'from_mass_payment':True, 'company_id': parent.company_id,
+                                                                'partner_type': partner_type, 'partner_id': partner_id,
+                                                                'no_of_day': parent.no_of_day}"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </div>
+                         -->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_mass_payments_supplier" model="ir.actions.act_window">
+            <field name="name">Pembayaran Vendor</field>
+            <field name="res_model">mass.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_payment_type': 'outbound', 'default_partner_type': 'supplier'}</field>
+            <field name="domain">[('partner_type', '=', 'supplier')]</field>
+            <field name="view_id" ref="view_mass_supplier_payment_tree"/>
+        </record>
+
+        <record id="action_mass_payments_customer" model="ir.actions.act_window">
+            <field name="name">Penerimaan Customer</field>
+            <field name="res_model">mass.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_payment_type': 'inbound', 'default_partner_type': 'customer'}</field>
+            <field name="domain">[('partner_type', '=', 'customer')]</field>
+            <field name="view_id" ref="view_mass_customer_payment_tree"/>
+        </record>
+
+        <menuitem action="action_mass_payments_supplier" id="menu_action_mass_payments_payable" parent="account.menu_finance_payables" sequence="21" name="Pembayaran Vendor"/>
+        <menuitem action="action_mass_payments_customer" id="menu_action_account_mass_payments_receivable" parent="account.menu_finance_receivables" sequence="21" name="Penerimaan Customer"/>
+
+    </data>
+</openerp>

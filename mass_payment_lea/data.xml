@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="mass_payment_supplier_sequence" model="ir.sequence">
+            <field name="name">Mass Payment</field>
+            <field name="code">supplier.mass.payment</field>
+            <field name="prefix">MP/SUP/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="mass_payment_customer_sequence" model="ir.sequence">
+            <field name="name">Mass Payment</field>
+            <field name="code">customer.mass.payment</field>
+            <field name="prefix">MP/CUST/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+    </data>
+</openerp>

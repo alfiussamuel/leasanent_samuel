@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_fiscalyear_all,account_fiscalyear all,model_account_fiscalyear,,1,1,1,1
+access_account_period_all,account_period all,model_account_period,,1,1,1,1
+access_account_closing_all,account_closing all,model_account_closing,,1,1,1,1
+access_account_closing_detail_all,account_closing_detail all,model_account_closing_detail,,1,1,1,1

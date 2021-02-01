@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_summary_sales_performance_comparison">
+            <t t-call="report.html_container">              
+                <t t-call="report.internal_layout">
+                    <div class="page">                  
+
+                        <h2 style="text-align:center;">Sales Comparison Per Class Category Product and Channel</h2>
+                        <br/>
+
+                        <table class="table table-condensed" style="margin-top:20px;font-size:13px;">
+                            <thead style="text-align:center;">
+                                <tr>
+                                    <th style="width:3%;" rowspan="2">No.</th>
+                                    <th rowspan="2">Class Category</th>
+                                    <th rowspan="2">Channel Category</th>
+                                    <t t-foreach="year_list" t-as="y">
+                                        <th colspan="2"><span t-esc="y"/></th>
+                                    </t>
+                                    <t t-foreach="year_list" t-as="y">
+                                        <th colspan="2"><span t-esc="y"/></th>
+                                    </t>
+                                    <th rowspan="2">% Qty</th>
+                                    <th rowspan="2">% Value</th>
+                                </tr>
+                                <tr>
+                                    <t t-foreach="year_list" t-as="y">
+                                        <th>Qty Sold</th>
+                                        <th>Value</th>
+                                    </t>
+                                    <t t-foreach="year_list" t-as="y">
+                                        <th>Avg. Qty</th>
+                                        <th>Average</th>
+                                    </t>
+                                </tr>
+                            </thead>
+
+                                <tbody style="font-size:11px;">
+                                    <t t-set="index" t-value="1"/>
+                                    <t t-foreach="product_class_ids" t-as="pc">
+
+                                        <!-- PRODUCT CLASS -->
+                                        <tr style="font-weight:bold;">
+                                            <td><span t-esc="index"/>.</td>
+                                            <td><span t-esc="pc['class_name']"/></td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> 0 % </td>
+                                            <td> 0 % </td>
+                                        </tr>
+
+                                        <!-- CHANNEL CATEGORY -->
+                                        <t t-foreach="pc['channel_data_line']" t-as="ch">
+                                            <tr>
+                                                <td> </td>
+                                                <td> </td>
+                                                
+                                                <td><span t-esc="ch['name']"/></td>
+                                                
+                                                <td><span t-esc="'{0:,.0f}'.format(ch['total_qty_before'])"/></td>
+                                                <td>Rp. <span t-esc="'{0:,.0f}'.format(ch['total_value_before'])"/></td>
+                                                <td><span t-esc="'{0:,.0f}'.format(ch['total_qty_current'])"/></td>
+                                                <td>Rp. <span t-esc="'{0:,.0f}'.format(ch['total_value_current'])"/></td>
+
+                                                <td><span t-esc="'{0:,.0f}'.format(ch['avg_qty_before'])"/></td>
+                                                <td>Rp. <span t-esc="'{0:,.0f}'.format(ch['avg_value_before'])"/></td>
+                                                <td><span t-esc="'{0:,.0f}'.format(ch['avg_qty_current'])"/></td>
+                                                <td>Rp. <span t-esc="'{0:,.0f}'.format(ch['avg_value_current'])"/></td>
+
+                                                <td><span t-esc="'{0:,.2f}'.format(pc['percentage_qty']*100)"/></td>
+                                                <td><span t-esc="'{0:,.2f}'.format(pc['percentage_value']*100)"/></td>
+                                            </tr>
+                                        </t>
+
+                                        <!-- EMPTY SPACE -->
+                                        <tr>
+                                            <td> <br/> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                        </tr>
+
+                                        <t t-set="index" t-value="index+1"/>
+                                    </t>
+
+                                    <!-- GRAND TOTAL -->
+                                    <tr>
+                                        <td> </td>
+                                        <td> <strong>TOTAL</strong> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                        <td> </td>
+                                    </tr>
+                                    <tr t-foreach="grand_total_data" t-as="gt">
+                                        <td> </td>
+                                        <td> </td>
+                                        <td><span t-esc="gt['name']"/></td>
+                                        <td><span t-esc="'{0:,.2f}'.format(gt['row1'])"/></td>
+                                        <td><span t-esc="'{0:,.2f}'.format(gt['row2'])"/></td>
+                                        <td><span t-esc="'{0:,.2f}'.format(gt['row3'])"/></td>
+                                        <td><span t-esc="'{0:,.2f}'.format(gt['row4'])"/></td>
+                                        <td><span t-esc="'{0:,.2f}'.format(gt['row5'])"/></td>
+                                        <td><span t-esc="'{0:,.2f}'.format(gt['row6'])"/></td>
+                                        <td><span t-esc="'{0:,.2f}'.format(gt['row7'])"/></td>
+                                        <td><span t-esc="'{0:,.2f}'.format(gt['row8'])"/></td>
+                                        <td><span t-esc="'{0:,.2f}'.format(gt['row9'])"/> %</td>
+                                        <td><span t-esc="'{0:,.2f}'.format(gt['row9'])"/> %</td>
+                                    </tr>
+                                </tbody>
+
+                        </table>
+
+                    </div>
+                </t>
+            </t>            
+        </template>
+
+
+    </data>
+</odoo>

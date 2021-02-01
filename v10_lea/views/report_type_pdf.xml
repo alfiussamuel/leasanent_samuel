@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+     	id="report_stock_report_id"
+    	string="Stock Report"
+		model="stock.quant"
+     	report_type="qweb-pdf"
+     	file= "v10_lea.stock_report"
+     	name= "v10_lea.stock_report"
+     	menu= "False"  
+    />
+</odoo>

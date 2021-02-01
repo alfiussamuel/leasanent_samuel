@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="default_data_coupon" model="voucher.config">
+            <field name="name">Default Configuration</field>
+            <field name="min_amount">1</field>
+            <field name="max_amount">9999</field>
+            <field name="default_value">10</field>
+        </record>
+
+         <record id="voucher_one" model="voucher.voucher">
+            <field name="name">Summer Sale</field>
+            <field name="voucher_value">100</field>
+            <field name="total_available">10</field>
+            <field name="voucher_usage">both</field>
+            <field name="validity">0</field>
+        </record>
+         <record id="voucher_two" model="voucher.voucher">
+            <field name="name">Winter Sale</field>
+            <field name="voucher_value">50</field>
+            <field name="total_available">50</field>
+            <field name="voucher_usage">both</field>
+            <field name="validity">0</field>
+        </record>
+    </data>
+</openerp>

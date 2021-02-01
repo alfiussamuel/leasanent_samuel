@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="report_picking_list_qweb_document">
+	    <t t-call="report.external_layout">
+	        <t t-set="doc" t-value="doc.with_context({'lang':doc.env.user.lang})" />
+	        <div class="page">
+	            <div class="row">
+	            	<div class="col-xs-6">
+	                	<h2 t-if="doc.create_uid.company_id"><span t-field="doc.create_uid.company_id.name"/><br/></h2>
+	                	<table>
+	                	<tr>
+	                		<td>Pick List No.</td>
+	                		<td style="padding-left:10px;padding-right:10px;"> : </td>
+	                		<td><span t-if="doc.name" t-field="doc.name"/></td>
+	                	</tr>
+	                	<tr>
+	                		<td>Pick List Date</td>
+	                		<td style="padding-left:10px;padding-right:10px;"> : </td>
+	                		<td><span t-if="doc.date" t-field="doc.date"/></td>
+	                	</tr>
+	                	<tr>
+	                		<td>Warehouse</td>
+	                		<td style="padding-left:10px;padding-right:10px;"> : </td>
+	                		<td><span t-if="doc.line_ids" t-field="doc.line_ids[0].delivery_id.picking_type_id.warehouse_id.name"/></td>
+	                	</tr>
+	                	<tr>
+	                		<td>Gate</td>
+	                		<td style="padding-left:10px;padding-right:10px;"> : </td>
+	                		<td><span t-if="doc.gate_id" t-field="doc.gate_id.name"/></td>
+	                	</tr>
+	                	</table>
+	                </div>
+	            </div>
+	            <br/>
+	            <div class="row">
+	            	<div class="col-xs-12">
+	                	<table class="table table-bordered">
+	                	<thead>
+	                		<tr>
+		                		<th class="text-center">Rack</th>
+		                		<th class="text-center">Barcode</th>
+		                		<th class="text-center">Qty Pick (Pcs)</th>	                		
+		                		<th class="text-center">Qty Picked Scan (Pcs)</th>
+		                	</tr>
+	                	</thead>
+	                	<tbody>
+	                		<t t-set="i" t-value="0"/>
+	                		<t t-foreach="doc.line_ids" t-as="l">
+	                			<tr>
+	                				<td class="text-left"><span t-field="l.rack_id.name"/></td>
+	                				<td class="text-left"><span t-field="l.product_id.name"/></td>
+	                				<td class="text-right"><span t-field="l.qty"/></td>                				
+	                				<td class="text-right"></td>
+	                			</tr>
+	                			<t t-set="i" t-value="i+l.qty"/>
+	                		</t>
+	                	</tbody>
+	                	</table>
+	                	<br/><br/>
+	                	<table class="table table-bordered">
+	                		<tr>
+	                			<td class="text-center">Total DO</td>
+	                			<td class="text-center">Total Qty Picked (Pcs)</td>
+	                		</tr>
+	                		<tr>
+	                			<td class="text-right"><span t-field="doc.total_do"/></td>
+	                			<td class="text-right"><span t-esc="i"/></td>
+	                		</tr>
+	                	</table>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="footer">
+	        	<div class="last-page col-xs-12">
+		        	<div class="col-xs-3">Picking Date :</div>
+		        	<div class="col-xs-3">Picker :</div>
+		        	<div class="col-xs-3">Receive Date :</div>
+		        	<div class="col-xs-3">Receiver :</div>
+		        	<br/><br/><br/><br/><br/><br/>
+		          	<div class="col-xs-3"> </div>
+					<div class="col-xs-3" style="border-top: 1px solid black;">name and sign.</div>
+					<div class="col-xs-3"> </div>
+					<div class="col-xs-3" style="border-top: 1px solid black;">name, sign and company stamp.</div>
+				</div>
+				<br/>
+				Page <span class="page"/>
+	        </div>
+	    </t>
+	</template>
+	
+	
+	<template id="report_picking_list_qweb">
+	    <t t-call="report.html_container">
+	        <t t-foreach="docs" t-as="doc">
+	            <t t-call="report_picking_list_pdf.report_picking_list_qweb_document" t-lang="doc.env.user.lang"/>
+	        </t>
+	    </t>
+	</template>
+	
+</odoo>

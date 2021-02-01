@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    
+    	<!-- Group LEA -->
+    	<record model="ir.module.category" id="group_lea">
+            <field name="name">LEA</field>
+            <field name="sequence">0</field>
+        </record>
+<!--
+        <record model="ir.module.category" id="group_lea_accounting_finance">
+            <field name="name">Accounting & Finance</field>
+            <field name="sequence">4</field>
+            <field name="category_id" ref="v10_lea.group_lea"/>
+        </record>        
+        <record model="ir.module.category" id="group_lea_purchasing">
+            <field name="name">Purchasing</field>
+            <field name="sequence">3</field>
+            <field name="category_id" ref="v10_lea.group_lea"/>
+        </record>
+        <record model="ir.module.category" id="group_lea_sales">
+            <field name="name">Sales</field>
+            <field name="sequence">1</field>
+            <field name="category_id" ref="v10_lea.group_lea"/>
+        </record>
+        <record model="ir.module.category" id="group_lea_gudang">
+            <field name="name">Gudang</field>
+            <field name="sequence">2</field>
+            <field name="category_id" ref="v10_lea.group_lea"/>
+        </record>
+        <record model="ir.module.category" id="group_lea_management">
+            <field name="name">Management</field>
+            <field name="sequence">5</field>
+            <field name="category_id" ref="v10_lea.group_lea"/>
+        </record>
+-->            
+    	
+    	<!-- Accounting Finance -->
+   		<record id="group_lea_staff_accounting" model="res.groups">
+			<field name="name">Staff Accounting</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_kabag_accounting" model="res.groups">
+			<field name="name">Kabag Accounting</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_audit" model="res.groups">
+			<field name="name">Audit</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_staff_finance" model="res.groups">
+			<field name="name">Staff Finance</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_kabag_finance" model="res.groups">
+			<field name="name">Kabag Finance</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		
+		<!-- Management -->
+		<record id="group_lea_direksi" model="res.groups">
+			<field name="name">Direksi</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_hrga" model="res.groups">
+			<field name="name">HRGA</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_itc" model="res.groups">
+			<field name="name">ITC</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_legal" model="res.groups">
+			<field name="name">Legal</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_staff_pic" model="res.groups">
+			<field name="name">Staff PIC</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_kabag_pic" model="res.groups">
+			<field name="name">Kabag PIC</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		
+		<!-- Gudang -->
+		<record id="group_lea_staff_gudang" model="res.groups">
+			<field name="name">Staff Gudang</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_kabag_gudang" model="res.groups">
+			<field name="name">Kabag Gudang</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		
+		<!-- Sales -->
+		<record id="group_lea_dmv" model="res.groups">
+			<field name="name">DMV</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>					
+		<record id="group_lea_staff_prodev" model="res.groups">
+			<field name="name">Staff Prodev</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_kabag_prodev" model="res.groups">
+			<field name="name">Kabag Prodev</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>		
+		<record id="group_lea_spg" model="res.groups">
+			<field name="name">SPG</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_spg_counter" model="res.groups">
+			<field name="name">SPG Counter</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_sales_manager" model="res.groups">
+			<field name="name">Sales Manager</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		
+		<!-- Purchasing -->
+		<record id="group_lea_staff_purchasing" model="res.groups">
+			<field name="name">Staff Purchasing</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>
+		<record id="group_lea_kabag_purchasing" model="res.groups">
+			<field name="name">Kabag Purchasing</field>
+			<field name="category_id" ref="v10_lea.group_lea"/>
+		</record>						
+
+	</data>
+</openerp>

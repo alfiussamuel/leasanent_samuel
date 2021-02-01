@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="paperformat_picking_list_qweb" model="report.paperformat">
+        <field name="name">Format Picking List QWEB</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">37</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">30</field>
+        <field name="dpi">90</field>
+    </record>
+	
+	<report 
+            id="picking_list_qweb"
+            string="Picking List PDF"
+            model="lea.picking.list" 
+            report_type="qweb-pdf"
+            file="report_picking_list_pdf.report_picking_list_qweb" 
+            name="report_picking_list_pdf.report_picking_list_qweb"
+            paperformat="report_picking_list_pdf.paperformat_picking_list_qweb"
+        />
+</odoo>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Period -->
+        <record id="view_account_period_form" model="ir.ui.view">
+            <field name="name">account.period.form</field>
+            <field name="model">account.period</field>
+            <field name="arch" type="xml">
+                <form string="Account Period">
+                    <header>
+                        <button string="Close Period" name="%(action_account_period_close)d" type="action" class="oe_highlight" states="draft"/>
+                        <button name="action_draft" states="done" string="Re-Open Period" type="object" groups="account.group_account_manager"/>
+                        <field name="state" widget="statusbar" nolabel="1"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="fiscalyear_id" widget="selection"/>
+                                <label for="date_start" string="Duration"/>
+                                <div>
+                                    <field name="date_start" class="oe_inline" nolabel="1"/> -
+                                    <field name="date_stop" nolabel="1" class="oe_inline"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="code"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_account_period_tree" model="ir.ui.view">
+            <field name="name">account.period.tree</field>
+            <field name="model">account.period</field>
+            <field name="arch" type="xml">
+              <tree colors="blue:state == 'draft';gray:state == 'done' " string="Period">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="date_start"/>
+                    <field name="date_stop"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_account_period_search" model="ir.ui.view">
+            <field name="name">account.period.search</field>
+            <field name="model">account.period</field>
+            <field name="arch" type="xml">
+                <search string="Search Period">
+                    <field name="name" filter_domain="['|', ('name','ilike',self), ('code','ilike',self)]" string="Period"/>
+                    <filter string="To Close" name="draft" domain="[('state','=','draft')]" icon="terp-dialog-close"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_account_period" model="ir.actions.act_window">
+            <field name="name">Periods</field>
+            <field name="res_model">account.period</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_draft': 1,'create':0}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a fiscal period.
+              </p><p>
+                An accounting period typically is a month or a quarter. It
+                usually corresponds to the periods of the tax declaration.
+              </p>
+            </field>
+        </record>
+
+        <record id="action_account_period_tree" model="ir.actions.act_window">
+            <field name="name">Close Master Period</field>
+            <field name="res_model">account.period</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_account_period_tree"/>
+            <field name="context">{'search_default_draft': 1,'create':'0'}</field>
+            <field name="help">A period is a fiscal period of time during which accounting entries should be recorded for accounting related activities. Monthly period is the norm but depending on your countries or company needs, you could also have quarterly periods. Closing a period will make it impossible to record new accounting entries, all new entries should then be made on the following open period. Close a period when you do not want to record new entries and want to lock this period for tax related calculation.</field>
+        </record>
+
+        <menuitem
+                id="menu_end_of_periods"
+                name="End of Periods"
+                parent="account.menu_finance_entries"
+                sequence="100"/>
+
+        <menuitem
+                id="action_close_period_menuitem"
+                name="Close Company Period"
+                action="action_close_period"
+                parent="menu_end_of_periods"
+                sequence="1"/>
+
+        <menuitem
+                action="action_account_period_tree"
+                name="Close Master Period"
+                id="menu_action_account_period_close_tree"
+                parent="menu_end_of_periods"
+                sequence="2"/>
+
+        <menuitem
+                action="action_account_fiscalyear_close_state"
+                id="menu_wizard_fy_close_state"
+                parent="menu_end_of_periods"
+                sequence="3"/>
+
+        <menuitem
+                id="menu_action_account_period"
+                action="action_account_period"
+                parent="menu_account_periods"/>
+
+
+</data>
+</odoo>

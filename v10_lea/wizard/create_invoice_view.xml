@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- CREATE INVOICE -->
+        <record id="wizard_create_invoice_form_view" model="ir.ui.view">
+            <field name="name">Create Invoice</field>
+            <field name="model">wizard.create.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Create Invoice">  
+                    <p>
+                        All selected sale order will be merge and create based on discount. Please make sure your selected sale order.
+                    </p>
+                    <footer>
+                        <button string="Create Invoice" name="button_create_invoice" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_wizard_create_invoice"
+            multi="True"
+            key2="client_action_multi" name="Create Invoice"
+            res_model="wizard.create.invoice" src_model="sale.order"
+            view_mode="form" target="new" view_type="form" />
+
+    </data>
+</odoo>

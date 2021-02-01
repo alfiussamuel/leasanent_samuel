@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <templates id="pos_coupons_gift_voucher_template" inherit_id="point_of_sale.template" xml:space="preserve">
+
+
+  
+  <!-- GiftButtonWidget -->
+   
+      <t t-name="GiftButtonWidget" name="POS Coupens Gift Voucher">
+         <div class="control-button">
+        		<i class="fa fa-gift"></i>Coupon
+          </div>
+   	 </t>
+
+    <!-- SelectExistingPopupWidget -->     
+    <t t-name="SelectExistingPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-confirm" style="height: 250px !important;">
+                <p class="title" style="background-color: rgb(110,200,155); color: #fff;">Apply Coupon/Gift Voucher Code</p>
+                <p class="body" style="color: #0075AC;">Enter Your Coupon Code Here</p>
+                 <input id ="existing_coupon_code" type="text" class="input-field" name="code"></input>
+                <div class="footer" style="background-color: rgb(110,200,155); color: #fff;">
+                    <div class="button cancel" style="background-color: #0075AC; color: #fff;">
+                        Cancel 
+                    </div>
+                    <div class="button confirm" id="apply_coupon_code" style="background-color: #0075AC; color: #fff;">
+                        Apply 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+ 
+    
+  	</templates>
+  	
+  	

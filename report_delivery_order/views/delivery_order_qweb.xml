@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <report 
+        id="action_delivery_order_qweb"
+        string="Delivery Order"
+        model="stock.picking" 
+        report_type="qweb-pdf"
+        file="report_delivery_order.delivery_order_report_qweb" 
+        name="report_delivery_order.delivery_order_report_qweb" 
+    />
+
+    <record id="paperformat_delivery_order" model="report.paperformat">
+        <field name="name">Format Delivery Order</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">148</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">38</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_delivery_order_qweb" model="ir.actions.report.xml">
+        <field name="paperformat_id" ref="report_delivery_order.paperformat_delivery_order"/>
+    </record>
+    
+</odoo>

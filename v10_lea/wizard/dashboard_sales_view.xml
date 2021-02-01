@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+		<record id="wizard_dashboard_sales_form_view" model="ir.ui.view">
+			<field name="name">wizard.dashboard.sales.form.view</field>
+			<field name="model">wizard.dashboard.sales</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<group>						
+							<field name="pos_id"/>
+							<field name="start_date"/>
+						</group>
+						<group>					
+							<field name="sales_id"/>
+							<field name="end_date"/>
+						</group>
+					</group>
+					
+					<group>
+						<field name="is_compare"/>
+					</group>
+
+					<group attrs="{'invisible': [('is_compare', '!=', True)]}">
+						<group>						
+							<field name="c_pos_id" attrs="{'required': [('is_compare', '=', True)]}"/>
+							<field name="c_start_date" attrs="{'required': [('is_compare', '=', True)]}"/>
+						</group>
+						<group>					
+							<field name="c_sales_id" attrs="{'required': [('is_compare', '=', True)]}"/>
+							<field name="c_end_date" attrs="{'required': [('is_compare', '=', True)]}"/>
+						</group>
+					</group>
+
+					<group>
+						<button name="button_print_result" string="Show Result" type="object" class="btn-primary"/>
+					</group>
+
+					<group>
+						<group>						
+							<field name="sales_target"/>
+							<field name="sales_result"/>
+							<field name="total_sales"/>
+							<field name="total_sales_normal"/>
+							<field name="total_sales_disc_a"/>
+							<field name="total_sales_disc_b"/>
+							<field name="total_sales_disc_c"/>
+							<field name="total_sales_special_price"/>
+							<field name="total_qty"/>
+							<field name="total_voucher"/>
+							<field name="total_stock"/>
+						</group>
+						<group attrs="{'invisible': [('is_compare', '!=', True)]}">							
+							<field name="c_sales_target"/>
+							<field name="c_sales_result"/>
+							<field name="c_total_sales"/>
+							<field name="c_total_sales_normal"/>
+							<field name="c_total_sales_disc_a"/>
+							<field name="c_total_sales_disc_b"/>
+							<field name="c_total_sales_disc_c"/>
+							<field name="c_total_sales_special_price"/>
+							<field name="c_total_qty"/>
+							<field name="c_total_voucher"/>
+							<field name="c_total_stock"/>
+						</group>
+					</group>
+
+					<footer>
+						<button string="Close" class="btn-default" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_wizard_dashboard_sales" model="ir.actions.act_window">
+			<field name="name">Dashboard Sales</field>
+			<field name="res_model">wizard.dashboard.sales</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="wizard_dashboard_sales_form_view"/>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem id="menu_wizard_dashboard_sales"  name="Sales Dashboard" action="action_wizard_dashboard_sales" parent="point_of_sale.menu_point_rep" sequence="100"/> 
+
+	</data>
+</odoo>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="wizard_dynamic_xls_report_tree" model="ir.ui.view">
+			<field name="name">Dynamic Reports</field>
+			<field name="model">dynamic.xls.report</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Dynamic Report">
+					<field name="model_name"/>
+					<field name="excel_sheet_name"/>
+					<field name="order_on_field"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="dynamic_xls_report" model="ir.ui.view">
+			<field name="name">Dynamic Reports</field>
+			<field name="model">dynamic.xls.report</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Dynamic Report">
+					<header>
+						<button name="add_action_model" type="object" class="btn btn-primary" string="Add action to Model" attrs="{'invisible':[('action_window','!=',False)]}"/>
+						<button name="remove_action_model" type="object" class="btn btn-primary" string="Remove action to Model" attrs="{'invisible':[('action_window','=',False)]}"/>
+					</header>
+					<group col="2">
+						<group col="2">
+							<field name="model_name" required="1"/>
+							<field name="search_domain" invisible="1"/>
+							<field name="limit_rec"/>
+							<field name="set_offset" />
+							<field name="order_type"/>
+							<field name="m2m_value"/>
+							<field name="action_window" readonly="True" invisible="1"/>
+							<field name="action_value" readonly="True" invisible="1"/>
+						</group>
+						<group col="2">
+							<field name="order_on_field"/>
+							<field name="group_by"/>
+							<field name="group_by_field" domain="[('model_id','=',model_name),('ttype','=','many2one')]" context="{'ftype':'many2one'}" attrs="{'invisible':[('group_by','=',False)],'required':[('group_by','!=',False)]}"/>
+							<field name="excel_sheet_name" required="1"/>
+							<field name="header_text"/>
+						</group>
+					</group>
+					<!--<group colspan="6">-->
+					<!--<field name="filename" invisible="1"/>-->
+					<!--<field name="filedata" filename="filename" attrs="{'invisible':[('filedata','=',False)]}"/>-->
+					<!--</group>-->
+					<group colspan="6">
+						<notebook>
+							<page string="Select Fields">
+								<!--<field name="field_name" readonly="1" domain="[('model_id','=',model_name),('ttype','!=','binary')]" nolabel="1">-->
+								<field name="field_name" domain="[('model_id','=',model_name),('ttype','!=','binary')]" nolabel="1">
+									<tree>
+										<field name="sequence" widget="handle"/>
+										<field name="name"/>
+										<field name="field_description"/>
+										<field name="model_id"/>
+										<field name="ttype"/>
+										<field name="state"/>
+									</tree>
+								</field>
+							</page>
+
+							<page string="Domain Lines">
+								<field name="domain_lines" nolabel="1">
+									<tree editable="top">
+										<field name="dynamic_rpt_id" readonly="1" invisible="1"/>
+										<field name="field_name" required="1"/>
+										<field name="operator" required="1"/>
+										<field name="value" required="1"/>
+									</tree>
+								</field>
+							</page>
+
+							<!--<page string="Excel Style">-->
+								<!--<separator string="Excel Style Title"/>-->
+								<!--<group col="4">-->
+									<!--<field name="excel_sheet_name" required="1"/>-->
+									<!--<field name="header_text"/>-->
+								<!--</group>-->
+								<!--&lt;!&ndash;<separator string="Total Style"/>&ndash;&gt;-->
+								<!--&lt;!&ndash;<group col="4">&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="company_txt_stye"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="company_italic"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<label for="company_txt_size" string="Text Size"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<div class="address_format">&ndash;&gt;-->
+										<!--&lt;!&ndash;<field name="company_txt_size" style="width:33%"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;</div>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="company_underline"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="company_txt_color"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="company_txt_align"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="company_bkg_col"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="company_border"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="company_bold"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="company_border_color"/>&ndash;&gt;-->
+								<!--&lt;!&ndash;</group>&ndash;&gt;-->
+
+								<!--<separator string="Header Style"/>-->
+								<!--<group col="4">-->
+									<!--<field name="header_txt_stye"/>-->
+									<!--<field name="header_italic"/>-->
+									<!--<label for="header_txt_size" string="Text Size"/>-->
+									<!--<div class="address_format">-->
+										<!--<field name="header_txt_size" style="width:33%"/>-->
+									<!--</div>-->
+									<!--<field name="header_underline"/>-->
+									<!--<field name="header_txt_color"/>-->
+									<!--<field name="header_txt_align"/>-->
+									<!--<field name="header_bkg_col"/>-->
+									<!--<field name="header_border"/>-->
+									<!--<field name="header_bold"/>-->
+									<!--<field name="header_border_color"/>-->
+								<!--</group>-->
+
+								<!--&lt;!&ndash;<separator string="Group Style"/>&ndash;&gt;-->
+								<!--&lt;!&ndash;<group col="4">&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="group_txt_stye"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="group_italic"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<label for="group_txt_size" string="Text Size"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<div class="address_format">&ndash;&gt;-->
+										<!--&lt;!&ndash;<field name="group_txt_size" style="width:33%"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;</div>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="group_underline"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="group_txt_color"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="group_txt_align"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="group_bkg_col"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="group_border"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="group_sub_bkg_col"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="group_border_color"/>&ndash;&gt;-->
+									<!--&lt;!&ndash;<field name="group_bold"/>&ndash;&gt;-->
+								<!--&lt;!&ndash;</group>&ndash;&gt;-->
+							<!--</page>-->
+						</notebook>
+					</group>
+				</form>
+			</field>
+		</record>
+		<record id="action_dynamic_xls_report" model="ir.actions.act_window">
+			<field name="name">Dynamic Report Export</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">dynamic.xls.report</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<!--<field name="target">new</field>-->
+		</record>
+		<menuitem name="Dynamic Report Export" id="menu_dynamic_xls_report" parent="base.menu_administration"/>
+		<menuitem name="Dynamic Report Export" id="sub_menu_dynamic_xls_report" parent="menu_dynamic_xls_report" action="action_dynamic_xls_report"/>
+
+		<record id="wizard_dynamic_xls_report" model="ir.ui.view">
+			<field name="name">Dynamic Report Wizard</field>
+			<field name="model">dynamic.xls.report</field>
+			<!--<field name="type">form</field>-->
+			<field name="arch" type="xml">
+				<form string="Dynamic Report Wizard">
+					<separator string="Are you sure want to export ?"/>
+					<footer>
+						<button name="get_xls" class="btn-primary" string="Export" type="object" default_focus="1"/>
+						<button special="cancel" string="Cancel" class="btn-default"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="wizard_dynamic_xls_report_download" model="ir.ui.view">
+			<field name="name">Dynamic Report Wizard Download</field>
+			<field name="model">dynamic.xls.report</field>
+			<!--<field name="type">form</field>-->
+			<field name="arch" type="xml">
+				<form string="Dynamic Report Wizard" create="false" edit="false">
+					<separator string="Download from here."/>
+					<field name="filename" invisible="1"/>
+					<field name="filedata" filename="filename" attrs="{'invisible':[('filedata','=',False)]}"/>
+					<footer>
+						<button special="cancel" string="Cancel" class="btn-default"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+
+
+
+
+
+
+		<!--<record id="base.view_model_fields_tree" model="ir.ui.view">-->
+            <!--<field name="model">ir.model.fields</field>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<tree string="Fields" readonly="1">-->
+                    <!--&lt;!&ndash;<field name="sequence"/>&ndash;&gt;-->
+                    <!--<field name="sequence" widget="handle"/>-->
+                    <!--<field name="name"/>-->
+                    <!--<field name="field_description"/>-->
+                    <!--<field name="model_id"/>-->
+                    <!--<field name="ttype"/>-->
+                    <!--<field name="state"/>-->
+                <!--</tree>-->
+            <!--</field>-->
+        <!--</record>-->
+
+
+
+
+
+
+
+		<!--<record id="added_sequnce_view" model="ir.ui.view">-->
+			<!--<field name="name">Fields Selected</field>-->
+			<!--<field name="model">ir.model.fields</field>-->
+			<!--<field name="type">form</field>-->
+			<!--<field name="inherit_id" ref="base.view_model_fields_tree"/>-->
+			<!--<field name="arch" type="xml">-->
+				<!--<field name="name" position="before">-->
+					<!--<field name="sequence" widget="handle"/>-->
+
+
+					<!--<xpath expr="//tree" position="replace">-->
+						<!--<field name="sequence" widget="handle"/>-->
+					<!--</xpath>-->
+
+
+
+					<!--<xpath expr="//tree" position="attributes">-->
+						<!--<attribute name="editable"/>-->
+					<!--</xpath>-->
+
+				<!--</field>-->
+			<!--</field>-->
+		<!--</record>-->
+
+
+
+	</data>
+</odoo>

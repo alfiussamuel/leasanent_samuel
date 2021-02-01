@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="point_scheme_form" model="ir.ui.view">
+            <field name="name">point.scheme.form</field>
+            <field name="model">point.scheme</field>
+            <field name="arch" type="xml">
+                <form string="Point Scheme Management">
+                    <header>
+                        <button name="approve" string="Approve" states="draft" type="object" groups="point_of_sale.group_pos_manager"/>
+                        <button name="cancel" string="Cancel" states="approve" type="object" />
+                         <field name="state" widget="statusbar" statusbar_visible="approve,cancel" />
+                     </header>
+                    <group>
+                        <field name="name" attrs="{'readonly': [('state','=','approve')] }"/>
+                    </group>
+                    <group colspan="2" col="4">
+                        <field name="start_date" attrs="{'readonly': [('state','=','approve')] }" />
+                        <field name="end_date" attrs="{'readonly': [('state','=','approve')] }" />
+                        <field name="points_basis" attrs="{'readonly': [('state','=','approve')] }"/>
+                        
+                    </group>
+                    <group>
+                        <field name="product_ids" attrs="{'invisible': [('points_basis','=','sale_invoice')] }"/>
+                        <field name="invoice_ids" attrs="{'invisible': [('points_basis','=','on_product_quantity')], 'readonly': [('state','=','approve')] }"/>
+                    </group>
+                    <group>
+                        <field name="shop_company_ids" colspan="4" domain="[('usage','=','internal')]">
+                             <tree string="Order lines" >
+                                 <field name="name" />
+                                 <field name="company_id" />
+                             </tree>
+                         </field>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record id="point_scheme_tree" model="ir.ui.view">
+            <field name="name">point.scheme.tree</field>
+            <field name="model">point.scheme</field>
+            <field name="arch" type="xml">
+                <tree string="Point Scheme Management">
+                     <field name="name"/>
+                    <field name="start_date" />
+                    <field name="end_date"/>
+                    <field name="points_basis" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="reedem_points_form" model="ir.ui.view">
+            <field name="name">reedem_points_form</field>
+            <field name="model">reedem.points</field>
+            <field name="arch" type="xml">
+                <form string="Redemption Points">
+                        <header>
+                        <button name="approve" string="Approve" states="draft" type="object" groups="point_of_sale.group_pos_manager"/>
+                        <button name="cancel" string="Cancel" states="approve" type="object" />
+                         <field name="state" widget="statusbar" statusbar_visible="approve,cancel" />
+                     </header>
+                    <group>
+                        <field name="name" attrs="{'readonly': [('state','=','approve')] }"/>
+                    </group>
+                    <group colspan="2" col="4">
+                        <field name="start_date" attrs="{'readonly': [('state','=','approve')] }" />
+                        <field name="end_date" attrs="{'readonly': [('state','=','approve')] }" />
+                        <field name="unit_of_currency" attrs="{'readonly': [('state','=','approve')] }"/>
+                    </group>
+                    <group>
+                    <field name="shop_company_ids_1" colspan="4" domain="[('usage','=','internal')]">
+                         <tree string="Order lines" >
+                             <field name="name" />
+                             <field name="company_id" />
+                         </tree>
+                     </field>
+                     </group>
+                </form>
+            </field>
+        </record>
+        
+        
+        
+        <record id="reedem_points_tree" model="ir.ui.view">
+            <field name="name">reedem.points.tree</field>
+            <field name="model">reedem.points</field>
+            <field name="arch" type="xml">
+                <tree string="Redemption Points">
+                     <field name="name"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="unit_of_currency" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="point_scheme_product_quantity_tree" model="ir.ui.view">
+            <field name="name">point.scheme.product.quantity.tree</field>
+            <field name="model">point.scheme.product.quantity</field>
+            <field name="arch" type="xml">
+                <tree string="Product Based Point Scheme">
+                    <field name="product"/>
+                    <field name="product_category"/>
+                    <field name="points"/>
+                </tree>
+            </field>
+        </record>
+       
+        
+        <record id="point_scheme_product_quantity_form" model="ir.ui.view">
+            <field name="name">point.scheme.product.quantity.form</field>
+            <field name="model">point.scheme.product.quantity</field>
+            <field name="arch" type="xml">
+                <form string="Product Based Point Scheme">
+                    <group>
+                        <field name="product"/>
+                        <field name="product_category"/>
+                        <field name="points"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record id="action_point_scheme_form" model="ir.actions.act_window">
+            <field name="name">Point Scheme Release</field>
+            <field name="res_model">point.scheme</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_reedem_points_form" model="ir.actions.act_window">
+            <field name="name">Redemption Points</field>
+            <field name="res_model">reedem.points</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+    	<menuitem id="menu_action_point_shceme_form" name="Point Management" groups="point_of_sale.group_pos_manager,point_of_sale.group_pos_user" parent="point_of_sale.menu_point_root" ></menuitem>
+    	
+    	<menuitem
+             id="point_scheme_submenu"
+            parent="menu_action_point_shceme_form"
+            action="action_point_scheme_form"
+            />
+            
+        <menuitem
+             id="point_redemption_submenu"
+            parent="menu_action_point_shceme_form"
+            action="action_reedem_points_form"
+            />
+    	
+    	<record id="reedemtion_available_points_form" model="ir.ui.view">
+            <field name="name">reedemtion.available.points.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="website" position="after">
+                    <field name="reedemable_points_available"/>
+                </field>
+            </field>
+        </record>
+        
+       <!--  <record id="view_partner_points_form" model="ir.ui.view">
+            <field name="name">view.partner.points.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="point_of_sale.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <field name="barcode" position="after">
+	                <newline/>
+	                <field name="pos_order_ids" widget="one2many">
+	                    <tree>
+	                        <field name="date_order" />
+	                        <field name="location_id" />
+	                        <field name="name"/>
+	                        <field name="pos_reference"/>
+	                        <field name="points_earned"/>
+	                        <field name="points_reedemed"/>
+	                        <field name="balance_points"/>
+	                    </tree>
+	                </field>
+                </field>
+            </field>
+        </record> -->
+        
+        
+        <record id="view_partner_stock_form_inherit" model="ir.ui.view">
+            <field name="name">view.partner.stock.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="stock.view_partner_stock_form"/>
+            <field name="arch" type="xml">
+                <group name="warehouse" position="after">
+	                <newline/>
+	                <field name="pos_order_ids" widget="one2many">
+	                    <tree>
+	                        <field name="date_order" />
+	                        <field name="location_id" />
+	                        <field name="name"/>
+	                        <field name="pos_reference"/>
+	                        <field name="points_earned"/>
+	                        <field name="points_reedemed"/>
+	                        <field name="balance_points"/>
+	                    </tree>
+	                </field>
+                </group>
+            </field>
+        </record>
+        
+        
+        <record id="pos_order_points_form_view" model="ir.ui.view">
+            <field name="name">pos.order.points.form.view</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                    <field name="pos_reference" position="after">
+                        <field name="points_earned"/>
+                        <field name="points_reedemed"/>
+                        <field name="balance_points"/>
+                    </field>    
+            </field>
+        </record>
+        
+        <record id="journal_selection_form_view1" model="ir.ui.view">
+            <field name="name">journal.selection.form_view1</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+            
+                    <field name="type" position="after">
+                    	<field name="for_points"/>
+                    </field>    
+            </field>
+        </record>
+    </data>
+</openerp>

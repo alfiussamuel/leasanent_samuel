@@ -1,0 +1,427 @@
+<odoo>
+    <data>
+
+        <report
+            id="report_spk_id"
+            string="Surat Perintah Kerja"
+            model="dt.lea.spk"
+            report_type="qweb-pdf"
+            file="dt_lea_mrp.report_spk"
+            name="dt_lea_mrp.report_spk"
+        />
+        <template id="report_spk">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="dt_lea_mrp.report_spk_document"/>
+                    <t t-call="dt_lea_mrp.header_spk"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="header_spk">
+            <div class="header">
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center;">
+                                <div style="color: black;">
+                                    <h4><strong>Surat Perintah Kerja</strong></h4></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;font-size:12px;">
+                                <div style="color: black;">
+                                    <strong>"ORANGE LABEL"</strong></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+
+        <template id="report_spk_document">
+            <div class="page">
+                <table style="font-size:11px;" width="100%">
+                    <tr>
+                        <td width="10%">No. SPK</td>
+                        <td>:&#160;</td>
+                        <td colspan="6"><span t-field="doc.document_number"/></td>
+
+                        <td width="10%">Pola Tgl</td>
+                        <td>:&#160;</td>
+                        <td><span t-field="doc.pola_tanggal"/></td>
+
+                        <td width="15%">Date</td>
+                        <td>:&#160;</td>
+                        <td><span t-field="doc.date"/></td>
+                    </tr>
+                    <tr>
+                        <td width="10%">No. PPJ</td>
+                        <td>:&#160;</td>
+                        <td colspan="6"><span t-field="doc.nomor_ppj"/></td>
+
+                        <td width="10%">Lot</td>
+                        <td>:&#160;</td>
+                        <td><span t-field="doc.lot"/></td>
+
+                        <td width="15%">No. Batch</td>
+                        <td>:&#160;</td>
+                        <td><span t-field="doc.no_batch"/></td>
+                    </tr>
+                    <tr>
+                        <td width="10%">No. ART</td>
+                        <td>:&#160;</td>
+                        <td colspan="6"><span t-field="doc.product_id"/></td>
+
+                        <td width="10%">Consump</td>
+                        <td>:&#160;</td>
+                        <td><span t-field="doc.consumed_material"/>&#160;<span t-field="doc.consumed_material_uom_id"/></td>
+
+                        <td width="15%">Kode Cuci</td>
+                        <td>:&#160;</td>
+                        <td><span t-field="doc.washing_id"/></td>
+                    </tr>
+                    <tr>
+                        <td width="10%">Fitting Style</td>
+                        <td>:&#160;</td>
+                        <td colspan="6"><span t-field="doc.fitting_style_id"/></td>
+
+                        <td width="10%"></td>
+                        <td></td>
+                        <td></td>
+
+                        <td width="15%">Kode Lab</td>
+                        <td>:&#160;</td>
+                        <td><span t-field="doc.code_lab_id"/></td>
+                    </tr>
+                    <tr>
+                        <td width="10%">Price</td>
+                        <td>:&#160;</td>
+                        <td colspan="6"><span t-field="doc.price_unit"/></td>
+
+                        <td width="10%"></td>
+                        <td></td>
+                        <td></td>
+
+                        <td width="15%">Jenis Permintaan</td>
+                        <td>:&#160;</td>
+                        <td><span t-field="doc.jenis_permintaan"/></td>
+                    </tr>
+                </table>
+                <br/>
+                <br/>
+                <table style="font-size:11px;" width="100%">
+                    <thead>
+                        <tr>
+                            <td width="15%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>Size</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>28</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>29</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>30</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>31</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>32</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>33</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>34</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>35</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>36</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>37</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>38</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>39</center></strong>
+                            </td>
+                            <td width="5%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>40</center></strong>
+                            </td>
+                            <td width="10%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>Total</center></strong>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tr t-foreach="doc.product_list_ids" t-as="f">
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.distribusi_id"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_28"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_29"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_30"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_31"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_32"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_33"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_34"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_35"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_36"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_37"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_38"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_39"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.size_40"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.total"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="15%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                            <strong><div style="margin-left:5px">Total</div></strong>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_28 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_29 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_30 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_31 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_32 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_33 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_34 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_35 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_36 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_37 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_38 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_39 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.size_40 for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.total for l in doc.product_list_ids)"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="15%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                            <strong><div style="margin-left:5px">Batch Size</div></strong>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;">
+                            <div style="margin-left:5px"><t t-esc="sum(l.total for l in doc.product_list_ids)"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                            <div style="margin-left:5px">Pcs</div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"></div>
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <table style="font-size:11px;" width="100%">
+                    <thead>
+                        <tr>
+                            <td rowspan="2" width="3%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>No</center></strong>
+                            </td>
+                            <td rowspan="2" width="15%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>Code Material</center></strong>
+                            </td>
+                            <td rowspan="2" width="40%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>Nama Material</center></strong>
+                            </td>
+                            <td rowspan="2" width="10%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>Kode Warna</center></strong>
+                            </td>
+                            <td colspan="2" width="20%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>Kebutuhan</center></strong>
+                            </td>
+                            <td rowspan="2" width="10%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>Satuan</center></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="10%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>/Pcs</center></strong>
+                            </td>
+                            <td width="10%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle">
+                                <strong><center>/Batch</center></strong>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tr t-foreach="doc.spk_bom_ids" t-as="f">
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-esc="f_index+1"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.product_id.default_code"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.product_id.name"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.kode_warna_id"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.kebutuhan_pcs"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.kebutuhan_batch"/></div>
+                        </td>
+                        <td style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+                            <div style="margin-left:5px"><span t-field="f.uom_id"/></div>
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <br/>
+                <table style="font-size:11px;" width="50%">
+                    <tr>
+                        <td width="20%" style="border-right:1px solid black;border-left:1px solid black;border-top:1px solid black;font-size:11px;vertical-align:middle">
+                            <div style="margin-left:5px;margin-top:5px"><strong> Note : </strong></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-right:1px solid black;border-left:1px solid black;border-bottom:1px solid black;font-size:11px;vertical-align:middle">
+                            <div style="margin-left:5px;margin-bottom:5px"><span t-field="doc.notes"/></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="footer">
+                <table style="font-size:11px;" width="100%">
+                    <tr>
+                        <td width="25%" style="vertical-align:middle">
+                            <strong><center>Mengetahui</center></strong>
+                        </td>
+                        <td width="50%" style="vertical-align:middle">
+                            <strong><center></center></strong>
+                        </td>
+                        <td width="25%" style="vertical-align:middle">
+                            <strong><center>Disetujui</center></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="25%" style="vertical-align:middle;height:150px">
+                            <!-- <strong><center><span t-field="o.manajer_proyek_id"/></center></strong> -->
+                            <strong><center>(............................)</center></strong>
+                        </td>
+                        <td width="50%" style="vertical-align:middle;height:150px">
+                            <strong><center></center></strong>
+                        </td>
+                        <td width="25%" style="vertical-align:middle;height:150px">
+                            <!-- <strong><center><span t-field="o.partner_id.name"/></center></strong> -->
+                            <strong><center>(............................)</center></strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <record id="spk_paperformat" model="report.paperformat">
+            <field name="name">Surat Perintah Kerja Paper Format</field>
+            <field name="default" eval="False" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">50</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">25</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="report_spk_id" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="dt_lea_mrp.spk_paperformat"/>
+        </record>
+
+    </data>
+</odoo>

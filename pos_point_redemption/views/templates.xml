@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<template id="pos_point_redemption_assets" inherit_id="point_of_sale.assets">
+			<!-- JS -->
+			<xpath expr="." position="inside">
+				<script type="text/javascript" src="/pos_point_redemption/static/src/js/models.js"></script>
+				<script type="text/javascript" src="/pos_point_redemption/static/src/js/widgets.js"></script>
+				<script type="text/javascript" src="/pos_point_redemption/static/src/lib/js/jquery.msgBox.js"></script>
+				
+			</xpath>
+			<!-- CSS -->
+			<xpath expr="//link[@id='pos-stylesheet']" position="after">
+				<link rel="stylesheet" href="/pos_point_redemption/static/src/css/point_redemption.css" />
+			</xpath>
+		</template>
+		
+    </data>
+</openerp>

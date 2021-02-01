@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="credit_limit_wizard">
+        <field name="name">Customer Credit Limit Form</field>
+        <field name="model">sale.customer.credit.limit.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="credit_limit_currency_id" invisible="1"/>
+                    <field name="so_currency_id" invisible="1"/>
+                    <field name="partner_id"/>
+                    <field name="credit_limit" widget="monetary" options="{'currency_field': 'credit_limit_currency_id'}"/>
+                    <field name="open_credit" widget="monetary" options="{'currency_field': 'credit_limit_currency_id'}"/>
+                    <field name="order_amount" widget="monetary" options="{'currency_field': 'so_currency_id'}"/>
+                    <field name="exceeded_credit" style="color: red;" widget="monetary" options="{'currency_field': 'credit_limit_currency_id'}"/>
+                </group>
+                <group>
+                    <span>Please wait until overdue invoices have been paid or choose to exceed the credit limit (requires manager approval)</span>
+                </group>
+                <footer>
+                    <button string="Cancel" special="cancel" class="oe_highlight"/>
+                    <button name="action_exceed_limit" string="Exceed Limit" type="object" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

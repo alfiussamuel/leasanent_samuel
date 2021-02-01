@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+		<!-- Add custom js for POS Coupons and Gift Voucher -->	    
+        <template id="assets_for_pos_coupons_gift_voucher" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_coupons_gift_voucher/static/src/js/pos_coupons_gift_voucher.js"/>
+            </xpath>
+        </template>
+        
+    </data>
+</openerp>

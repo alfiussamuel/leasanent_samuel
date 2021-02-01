@@ -1,0 +1,1044 @@
+<odoo>
+	<data>
+		
+		<!-- Menu Quotations Detail -->
+		<record id="action_quotation_detail" model="ir.actions.act_window">
+            <field name="name">Quotations Detail</field>            
+            <field name="res_model">sale.order.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state', 'in', ['draft'])]</field>
+            <field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>                                                                      
+        </record>
+
+        <!-- Menu Quotations Consigment -->
+		<record id="action_quotation_consigment" model="ir.actions.act_window">
+            <field name="name">Quotations Consigment</field>            
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="domain">[('state','in',('draft','cancel','sent')), ('customer_type', '=', 'CONSIGNMENT')]</field>
+             <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Create a Quotation, the first step of a new sale.
+              </p><p>
+                Your next actions should flow efficiently: confirm the Quotation
+                to a Sale Order, then create the Invoice and collect the Payment.
+              </p><p>
+                Note that once a Quotation becomes a Sale Order, it will be moved
+                from the Quotations list to the Sales Order list.
+              </p>
+            </field>                                                                 
+        </record>
+
+
+        <!-- Menu Quotations Wholesale-->
+		<record id="action_quotation_wholesale" model="ir.actions.act_window">
+            <field name="name">Quotations Wholesale</field>            
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="domain">[('state','in',('draft','cancel','sent')), ('customer_type', 'in', ('WHOLESALE', 'JEANS STORE'))]</field>
+             <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Create a Quotation, the first step of a new sale.
+              </p><p>
+                Your next actions should flow efficiently: confirm the Quotation
+                to a Sale Order, then create the Invoice and collect the Payment.
+              </p><p>
+                Note that once a Quotation becomes a Sale Order, it will be moved
+                from the Quotations list to the Sales Order list.
+              </p>
+            </field>                                                                 
+        </record>
+        
+		<!-- Menu Replenishment -->
+		<record id="action_lea_replenishment" model="ir.actions.act_window">
+			<field name="name">Replenishment</field>
+			<field name="res_model">lea.replenishment</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Putaway -->
+		<record id="action_lea_putaway" model="ir.actions.act_window">
+			<field name="name">Putaway</field>
+			<field name="res_model">lea.putaway</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Rack Mutation -->
+		<record id="action_lea_rack_mutation" model="ir.actions.act_window">
+			<field name="name">Rack Mutation</field>
+			<field name="res_model">lea.rack.mutation</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>	
+		
+		<!-- Menu Gate -->
+		<record id="action_lea_gate" model="ir.actions.act_window">
+			<field name="name">Gate</field>
+			<field name="res_model">lea.gate</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>	
+		
+		<!-- Menu Picker -->
+		<record id="action_lea_picker" model="ir.actions.act_window">
+			<field name="name">Picker</field>
+			<field name="res_model">lea.picker</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>	
+		
+		<!-- Menu Picking List -->
+		<record id="action_lea_picking_list" model="ir.actions.act_window">
+			<field name="name">Picking List</field>
+			<field name="res_model">lea.picking.list</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{'search_default_ready_today': 1}</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Packing List -->
+		<record id="action_lea_packing_list" model="ir.actions.act_window">
+			<field name="name">Packing List</field>
+			<field name="res_model">lea.packing.list</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{'search_default_ready_today': 1}</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>			
+		
+		<!-- Menu Lea Rack -->
+		<record id="action_lea_rack" model="ir.actions.act_window">
+			<field name="name">Rack</field>
+			<field name="res_model">lea.rack</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>	
+								
+		<!-- Menu Lea Level -->
+		<record id="action_lea_rack_level" model="ir.actions.act_window">
+			<field name="name">Level</field>
+			<field name="res_model">lea.rack.level</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>	
+		
+		<!-- Menu Lea Column -->
+		<record id="action_lea_rack_level_column" model="ir.actions.act_window">
+			<field name="name">Column</field>
+			<field name="res_model">lea.rack.level.column</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>	
+		
+		<!-- Menu Product Brand -->
+		<record id="action_lea_product_brand" model="ir.actions.act_window">
+			<field name="name">Product Brand</field>
+			<field name="res_model">lea.product.brand</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>		
+										
+		<!-- Menu Product Class -->
+		<record id="action_lea_product_class" model="ir.actions.act_window">
+			<field name="name">Product Class</field>
+			<field name="res_model">lea.product.class</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>		
+						
+		<!-- Menu Product Category 1 -->
+		<record id="action_lea_product_category1" model="ir.actions.act_window">
+			<field name="name">Product Category 1</field>
+			<field name="res_model">lea.product.category1</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>				
+		
+		<!-- Menu Product Category 2 -->
+		<record id="action_lea_product_category2" model="ir.actions.act_window">
+			<field name="name">Product Category 2</field>
+			<field name="res_model">lea.product.category2</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>		
+						
+		<!-- Menu Product Category 3 -->
+		<record id="action_lea_product_category3" model="ir.actions.act_window">
+			<field name="name">Product Category 3</field>
+			<field name="res_model">lea.product.category3</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>		
+						
+		<!-- Menu Product Category 4 -->
+		<record id="action_lea_product_category4" model="ir.actions.act_window">
+			<field name="name">Product Category 4</field>
+			<field name="res_model">lea.product.category4</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>					
+			
+		<!-- Menu Product Category 5 -->
+		<record id="action_lea_product_category5" model="ir.actions.act_window">
+			<field name="name">Product Category 5</field>
+			<field name="res_model">lea.product.category5</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>					
+			
+		<!-- Menu Product Category 6 -->
+		<record id="action_lea_product_category6" model="ir.actions.act_window">
+			<field name="name">Product Category 6</field>
+			<field name="res_model">lea.product.category6</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>							
+						
+		<!-- Menu Product Fitting -->
+		<record id="action_lea_product_fitting" model="ir.actions.act_window">
+			<field name="name">Product Fitting</field>
+			<field name="res_model">lea.product.fitting</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+						
+		<!-- Menu Product Sourcing -->
+		<record id="action_lea_product_sourcing" model="ir.actions.act_window">
+			<field name="name">Product Sourcing</field>
+			<field name="res_model">lea.product.sourcing</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>		
+			
+		<!-- Menu Product Material Category -->
+		<record id="action_lea_product_material_category" model="ir.actions.act_window">
+			<field name="name">Product Material Category</field>
+			<field name="res_model">lea.product.material.category</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Material Group -->
+		<record id="action_lea_product_material_group" model="ir.actions.act_window">
+			<field name="name">Product Material Group</field>
+			<field name="res_model">lea.product.material.group</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>					
+
+		<!-- Menu Product Material Type -->
+		<record id="action_lea_product_material_type" model="ir.actions.act_window">
+			<field name="name">Product Material Type</field>
+			<field name="res_model">lea.product.material.type</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>					
+
+		<!-- Menu Product Stock Type -->
+		<record id="action_lea_product_stock_type" model="ir.actions.act_window">
+			<field name="name">Product Stock Type</field>
+			<field name="res_model">lea.product.stock.type</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+						
+		<!-- Menu Product Size -->
+		<record id="action_lea_product_size" model="ir.actions.act_window">
+			<field name="name">Product Size</field>
+			<field name="res_model">lea.product.size</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Pocket -->
+		<record id="action_lea_product_pocket" model="ir.actions.act_window">
+			<field name="name">Pocket</field>
+			<field name="res_model">lea.product.pocket</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Sleeve -->
+		<record id="action_lea_product_sleeve" model="ir.actions.act_window">
+			<field name="name">Sleeve</field>
+			<field name="res_model">lea.product.sleeve</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Color -->
+		<record id="action_lea_product_color" model="ir.actions.act_window">
+			<field name="name">Color</field>
+			<field name="res_model">lea.product.color</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Embeded -->
+		<record id="action_lea_product_embeded" model="ir.actions.act_window">
+			<field name="name">Embeded</field>
+			<field name="res_model">lea.product.embeded</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Raw Material -->
+		<record id="action_lea_product_raw_material" model="ir.actions.act_window">
+			<field name="name">Raw Material</field>
+			<field name="res_model">lea.product.raw.material</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Fitting Category -->
+		<record id="action_lea_product_fitting_category" model="ir.actions.act_window">
+			<field name="name">Fitting Category</field>
+			<field name="res_model">lea.product.fitting.category</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Sex Category -->
+		<record id="action_lea_product_sex_category" model="ir.actions.act_window">
+			<field name="name">Sex Category</field>
+			<field name="res_model">lea.product.sex.category</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Moving Status -->
+		<record id="action_lea_product_moving_status" model="ir.actions.act_window">
+			<field name="name">Moving Status</field>
+			<field name="res_model">lea.product.moving.status</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Selling Group -->
+		<record id="action_lea_product_selling_group" model="ir.actions.act_window">
+			<field name="name">Selling Group</field>
+			<field name="res_model">lea.product.selling.group</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product QC Group -->
+		<record id="action_lea_product_qc_group" model="ir.actions.act_window">
+			<field name="name">QC Group</field>
+			<field name="res_model">lea.product.qc.group</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Style -->
+		<record id="action_lea_product_style" model="ir.actions.act_window">
+			<field name="name">Style</field>
+			<field name="res_model">lea.product.style</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Class Category -->
+		<record id="action_lea_product_class_category" model="ir.actions.act_window">
+			<field name="name">Class Category</field>
+			<field name="res_model">lea.product.class.category</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Category -->
+		<record id="action_lea_product_category" model="ir.actions.act_window">
+			<field name="name">Category</field>
+			<field name="res_model">lea.product.category</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Product Label -->
+		<record id="action_lea_product_label" model="ir.actions.act_window">
+			<field name="name">Label</field>
+			<field name="res_model">lea.product.label</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+													
+		<!-- Menu Identity Type -->
+		<record id="action_lea_identity_type" model="ir.actions.act_window">
+			<field name="name">Identity Type</field>
+			<field name="res_model">lea.identity.type</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>		
+
+		<!-- Menu Distribution Area -->
+		<record id="action_lea_area" model="ir.actions.act_window">
+			<field name="name">Distribution Area</field>
+			<field name="res_model">lea.area</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>					
+			
+		<!-- Menu Sub Distribution Area -->
+		<record id="action_lea_sub_area" model="ir.actions.act_window">
+			<field name="name">Distribution Sub Area</field>
+			<field name="res_model">lea.sub.area</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>		
+
+		<!-- Menu Discount -->
+		<record id="action_lea_discount" model="ir.actions.act_window">
+			<field name="name">Discount</field>
+			<field name="res_model">lea.discount</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Petty Cash -->
+		<record id="action_lea_petty_cash" model="ir.actions.act_window">
+			<field name="name">Petty Cash</field>
+			<field name="res_model">lea.petty.cash</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Bank Statement -->
+		<record id="action_lea_bank_statement" model="ir.actions.act_window">
+			<field name="name">Bank Statement</field>
+			<field name="res_model">lea.bank.statement</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Uang Muka -->
+		<record id="action_lea_uang_muka" model="ir.actions.act_window">
+			<field name="name">Uang Muka</field>
+			<field name="res_model">lea.uang.muka</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Menu Purchase Request -->
+		<record id="action_lea_purchase_request" model="ir.actions.act_window">
+			<field name="name">Purchase Request</field>
+			<field name="res_model">lea.purchase.request</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+              	<p class="oe_view_nocontent_create">
+	                Click to add a Data
+              	</p>				
+			</field>
+		</record>
+		
+		<!-- Sales -->
+		<menuitem action="v10_lea.action_quotation_detail" 
+				id="menu_quotation_detail" 
+				parent="sales_team.menu_sales"				
+				sequence="90" />
+
+		<menuitem id="menu_lea_product_config" name="Product Configuration" sequence="100" parent="sales_team.menu_sales" groups="sales_team.group_sale_manager"/>
+
+		<!-- Sales consigment -->
+		<menuitem 
+				action="v10_lea.action_quotation_consigment" 
+				id="menu_quotation_consigment" 
+				parent="sales_team.menu_sales"				
+				sequence="80" />
+
+		<!-- Sales Wholesale -->
+		<menuitem 
+				action="v10_lea.action_quotation_wholesale" 
+				id="menu_quotation_wholesale" 
+				parent="sales_team.menu_sales"				
+				sequence="81" />
+
+					
+			<!-- 
+			<menuitem id="menu_lea_product_class" name="Product Class" action="action_lea_product_class" sequence="100" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_category1" name="Product Category 1" action="action_lea_product_category1" sequence="101" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_category2" name="Product Category 2" action="action_lea_product_category2" sequence="102" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_category3" name="Product Category 3" action="action_lea_product_category3" sequence="103" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_category4" name="Product Category 4" action="action_lea_product_category4" sequence="104" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_category5" name="Product Category 5" action="action_lea_product_category5" sequence="105" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_category6" name="Product Category 6" action="action_lea_product_category6" sequence="106" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_fitting" name="Product Fitting" action="action_lea_product_fitting" sequence="107" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_sourcing" name="Product Sourcing" action="action_lea_product_sourcing" sequence="108" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>			 
+			<menuitem id="menu_lea_product_material_group" name="Product Material Group" action="action_lea_product_material_group" sequence="110" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_material_type" name="Product Material Type" action="action_lea_product_material_type" sequence="111" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_stock_type" name="Product Stock Type" action="action_lea_product_stock_type" sequence="112" parent="v10_lea.menu_lea_product_config" groups="sales_team.group_sale_manager"/>
+			 -->
+			
+			<menuitem id="menu_lea_product_brand" 
+				name="Product Brand" 
+				action="action_lea_product_brand" 
+				sequence="99" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_size" 
+				name="Product Size" 
+				action="action_lea_product_size" 
+				sequence="100" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>										
+			<menuitem id="menu_lea_product_pocket" 
+				name="Product Pocket" 
+				action="action_lea_product_pocket" 
+				sequence="101" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_sleeve" 
+				name="Product Sleeve" 
+				action="action_lea_product_sleeve" 
+				sequence="102" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_color" 
+				name="Product Color" 
+				action="action_lea_product_color" 
+				sequence="103" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_embeded" 
+				name="Product Embeded" 
+				action="action_lea_product_embeded" 
+				sequence="104" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_raw_material" 
+				name="Product Raw Material" 
+				action="action_lea_product_raw_material" 
+				sequence="105" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_fitting_category" 
+				name="Product Fitting Category" 
+				action="action_lea_product_fitting_category" 
+				sequence="106" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_sex_category" 
+				name="Product Sex Category" 
+				action="action_lea_product_sex_category" 
+				sequence="107" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_moving_status" 
+				name="Product Moving Status" 
+				action="action_lea_product_moving_status" 
+				sequence="108" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_selling_group" 
+				name="Product Selling Group" 
+				action="action_lea_product_selling_group" 
+				sequence="109" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_qc_group" 
+				name="Product QC Group" 
+				action="action_lea_product_qc_group" 
+				sequence="110" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_material_category" 
+				name="Product Material Category" 
+				action="action_lea_product_material_category" 
+				sequence="111" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_style" 
+				name="Product Style" 
+				action="action_lea_product_style" 
+				sequence="112" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_class_category" 
+				name="Product Class Category" 
+				action="action_lea_product_class_category" 
+				sequence="113" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_category" 
+				name="Product Category" 
+				action="action_lea_product_category" 
+				sequence="114" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_product_label" 
+				name="Product Label" 
+				action="action_lea_product_label" 
+				sequence="115" 
+				parent="v10_lea.menu_lea_product_config" 
+				groups="sales_team.group_sale_manager"/>
+		
+		<menuitem id="menu_lea_product_config_other" 
+			name="Other Configuration" 
+			sequence="110" 
+			parent="sales_team.menu_sales" 
+			groups="sales_team.group_sale_manager"/>		
+			<menuitem id="menu_lea_identity_type" 
+				name="Identity Type" 
+				action="action_lea_identity_type"
+				sequence="1" 
+				parent="v10_lea.menu_lea_product_config_other" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_area" 
+				name="Distribution Area" 
+				action="action_lea_area" 
+				sequence="2" 
+				parent="v10_lea.menu_lea_product_config_other" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_sub_area" 
+				name="Distribution Sub Area" 
+				action="action_lea_sub_area" 
+				sequence="3" 
+				parent="v10_lea.menu_lea_product_config_other" 
+				groups="sales_team.group_sale_manager"/>
+			<menuitem id="menu_lea_discount" 
+				name="Discount" 
+				action="action_lea_discount" 
+				sequence="4" 
+				parent="v10_lea.menu_lea_product_config_other" 
+				groups="sales_team.group_sale_manager"/>
+		
+		<!-- Purchase -->
+		<menuitem id="menu_lea_purchase_request" 
+			name="Purchase Request" 
+			action="action_lea_purchase_request" 
+			sequence="5" 
+			parent="purchase.menu_procurement_management"/>
+			
+		<!-- Inventory -->
+		<menuitem id="menu_lea_racking_system" 
+			name="Racking System" 			
+			sequence="100" 
+			parent="stock.menu_stock_inventory_control"/>
+			<menuitem id="menu_lea_racking_system_rack"
+				action="action_lea_rack" 
+				name="Rack" 			
+				sequence="1" 
+				parent="v10_lea.menu_lea_racking_system"/>
+			<menuitem id="menu_lea_racking_system_level"
+				action="action_lea_rack_level" 
+				name="Level" 			
+				sequence="2" 
+				parent="v10_lea.menu_lea_racking_system"/>
+			<menuitem id="menu_lea_racking_system_column"
+				action="action_lea_rack_level_column" 
+				name="Column" 			
+				sequence="3" 
+				parent="v10_lea.menu_lea_racking_system"/>
+			<menuitem id="menu_lea_racking_system_rack_mutation"
+				action="action_lea_rack_mutation" 
+				name="Rack Mutation" 			
+				sequence="4" 
+				parent="v10_lea.menu_lea_racking_system"/>
+			<menuitem id="menu_lea_racking_system_putaway"
+				action="action_lea_putaway" 
+				name="Putaway" 			
+				sequence="5" 
+				parent="v10_lea.menu_lea_racking_system"/>
+			<menuitem id="menu_lea_racking_system_replenishment"
+				action="action_lea_replenishment" 
+				name="Replenishment" 			
+				sequence="6" 
+				parent="v10_lea.menu_lea_racking_system"/>
+				
+		<menuitem id="menu_lea_inventory_transfer_picking" 
+			name="Picking Operations" 			
+			sequence="10" 
+			parent="stock.menu_stock_warehouse_mgmt"/>
+			<menuitem id="menu_lea_inventory_transfer_create_picking_list" 
+        		name="Create Job Picking" 
+        		action="action_lea_create_job_picking"        		         		        	
+        		sequence="1"
+        		parent="menu_lea_inventory_transfer_picking"
+        		groups="stock.group_stock_manager,stock.group_stock_user"/>
+       		<menuitem id="menu_lea_inventory_transfer_picking_list" 
+        		name="Picking List"         	         
+        		action="action_lea_picking_list"         	
+        		sequence="2"
+        		parent="menu_lea_inventory_transfer_picking"
+        		groups="stock.group_stock_manager,stock.group_stock_user"/>
+	        		        	        		
+		<menuitem id="menu_lea_inventory_transfer_packing" 
+			name="Packing Operations" 			
+			sequence="11" 
+			parent="stock.menu_stock_warehouse_mgmt"/>
+			<menuitem id="menu_lea_inventory_transfer_create_packing_list" 
+        		name="Create Job Packing" 
+        		action="action_lea_create_job_packing"        		         		        	
+        		sequence="1"
+        		parent="menu_lea_inventory_transfer_packing"
+        		groups="stock.group_stock_manager,stock.group_stock_user"/>				       
+        	<menuitem id="menu_lea_inventory_transfer_packing_list" 
+	        	name="Packing List"         	         
+	        	action="action_lea_packing_list"         	
+	        	sequence="2"
+	        	parent="menu_lea_inventory_transfer_packing"
+	        	groups="stock.group_stock_manager,stock.group_stock_user"/>
+		        	
+        <menuitem id="menu_lea_inventory_transfer_configuration" 
+			name="Configuration" 			
+			sequence="13" 
+			parent="stock.menu_stock_warehouse_mgmt"/>
+			<menuitem id="menu_lea_inventory_transfer_configuration_gate"			
+				name="Gate" 			
+				action="action_lea_gate" 
+				sequence="10" 
+				parent="v10_lea.menu_lea_inventory_transfer_configuration"
+				groups="stock.group_stock_manager,stock.group_stock_user"/>
+			<menuitem id="menu_lea_inventory_transfer_configuration_picker"			
+				name="Picker" 			
+				action="action_lea_picker"
+				sequence="20" 
+				parent="v10_lea.menu_lea_inventory_transfer_configuration"
+				groups="stock.group_stock_manager,stock.group_stock_user"/>					
+		
+		<!-- Accounting -->
+		<menuitem action="account.action_invoice_tree1" 
+			id="menu_action_invoice_tree1_sales" 
+			parent="sales_team.menu_sales" 
+			sequence="91"/>		
+				
+		<menuitem name="Finance"
+            id="menu_lea_finance"
+            groups="account.group_account_user,account.group_account_manager,account.group_account_invoice"
+            web_icon="v10_lea,static/description/icon_finance.png"
+            sequence="40"/>            
+        <menuitem id="menu_lea_finance_cash_bank" name="Cash and Bank" 
+			sequence="1" parent="v10_lea.menu_lea_finance" 
+			groups="account.group_account_user,account.group_account_manager,account.group_account_invoice"/>
+		<menuitem id="menu_lea_finance_petty_cash" name="Petty Cash" 
+			action="action_lea_petty_cash" sequence="1" parent="v10_lea.menu_lea_finance_cash_bank" 
+			groups="account.group_account_user,account.group_account_manager,account.group_account_invoice"/>
+		<menuitem id="menu_lea_finance_bank_statement" name="Bank Statement" 
+			action="action_lea_bank_statement" sequence="2" parent="v10_lea.menu_lea_finance_cash_bank" 
+			groups="account.group_account_user,account.group_account_manager,account.group_account_invoice"/>
+		<menuitem id="menu_lea_finance_uang_muka" name="Uang Muka" 
+			action="action_lea_uang_muka" sequence="3" parent="v10_lea.menu_lea_finance_cash_bank" 
+			groups="account.group_account_user,account.group_account_manager,account.group_account_invoice"/>						
+		
+		<!-- Top Menu Products -->
+		<menuitem name="Products"
+            id="menu_product_global"
+            groups="group_lea_staff_prodev,group_lea_kabag_prodev"
+            web_icon="v10_lea,static/description/icon_products.png"
+            sequence="10"/>			
+            <menuitem name="Product Management" 
+            	id="menu_product_global_product" 
+            	parent="menu_product_global"
+            	groups="group_lea_staff_prodev,group_lea_kabag_prodev" 
+            	sequence="1"/>
+        		<menuitem name="Products" 
+	        		action="product.product_template_action" 
+        			id="menu_product_global_product_product" 
+        			parent="menu_product_global_product" 
+        			groups="group_lea_staff_prodev,group_lea_kabag_prodev"
+        			sequence="1"/>
+       		<menuitem id="menu_product_global_config" 
+       			name="Product Configuration" 
+       			sequence="100" 
+       			parent="menu_product_global" 
+       			groups="sales_team.group_sale_manager"/>								
+				<menuitem id="menu_product_global_config_brand" 
+					name="Product Brand" 
+					action="v10_lea.action_lea_product_brand" 
+					sequence="99" 
+					parent="v10_lea.menu_product_global_config" 
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_size" 
+					name="Product Size" 
+					action="v10_lea.action_lea_product_size" 
+					sequence="100" 
+					parent="v10_lea.menu_product_global_config" 
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>										
+				<menuitem id="menu_product_global_config_pocket" 
+					name="Product Pocket" 
+					action="v10_lea.action_lea_product_pocket" 
+					sequence="101" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_sleeve" 
+					name="Product Sleeve" 
+					action="v10_lea.action_lea_product_sleeve" 
+					sequence="102" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_color" 
+					name="Product Color" 
+					action="v10_lea.action_lea_product_color" 
+					sequence="103" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_embeded" 
+					name="Product Embeded" 
+					action="v10_lea.action_lea_product_embeded" 
+					sequence="104" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_raw_material" 
+					name="Product Raw Material" 
+					action="v10_lea.action_lea_product_raw_material" 
+					sequence="105" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_fitting_category" 
+					name="Product Fitting Category" 
+					action="v10_lea.action_lea_product_fitting_category" 
+					sequence="106" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_sex_category" 
+					name="Product Sex Category" 
+					action="v10_lea.action_lea_product_sex_category" 
+					sequence="107" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_moving_status" 
+					name="Product Moving Status" 
+					action="v10_lea.action_lea_product_moving_status" 
+					sequence="108" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_selling_group" 
+					name="Product Selling Group" 
+					action="v10_lea.action_lea_product_selling_group" 
+					sequence="109" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_qc_group" 
+					name="Product QC Group" 
+					action="v10_lea.action_lea_product_qc_group" 
+					sequence="110" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_style" 
+					name="Product Style" 
+					action="v10_lea.action_lea_product_style" 
+					sequence="111" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_material_category" 
+					name="Product Material Category" 
+					action="v10_lea.action_lea_product_material_category" 
+					sequence="112" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_class_category" 
+					name="Product Class Category" 
+					action="v10_lea.action_lea_product_class_category" 
+					sequence="113" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_category" 
+					name="Product Category" 
+					action="v10_lea.action_lea_product_category" 
+					sequence="114" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+				<menuitem id="menu_product_global_config_label" 
+					name="Product Label" 
+					action="v10_lea.action_lea_product_label" 
+					sequence="115" 
+					parent="v10_lea.menu_product_global_config"
+					groups="group_lea_staff_prodev,group_lea_kabag_prodev"/>
+            									            
+	</data>
+</odoo>
+

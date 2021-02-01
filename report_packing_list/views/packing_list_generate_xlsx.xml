@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+        id="packing_list_xlsx"
+        model="lea.packing.list"
+        string="Packing List"
+        report_type="xlsx"
+        name="lea.packing.list.xlsx"
+        file="lea.packing.list.xlsx"
+        attachment_use="False"
+    />
+</odoo>

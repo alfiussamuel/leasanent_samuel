@@ -1,0 +1,30 @@
+<odoo>
+	<data>
+		<!-- Form -->
+		<record id="action_buat_invoice" model="ir.ui.view">
+			<field name="name">Sales Order Custom</field>
+			<field name="model">sale.order.custom</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<p>You can create invoice depends by Discount here.</p>
+					</group>
+					<footer>
+						<button name="buat_invoice" type="object" string="Create Invoice" class="oe_highlight"/> or
+						<button string="Cancel" special="cancel" class="btn-default"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+		<!-- Action -->
+		<act_window id="action_sales_order_create_invoice"
+            multi="True"
+            key2="client_action_multi"
+            name="Create Invoice Discount"
+            res_model="sale.order.custom"
+            src_model="sale.order"
+            view_mode="form" 
+            target="new" 
+            view_type="form" /> 
+	</data>
+</odoo>

@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+
+        <record id="account_only_create_account_view" model="ir.ui.view">
+            <field name="name">Create Account</field>
+            <field name="model">account.only.create.account</field>
+            <field name="arch" type="xml">
+                <form string="Get Accounts">                   
+                    <footer>
+                        <button string="Confirm" name="create_account" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_account_only_create_account"
+            multi="True"
+            key2="client_action_multi" name="Create Account"
+            res_model="account.only.create.account" src_model="account.account.only"
+            view_mode="form" target="new" view_type="form" />        
+
+    </data>
+</odoo>

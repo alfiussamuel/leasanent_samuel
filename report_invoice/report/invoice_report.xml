@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <report id = "action_invoice_template_report_non_pkp"
+	    string = "Invoice Non PKP"
+	    model = "account.invoice"
+	    report_type = "qweb-pdf"
+	    name = "report_invoice.invoice_template_report_non_pkp"
+        file="report_invoice.invoice_template_report_non_pkp"/>
+
+
+    <report id = "action_invoice_template_report_pkp"
+        string = "Invoice PKP"
+        model = "account.invoice"
+        report_type = "qweb-pdf"
+        name = "report_invoice.invoice_template_report_pkp"
+        file="report_invoice.invoice_template_report_pkp"/>
+
+    <record id="invoice_template_report_paperformat" model="report.paperformat">
+        <field name="name">Invoice Report</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">148</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">37</field>
+        <field name="margin_bottom">60</field>
+        <field name="margin_left">4</field>
+        <field name="margin_right">4</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">34</field>
+        <field name="dpi">90</field>
+        <!-- <field name="dpi">300</field> -->
+    </record>
+
+    <record id="action_invoice_template_report_non_pkp" model="ir.actions.report.xml">
+        <field name="paperformat_id" ref="report_invoice.invoice_template_report_paperformat"/>
+    </record>
+
+    <record id="action_invoice_template_report_pkp" model="ir.actions.report.xml">
+        <field name="paperformat_id" ref="report_invoice.invoice_template_report_paperformat"/>
+    </record>
+
+    <!--- Invoice Retur -->
+    <report id = "action_invoice_template_report_retur"
+        string = "Invoice Retur"
+        model = "account.invoice"
+        report_type = "qweb-pdf"
+        name = "report_invoice.invoice_template_report_retur"
+        file="report_invoice.invoice_template_report_retur"/>
+
+    <record id="action_invoice_template_report_retur" model="ir.actions.report.xml">
+        <field name="paperformat_id" ref="report_invoice.invoice_template_report_paperformat"/>
+    </record>
+
+
+</odoo>

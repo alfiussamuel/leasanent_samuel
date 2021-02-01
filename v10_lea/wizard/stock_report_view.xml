@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+		<record id="stock_report_wizard_view_forms" model="ir.ui.view">
+			<field name="name">stock.report.wizard.view.form</field>
+			<field name="model">stock.report.wizard</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>												
+            			<field name="location_id"             				 
+            				options="{'no_create_edit':True, 'no_open':True, 'no_quick_create': True}"/>
+            			<field name="product_category3_id"             				 
+            				options="{'no_create_edit':True, 'no_open':True, 'no_quick_create': True}"/>
+					</group>
+                    <newline/>
+					<footer>
+						<button name="generate_stock_report" string="Generate Stock Report" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_wizard_stock_report" model="ir.actions.act_window">
+			<field name="name">Stock Report</field>
+			<field name="res_model">stock.report.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="stock_report_wizard_view_forms"/>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem id="stock_report_menu"  name="Stock Report" action="action_wizard_stock_report"
+				parent="point_of_sale.menu_point_rep" sequence="10"/> 
+	</data>
+</odoo>

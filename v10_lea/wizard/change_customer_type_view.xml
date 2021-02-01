@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--Account Move lines-->
+        <record id="wizard_change_customer_type_view" model="ir.ui.view">
+            <field name="name">Change Customer Type</field>
+            <field name="model">wizard.change.customer.type</field>
+            <field name="arch" type="xml">
+                <form string="Change Customer Type">                	
+                    <label string="Are you sure you want to change customer type from all this Sales Order?"/>                    
+                    <footer>
+                        <button string="Change" name="button_change" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_change_customer_type" model="ir.actions.act_window">
+            <field name="name">Change Customer Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.change.customer.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_change_customer_type_view"/>
+            <field name="context">{}</field>
+            <field name="target">new</field>            
+        </record>
+
+        <record model="ir.values" id="wizard_change_customer_type_values">
+            <field name="model_id" ref="sale.model_sale_order" />
+            <field name="name">Change Customer Type</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_wizard_change_customer_type'))" />
+            <field name="key">action</field>
+            <field name="model">sale.order</field>
+        </record>
+
+    </data>
+</odoo>

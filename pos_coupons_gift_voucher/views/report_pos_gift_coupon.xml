@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+	<template id="report_pos_gift_coupon">
+    <t t-foreach="docs" t-as="o">
+           
+    <div class="page">
+    
+        <!--div class="row">
+    	
+ 		<div class="col-xs-3">
+ 			<img t-att-src="'data:image/png;base64,%s' % o.partner_id.company_id.logo"/><br/>
+ 			<span t-field="o.partner_id.company_id.name"/><br/>
+ 			<span t-field="o.partner_id.company_id.street"/><span t-field="o.partner_id.company_id.street2"/><br/><span t-field="o.partner_id.company_id.city"/>
+ 		</div>
+ 		<div class="col-xs-3">
+ 		</div>
+
+		<div class="col-xs-3" style="position:absolute;opacity:1.0;width:90%;text-align:right;z-index:1000;">
+			<img src="pos_coupons_gift_voucher/static/description/gift_coupon_report.jpg"/>
+		
+		</div>
+		</div>
+		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		<div class="row">
+		<div class="col-xs-4">
+		</div>
+
+		
+		<div class="col-xs-4" style="font-size:25px; text-align:left; font-color:#E74C3C;">
+			<span style="color:#E74C3C; font-weight: bold;" > Name: </span><span t-field="o.name"/><br/>
+			<strong>Customer:</strong><span t-field="o.partner_id"/><br/>
+			<strong>Expiry Date:</strong><span t-field="o.expiry_date"/><br/>
+			<strong>Amount:</strong><span t-field="o.amount"/><br/><br/>
+			<strong><span style="font-size:40px;" t-field="o.gift_coupen_code"/></strong>
+
+		</div>
+		<div class="col-xs-4" style="font-size:25px;">
+			<strong>Issue Date:</strong><span t-field="o.issue_date"/><br/>
+		</div>
+		</div-->
+
+		<div class="row">
+			<div class="col-xs-6">
+ 			<img t-att-src="'data:image/png;base64,%s' % o.partner_id.company_id.logo"/><br/>
+ 			<span t-field="o.partner_id.company_id.name"/><br/>
+ 			<span t-field="o.partner_id.company_id.street"/><span t-field="o.partner_id.company_id.street2"/><br/><span t-field="o.partner_id.company_id.city"/>
+ 			</div>
+		</div><br/>
+		<div class="row">
+			<div class="col-xs-3" style="position:absolute;opacity:1.0;width:50%;height:20%;z-index:1000;">
+			<img src="pos_coupons_gift_voucher/static/description/gift_coupon_report.jpg"/>
+			</div>
+			<div class="col-xs-3">
+			</div>
+			<div class="col-xs-3">
+			</div>
+
+
+			<div class="col-xs-3" style="width:50%;font-size:25px; text-align:left; font-color:#E74C3C;">
+			<span style="color:#E74C3C; font-weight: bold;" > Name: </span><span t-field="o.name"/><br/>
+			<t t-if="o.partner_true == True"><strong>Customer:</strong><span t-field="o.partner_id"/><br/></t>
+			<strong>Expiry Date:</strong><span t-field="o.expiry_date" t-field-options='{"widget": "date"}'/><br/>
+			<strong>Amount:</strong><span t-field="o.amount"/><br/>
+			<strong>Issue Date:</strong><span t-field="o.issue_date" t-field-options='{"widget": "date"}'/><br/><br/>
+			<strong><span style="font-size:40px;" t-field="o.gift_coupen_code"/></strong>
+			</div>
+
+		</div><br/><br/><br/>
+
+		<!--div class="row">
+			<div class="col-xs-4">
+			</div>
+			
+			<div class="col-xs-4" style="width:50%;">
+				<strong><span style="font-size:40px; text-align:center" t-field="o.gift_coupen_code"/></strong>
+			</div>
+			<div class="col-xs-4">
+			</div>
+		</div-->
+		
+	
+    </div>
+	</t>
+	</template>
+
+<record id="paper_format" model="report.paperformat">
+            <field name="name">Indian</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">150</field>
+            <field name="page_width">300</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+			<field name="orientation">Portrait</field>
+            <field name="header_spacing">20</field>
+            <field name="dpi">80</field>
+</record>
+<record id="pos_coupons_gift_voucher.action_gift_coupons" model="ir.actions.report.xml">
+    <field name="name">Coupon</field>
+    <field name="model">pos.gift.coupon</field>
+    <field name="report_name">pos_coupons_gift_voucher.report_pos_gift_coupon</field>
+    <field name="paperformat_id" ref="pos_coupons_gift_voucher.paper_format"/>
+</record>
+
+</data>
+</odoo>

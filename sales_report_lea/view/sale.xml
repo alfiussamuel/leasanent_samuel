@@ -1,0 +1,69 @@
+<odoo>
+	<data>
+
+        <record id="view_order_form_internal_lea" model="ir.ui.view">
+	        <field name="name">Sales Order Internal</field>
+	        <field name="model">sale.order</field>
+	        <field name="inherit_id" ref="sale.view_order_form"/>
+	        <field name="arch" type="xml">
+	        	<field name="date_delivery" position="after">
+	        		<field name="is_internal"/>
+	        	</field>
+				<button name="action_cancel" position="after">
+	        		<button name="action_correct_cancel" type="object" states="cancel,draft" string="Correction Cancel" groups="base.user_root"/>
+	        	</button>
+	        </field>
+        </record>
+
+		<record id="view_order_tree_lea2" model="ir.ui.view">
+	        <field name="name">Sales Order</field>
+	        <field name="model">sale.order</field>
+	        <field name="inherit_id" ref="sale.view_order_tree"/>
+	        <field name="arch" type="xml">
+	        	<field name="name" position="after">
+	        		<field name="is_internal"/>
+	        	</field>
+	        </field>
+	    </record>
+
+
+		<record id="wizard_update_partner_invoice" model="ir.ui.view">
+            <field name="name">Wizard Update Invoice</field>
+            <field name="model">wizard.update.partner.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Update Partner Invoice" version="7.0">
+                    <group>
+                       <p>Update Partner Invoice</p>
+                    </group>
+                    <footer>
+                        <button string="Update" name="update_partner" type="object" default_focus="1" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_update_partner_invoice">
+                <field name="name">Update Partner</field>
+                <field name="view_id" ref="wizard_update_partner_invoice"/>
+                <field name="domain">[]</field>
+                <field name="context">{}</field>
+                <field name="res_model">wizard.update.partner.invoice</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">form</field>
+                <field name="target">new</field>
+        </record>
+
+        <record model="ir.values" id="ir_value_id_update_partner_invoice">
+                <field name="model_id" ref="account.model_account_invoice" />
+                <field name="name">Update Invoice</field>
+                <field name="key2">client_action_multi</field>
+                <field name="value" eval="'ir.actions.act_window,' + str(ref('action_update_partner_invoice'))" />
+                <field name="key">action</field>
+                <field name="model">account.invoice</field>
+        </record>
+
+	</data>
+</odoo>
+

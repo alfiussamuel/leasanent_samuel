@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- SALE ORDER -->
+        <record id="wizard_confirm_quotation_form_view" model="ir.ui.view">
+            <field name="name">Multiple Confirm Sale</field>
+            <field name="model">wizard.confirm.sale.order</field>
+            <field name="arch" type="xml">
+                <form string="Confirm Sale">  
+                    <p>
+                        All selected quotation will be confirmed after this operation finish. Please make sure you quotation item(s).
+                    </p>
+                    <footer>
+                        <button string="Confirm Sale" name="button_confirm" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_wizard_confirm_quotation"
+            multi="True"
+            key2="client_action_multi" name="Confirm Sale"
+            res_model="wizard.confirm.sale.order" src_model="sale.order"
+            view_mode="form" target="new" view_type="form" />
+
+
+        <!-- SALE ORDER LINE -->
+        <record id="wizard_confirm_quotation_line_form_view" model="ir.ui.view">
+            <field name="name">Multiple Confirm Sale Order</field>
+            <field name="model">wizard.confirm.sale.order.line</field>
+            <field name="arch" type="xml">
+                <form string="Confirm Sale Line">  
+                    <p>
+                        All selected quotation will be confirmed after this operation finish. Please make sure your quotation item(s).
+                    </p>
+                    <footer>
+                        <button string="Confirm Sale" name="button_confirm" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_wizard_confirm_quotation_line"
+            multi="True"
+            key2="client_action_multi" name="Confirm Sale Order"
+            res_model="wizard.confirm.sale.order.line" src_model="sale.order.line"
+            view_mode="form" target="new" view_type="form" />
+
+
+        <!-- UPDATE DISCOUNT IN SALE ORDER LINE -->
+        <record id="wizard_update_discount_quotation_line_form_view" model="ir.ui.view">
+            <field name="name">Update Discount</field>
+            <field name="model">wizard.update.discount.sale.order.line</field>
+            <field name="arch" type="xml">
+                <form string="Confirm Sale Line">  
+                    <group>
+                        <group string="Current Discount">
+                            <field name="discount" readonly="1"/>
+                        </group>
+                        <group string="New Discount">
+                            <field name="new_discount" required="1"/>
+                        </group>
+                    </group>
+                    <p>
+                        All selected quotation will be update with new discount after this operation finish. Please make sure your quotation item(s).
+                    </p>
+                    <footer>
+                        <button string="Update Discount" name="button_confirm" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_wizard_update_discount_quotation_line"
+            multi="True"
+            key2="client_action_multi" name="Update Discount"
+            res_model="wizard.update.discount.sale.order.line" src_model="sale.order.line"
+            view_mode="form" target="new" view_type="form" />
+
+    </data>
+</odoo>

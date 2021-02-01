@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_pos_config_form_default_customer_inherit">
+            <field name="name">pos.config.form.default.customer.inherit</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"></field>
+            <field name="arch" type="xml">
+                <field name="iface_display_categ_images" position="after">
+                    <field name='defaut_customer'/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

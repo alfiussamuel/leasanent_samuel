@@ -1,0 +1,2709 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>			                   		               	           				
+			
+		<!-- Lea Replenishment -->
+		<record id="view_lea_replenishment_tree" model="ir.ui.view">
+			<field name="name">Replenishment</field>
+			<field name="model">lea.replenishment</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Replenishment">
+					<field name="name"/>
+					<field name="date"/>				
+					<field name="state"/>													
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_lea_replenishment_form" model="ir.ui.view">
+			<field name="name">Replenishment</field>
+			<field name="model">lea.replenishment</field>
+			<field name="type">form</field>			
+			<field name="arch" type="xml">				
+				<form string="Replenishment">					
+					<sheet>
+						<group>							
+							<field name="name" readonly="1"/>
+							<field name="date" readonly="1"/>
+						</group>
+						<group>
+							<notebook>
+								<page string="Detail">
+									<group>
+										<field name="line_ids" nolabel="1">
+											<tree editable="top">
+												<field name="product_id" required="1"/>
+												<field name="column_from" required="1"/>
+												<field name="column_to" required="1"/>
+												<field name="qty" required="1"/>
+											</tree>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<!-- Lea Putaway -->
+		<record id="view_lea_putaway_tree" model="ir.ui.view">
+			<field name="name">Putaway</field>
+			<field name="model">lea.putaway</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Putaway">
+					<field name="name"/>
+					<field name="type"/>
+					<field name="picking_id"/>
+					<field name="inventory_id"/>					
+					<field name="state"/>													
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_lea_putaway_form" model="ir.ui.view">
+			<field name="name">Putaway</field>
+			<field name="model">lea.putaway</field>
+			<field name="type">form</field>			
+			<field name="arch" type="xml">				
+				<form string="Putaway">
+					<header>
+						<button string="Confirm" type="object" name="button_confirm" class="oe_highlight" states="Draft"/>
+						<button string="Done" type="object" name="button_done" class="oe_highlight" states="Progress"/>
+						<button string="Cancel" type="object" name="button_cancel" class="oe_highlight" states="Done"/>									
+						<field name="state" widget="statusbar" readonly="1"/>
+					</header>
+					<sheet>
+						<group>							
+							<field name="name" readonly="1"/>
+							<field name="type" readonly="1"/>
+							<field name="picking_id" readonly="1"
+								attrs="{'invisible': [('type', '=', 'Adjustment')]}"/>
+							<field name="location_id"/>
+							<field name="partner_id"
+								attrs="{'invisible': [('type', '=', 'Adjustment')]}"/>
+							<field name="inventory_id" readonly="1"
+								attrs="{'invisible': [('type', '=', 'Receipt')]}"/>
+						</group>
+						<group>
+							<notebook>
+								<page string="Detail">
+									<group>
+										<field name="line_ids" nolabel="1">
+											<tree editable="top">
+												<field name="product_id" required="1"/>
+												<field name="column_id" required="1"/>
+												<field name="qty" required="1" sum="Total"/>
+											</tree>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<!-- Lea Rack Mutation -->
+		<record id="view_lea_rack_mutation_tree" model="ir.ui.view">
+			<field name="name">Rack Mutation</field>
+			<field name="model">lea.rack.mutation</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Rack Mutation">
+					<field name="name"/>
+					<field name="created_by"/>
+					<field name="created_date"/>
+					<field name="state"/>													
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_lea_rack_mutation_form" model="ir.ui.view">
+			<field name="name">Rack Mutation</field>
+			<field name="model">lea.rack.mutation</field>
+			<field name="type">form</field>			
+			<field name="arch" type="xml">				
+				<form string="Rack Mutation">
+					<header>
+						<button string="Confirm" type="object" name="button_confirm" class="oe_highlight" states="Draft"/>
+						<button string="Approve" type="object" name="button_approve" class="oe_highlight" states="Confirmed"/>
+						<button string="Set to Draft" type="object" name="button_set_to_draft" states="Confirmed,Cancelled"/>
+						<button string="Cancel" type="object" name="button_cancel" states="Approved"/>						
+						<field name="state" widget="statusbar" readonly="1"/>
+					</header>
+					<sheet>
+						<group>							
+							<field name="name" readonly="1"/>
+							<field name="created_by" readonly="1"/>
+							<field name="created_date" readonly="1"/>																																												
+						</group>
+						<group>
+							<notebook>
+								<page string="Detail">
+									<group>
+										<field name="line_ids" nolabel="1">
+											<tree editable="top">												
+												<field name="product_id" required="1"/>
+												<field name="column_from" required="1"/>
+												<field name="column_to" required="1"/>
+												<field name="qty" required="1"/>
+												<field name="type"/>
+											</tree>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <record id="lea_packing_list_search" model="ir.ui.view">
+	        <field name="name">Packing List</field>
+	        <field name="model">lea.packing.list</field>	        
+	        <field name="arch" type="xml">
+	        	<search string="Search Packing List">
+		        	<field name="picking_id"/>
+		        	<field name="picking_date"/>
+		        	<field name="partner_id"/>
+		        	<field name="state"/>
+		        	<filter string="To Do" name="ready" domain="[('state','=','Draft')]"/>
+		        	<filter string="Done" name="done" domain="[('state','=','Done')]"/>	        		        		        	
+		        	<filter string="Today" domain="[('picking_date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))), ('picking_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+		        	<filter string="Ready Today" name="ready_today" domain="[('state','=','Draft'), ('picking_date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))), ('picking_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+	        		<group expand="0" string="Group By">
+	                	<filter name="group_by_picking_id" string="DO No." context="{'group_by':'picking_id'}"/>
+	                	<filter name="group_by_picking_date" string="Date" context="{'group_by':'picking_date'}"/>
+	                	<filter name="group_by_partner_id" string="Customer" context="{'group_by':'partner_id'}"/>
+	                	<filter name="group_by_state" string="Status" context="{'group_by':'state'}"/>                                   	                      
+	               	</group>	        	
+	        	</search>
+	        </field>
+	    </record>
+	    
+	    
+		<!-- Lea Packing List -->
+		<record id="view_lea_packing_list_tree" model="ir.ui.view">
+			<field name="name">Packing List</field>
+			<field name="model">lea.packing.list</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Packing List">
+					<field name="name"/>
+					<field name="partner_id"/>
+					<field name="date"/>					
+					<field name="picking_id"/>
+					<field name="picking_date"/>
+					<field name="sale_id"/>
+					<field name="sale_date"/>					
+					<field name="state"/>												
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_lea_packing_list_form" model="ir.ui.view">
+			<field name="name">Packing List</field>
+			<field name="model">lea.packing.list</field>
+			<field name="type">form</field>			
+			<field name="arch" type="xml">				
+				<form>
+					<header>						
+						<button string="Done" type="object" name="button_done" states="Draft"/>
+						<button string="Set to Draft" type="object" name="button_draft" states="Done"/>
+						<field name="state" widget="statusbar" readonly="1"/>
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" readonly="1"/>
+								<field name="partner_id" readonly="1"/>								
+								<field name="total_picked"/>
+								<field name="total_packed"/>
+								<field name="total_coli"/>		
+								<field name="total_article"/>																				
+							</group>					
+							<group>															
+								<field name="picking_id" readonly="1"/>
+								<field name="picking_date" readonly="1"/>								
+								<field name="sale_id" readonly="1"/>
+								<field name="sale_date" readonly="1"/>
+								<field name="total_weight"/>	
+							</group>									
+						</group>
+						<group>
+							<notebook>
+								<page string="Packing List Detail">
+									<group>										
+										<button string="Create Coli" type="object" name="create_coli" class="oe_highlight" states="Draft"/>										
+									</group>									
+									<group>
+										<group>
+											<field name="coli" class="oe_inline"/>
+											<field name="barcode" class="oe_inline"/>
+										</group>
+										<group>
+											<field name="coli_qty" class="oe_inline"/>
+											<field name="total_scanned" class="oe_inline"/>
+											<field name="total_qty_coli" class="oe_inline"/>
+										</group>										
+									</group>
+									<group>
+										<field name="line_ids" nolabel="1">
+											<tree editable="top">												
+												<field name="product_id"/>
+												<field name="qty_picked"/>
+												<field name="qty_remaining"/>	
+												<field name="qty_packed"/>												
+											</tree>
+										</field>
+									</group>
+								</page>
+								<page string="Summary per Coli">									
+									<group>
+										<field name="coli_ids" nolabel="1" create="false" edit="false">
+											<tree>												
+												<field name="coli"/>												
+												<field name="total_qty"/>		
+												<field name="weight"/>																							
+											</tree>
+											<form>
+												<group>
+													<field name="coli"/>												
+													<field name="total_qty"/>
+													<field name="weight"/>													
+												</group>
+												<group>
+													<notebook>
+														<page string="Barcode">
+															<field name="product_ids" readonly="1">
+																<tree editable="top">
+																	<field name="categ_id"/>																	
+																	<field name="qty_al"/>
+														            <field name="qty_xs"/>
+														            <field name="qty_s"/>
+														            <field name="qty_m"/>
+														            <field name="qty_l"/>
+														            <field name="qty_xl"/>
+														            <field name="qty_x"/>
+														            <field name="qty_y"/>
+														            <field name="qty_z"/>
+														            <field name="qty_25"/>
+														            <field name="qty_26"/>
+														            <field name="qty_27"/>
+														            <field name="qty_28"/>
+														            <field name="qty_29"/>
+														            <field name="qty_30"/>
+														            <field name="qty_31"/>
+														            <field name="qty_32"/>
+														            <field name="qty_33"/>
+														            <field name="qty_34"/>
+														            <field name="qty_35"/>
+														            <field name="qty_36"/>
+														            <field name="qty_38"/>
+														            <field name="qty_40"/>
+														            <field name="qty_42"/>
+														            <field name="total_qty"/>
+																</tree>
+															</field>
+														</page>
+													</notebook>
+												</group>
+											</form>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <record id="lea_packing_list_search" model="ir.ui.view">
+	        <field name="name">Packing List</field>
+	        <field name="model">lea.packing.list</field>	        
+	        <field name="arch" type="xml">
+	        	<search string="Search Packing List">
+		        	<field name="picking_id"/>
+		        	<field name="picking_date"/>
+		        	<field name="partner_id"/>
+		        	<field name="state"/>
+		        	<filter string="To Do" name="ready" domain="[('state','=','Draft')]"/>
+		        	<filter string="Done" name="done" domain="[('state','=','Done')]"/>	        		        		        	
+		        	<filter string="Today" domain="[('picking_date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))), ('picking_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+		        	<filter string="Ready Today" name="ready_today" domain="[('state','=','Draft'), ('picking_date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))), ('picking_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+	        		<group expand="0" string="Group By">
+	                	<filter name="group_by_picking_id" string="DO No." context="{'group_by':'picking_id'}"/>
+	                	<filter name="group_by_picking_date" string="Date" context="{'group_by':'picking_date'}"/>
+	                	<filter name="group_by_partner_id" string="Customer" context="{'group_by':'partner_id'}"/>
+	                	<filter name="group_by_state" string="Status" context="{'group_by':'state'}"/>                                   	                      
+	               	</group>	        	
+	        	</search>
+	        </field>
+	    </record>
+	    
+	    
+		<!-- Lea Picking List -->
+		<record id="view_lea_picking_list_tree" model="ir.ui.view">
+			<field name="name">Picking List</field>
+			<field name="model">lea.picking.list</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Picking List">
+					<field name="picker_id"/>
+					<field name="name"/>
+					<field name="picking_id"/>
+					<field name="date"/>					
+					<field name="gate_id"/>
+					<field name="warehouse_id"/>
+					<field name="location_id"/>	
+					<field name="total_do" invisible="1"/>									
+					<field name="total_qty"/>
+					<field name="total_picked"/>
+					<field name="state"/>													
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_lea_picking_list_form" model="ir.ui.view">
+			<field name="name">Picking List</field>
+			<field name="model">lea.picking.list</field>
+			<field name="type">form</field>			
+			<field name="arch" type="xml">				
+				<form>
+					<header>
+						<button string="Done" type="object" name="button_done" class="oe_highlight" states="Draft"/>
+						<button string="Set to Draft" type="object" name="button_draft" states="Done"/>
+						<field name="state" widget="statusbar" readonly="1"/>
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="name" readonly="1"/>
+								<field name="date" readonly="1"/>
+								<field name="picking_id"/>
+								<field name="total_qty"/>
+								<field name="total_picked"/>																													
+							</group>					
+							<group>						
+								<field name="picker_id" readonly="1"/>
+								<field name="gate_id" readonly="1"/>		
+								<field name="warehouse_id"/>
+								<field name="location_id"/>								
+							</group>									
+						</group>
+						<group>
+							<notebook>
+								<page string="Picking List Detail">
+									<group>
+										<field name="barcode" default_focus="1"/>										
+									</group>
+									<group>										
+										<field name="line_ids" nolabel="1">
+											<tree editable="top" create="false" delete="false">
+												<field name="delivery_id"/>
+												<field name="product_id"/>
+												<field name="qty"/>												
+												<field name="qty_scan"/>
+												<field name="rack_id"/>																								
+											</tree>
+										</field>
+									</group>
+								</page>
+								<page string="Summary">
+									<group>
+										<field name="barcode_summary" default_focus="1"/>										
+									</group>
+									<group>										
+										<field name="summary_ids" nolabel="1">
+											<tree editable="top" create="false" delete="false">												
+												<field name="product_id"/>
+												<field name="qty"/>												
+												<field name="qty_scan"/>
+											</tree>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <record id="lea_picking_list_search" model="ir.ui.view">
+	        <field name="name">Picking List</field>
+	        <field name="model">lea.picking.list</field>	        
+	        <field name="arch" type="xml">
+	        	<search string="Search Picking List">
+		        	<field name="picker_id"/>
+		        	<field name="gate_id"/>
+		        	<field name="date"/>
+		        	<field name="state"/>
+		        	<filter string="To Do" name="ready" domain="[('state','=','Draft')]"/>
+		        	<filter string="Done" name="done" domain="[('state','=','Done')]"/>	        		        		        	
+		        	<filter string="Today" domain="[('date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))), ('date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+		        	<filter string="Ready Today" name="ready_today" domain="[('state','=','Draft'), ('date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))), ('date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+	        		<group expand="0" string="Group By">
+	                	<filter name="group_by_picker_id" string="Picker" context="{'group_by':'picker_id'}"/>
+	                	<filter name="group_by_gate_id" string="Gate" context="{'group_by':'gate_id'}"/>
+	                	<filter name="group_by_date" string="Date" context="{'group_by':'date'}"/>
+	                	<filter name="group_by_state" string="Status" context="{'group_by':'state'}"/>                                   	                      
+	               	</group>	        	
+	        	</search>
+	        </field>
+	    </record>
+		
+		
+		<!-- Lea Create Job Packing -->
+		<record id="view_lea_create_job_packing_tree" model="ir.ui.view">
+			<field name="name">Create Job Packing</field>
+			<field name="model">stock.picking</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Create Job Packing" create="false" edit="false" delete="false">
+					<field name="name" string="DO Number"/>													
+					<field name="min_date" string="DO Date"/>
+					<field name="partner_id" string="Customer"/>
+					<field name="area_id" string="Area"/>
+					<field name="sub_area_id" string="Sub Area"/>
+					<field name="state" invisible="1"/>			
+				</tree>
+			</field>
+		</record>
+
+        <record id="action_lea_create_job_packing" model="ir.actions.act_window">
+            <field name="name">Create Job Packing</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_lea_create_job_packing_tree"></field>
+            <field name="domain">[('picking_type_id.code','in',('outgoing', 'internal')),('state','in',('assigned','partially_available')),('is_packing_list','=',False),('is_picking_list','=',True),('picking_list_id.state','=','Done')]</field>
+       </record>
+       
+<!-- 				
+		<record id="action_lea_create_packing_list" model="ir.actions.server">
+            <field name="name">Create Job Packing</field>
+            <field name="model_id" ref="model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_create_packing_list()</field>
+            <field eval="True" name="condition"/>
+        </record>              	
+ -->
+
+		<!-- Lea Create Job Picking -->
+		<record id="view_lea_create_job_picking_tree" model="ir.ui.view">
+			<field name="name">Create Job Picking</field>
+			<field name="model">stock.picking</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Create Job Picking" create="false" edit="false" delete="false">
+					<field name="name" string="DO Number"/>													
+					<field name="min_date" string="DO Date"/>
+					<field name="partner_id" string="Customer"/>
+					<field name="area_id" string="Area"/>
+					<field name="sub_area_id" string="Sub Area"/>
+					<field name="state" invisible="1"/>			
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_stock_picking_inherit_search" model="ir.ui.view">
+			<field name="name">stock.picking.search.expand.filter</field>
+			<field name="model">stock.picking</field>
+			<field name="inherit_id" ref="stock.view_picking_internal_search"/>
+			<field name="arch" type="xml">
+			    <field name="name" position="after">
+			        <filter string="Delivery Order" name="delivery_order" domain="[('picking_type_id.code','=','outgoing')]"/>
+			        <filter string="Internal Transfer" name="internal_transfer" domain="[('picking_type_id.code','=','internal')]"/>
+			    </field>
+			</field>
+		</record>
+		
+        <record id="action_lea_create_job_picking" model="ir.actions.act_window">
+            <field name="name">Create Job Picking</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_lea_create_job_picking_tree"></field>
+            <field name="domain">[('picking_type_id.code','in',('outgoing','internal')),('state','in',('assigned','partially_available')),('is_picking_list','=',False)]</field>                                                
+       </record>
+
+
+
+
+       		
+<!-- 				
+		<record id="action_lea_create_job_picking" model="ir.actions.server">
+            <field name="name">Create Job Picking</field>
+            <field name="model_id" ref="model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_create_job_picking()</field>            
+            <field eval="True" name="condition"/>
+        </record>
+ -->            
+            
+		<!-- Lea Gate -->
+		<record id="view_lea_gate_tree" model="ir.ui.view">
+			<field name="name">Gate</field>
+			<field name="model">lea.gate</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Gate" editable="top">
+					<field name="name" required="1"/>
+					<field name="warehouse_id" required="1"/>
+					<field name="location_id" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Lea Picker -->
+		<record id="view_lea_picker_tree" model="ir.ui.view">
+			<field name="name">Picker</field>
+			<field name="model">lea.picker</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Picker" editable="top">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+						
+		<!-- Lea Rack -->
+		<record id="view_lea_rack_tree" model="ir.ui.view">
+			<field name="name">Rack</field>
+			<field name="model">lea.rack</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Rack" editable="top">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Lea Level -->
+		<record id="view_lea_rack_level_tree" model="ir.ui.view">
+			<field name="name">Level</field>
+			<field name="model">lea.rack.level</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Level" editable="top">
+					<field name="rack_id" required="1"/>
+					<field name="name" required="1"/>	
+					<field name="type" required="1"/>								
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Lea Column -->
+		<record id="view_lea_rack_level_column_tree" model="ir.ui.view">
+			<field name="name">Column</field>
+			<field name="model">lea.rack.level.column</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Column">					
+					<field name="name"/>
+					<field name="product_id"/>
+					<field name="min_stock"/>
+					<field name="max_stock"/>
+					<field name="available_stock"/>
+					<field name="type"/>									
+				</tree>
+			</field>
+		</record>					
+		<record id="view_lea_rack_level_column_form" model="ir.ui.view">
+			<field name="name">Column</field>
+			<field name="model">lea.rack.level.column</field>
+			<field name="type">form</field>			
+			<field name="arch" type="xml">				
+				<form string="Column">
+					<header>
+						<button name="create_column_product" type="object" string="Update on Product"/>
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="level_id"/>	
+								<field name="name" required="1"/>
+								<field name="product_id"/>	
+								<field name="type"/>							
+							</group>
+							<group>
+								<field name="min_stock"/>
+								<field name="max_stock" required="1"/>
+								<field name="available_stock"/>
+							</group>																					
+						</group>
+						<group>
+							<notebook>
+								<page string="Stock Mutation">
+									<group>
+										<field name="line_ids" nolabel="1">
+											<tree editable="top">
+												<field name="type"/>
+												<field name="qty"/>	
+												<field name="date"/>																																														
+											</tree>																					
+										</field>											
+									</group>
+								</page>
+							</notebook>
+						</group>
+					</sheet>																		
+				</form>
+			</field>
+		</record>				
+        <record id="view_lea_rack_level_column_search" model="ir.ui.view">
+	        <field name="name">Column</field>
+	        <field name="model">lea.rack.level.column</field>	        
+	        <field name="arch" type="xml">
+	        	<search string="Search Column">
+	        		<field name="product_id"/>		 
+		        	<field name="name"/>		        			        
+	        		<group expand="0" string="Group By">
+	                	<filter name="group_by_rack_id" string="Rack" context="{'group_by':'rack_id'}"/>
+	                	<filter name="group_by_level_id" string="Level" context="{'group_by':'level_id'}"/>
+	                	<filter name="group_by_product_id" string="Barcode" context="{'group_by':'product_id'}"/>	                	                                   	                     
+	               	</group>	        	
+	        	</search>
+	        </field>
+	    </record>		
+				
+		<!-- Lea Purchase Request -->
+		<record id="view_lea_purchase_request_tree" model="ir.ui.view">
+			<field name="name">Purchase Request</field>
+			<field name="model">lea.purchase.request</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Purchase Request">
+					<field name="name"/>
+					<field name="created_by" readonly="1"/>					
+					<field name="created_date" readonly="1"/>
+					<field name="approved_date" readonly="1"/>
+					<field name="approved_by" readonly="1"/>
+					<field name="state"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_lea_purchase_request_form" model="ir.ui.view">
+			<field name="name">Purchase Request</field>
+			<field name="model">lea.purchase.request</field>
+			<field name="type">form</field>			
+			<field name="arch" type="xml">				
+				<form string="Purchase Request">
+					<header>						
+						<button name="button_confirm" string="Confirm" type="object" states="Draft" class="oe_highlight"/>		
+						<button name="button_set_to_draft" string="Set to Draft" type="object" states="Confirmed"/>						
+						<button name="button_approve" string="Approve" type="object" states="Confirmed" class="oe_highlight"/>
+						<field name="state" readonly="1" widget="statusbar"/>
+					</header>		
+					<sheet>												
+						<label for="name" class="oe_edit_only" />
+						<h1>
+							<field name="name" readonly="1"/>
+						</h1>
+						<group>							
+							<field name="created_by" readonly="1" class="oe_inline"/>
+							<field name="created_date" readonly="1" class="oe_inline"/>
+							<field name="approved_date" readonly="1" class="oe_inline"
+								attrs="{'invisible': [('state', '!=', 'Approved')]}"/>
+							<field name="approved_by" readonly="1" class="oe_inline"
+								attrs="{'invisible': [('state', '!=', 'Approved')]}"/>																																										
+						</group>
+						<group>
+							<notebook>
+								<page string="Product List">
+									<group>
+										<field name="line_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'Draft')]}">
+											<tree editable="bottom">																																							
+												<field name="product_id" required="1"
+													options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+												<field name="product_qty" required="1"/>
+												<field name="product_uom_id" required="1"/>
+												<field name="product_desc" required="1"/>																																																																																																																				
+											</tree>
+											<form>
+												<group>																																						
+													<field name="product_id" required="1"
+														options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+													<field name="product_qty" required="1"/>
+													<field name="product_uom_id" required="1"/>
+												<field name="product_desc" required="1"/>																																																	
+												</group>
+											</form>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>						
+					</sheet>					
+				</form>
+			</field>
+		</record>
+		
+		<!-- Lea Bank Statement -->
+		<record id="view_lea_bank_statement_tree" model="ir.ui.view">
+			<field name="name">Bank Statement</field>
+			<field name="model">lea.bank.statement</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Bank Statement">
+					<field name="name"/>
+					<field name="date"/>					
+					<field name="journal_id"/>
+					<field name="amount_total_debit"/>
+					<field name="amount_total_credit"/>					
+					<field name="state"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_lea_bank_statement_form" model="ir.ui.view">
+			<field name="name">Bank Statement</field>
+			<field name="model">lea.bank.statement</field>
+			<field name="type">form</field>			
+			<field name="arch" type="xml">				
+				<form string="Bank Statement">
+					<header>						
+						<button name="button_post" string="Post" type="object" states="Draft" class="oe_highlight"/>						
+						<button name="button_cancel" string="Cancel" type="object" states="Posted" class="oe_highlight"/>
+						<field name="state" readonly="1" widget="statusbar"/>
+					</header>		
+					<sheet>						
+						<div name="button_box" class="oe_button_box">		                    
+		                	    <button class="oe_stat_button" name="action_view_journal" type="object" icon="fa-files-o">
+		                        <field string="Journal" name="journal_count" widget="statinfo" />
+		                    </button>
+		                </div>						
+						<group>							
+							<field name="name" readonly="1"/>							
+							<field name="tanggal_input" readonly="1" invisible="1"/>
+							<field name="journal_id" required="1" class="oe_inline"
+								attrs="{'readonly': [('state', '!=', 'Draft')]}"
+								options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+							<field name="date" class="oe_inline" required="1"/>																											
+							<field name="amount_total_debit"/>
+							<field name="amount_total_credit"/>																														
+						</group>
+						<group>
+							<notebook>
+								<page string="Detail Transaksi">
+									<group>
+										<field name="line_ids" nolabel="1" attrs="{'readonly': [('state', '=', 'Posted')]}">
+											<tree>																																																			
+												<field name="name" required="1"/>																							
+												<field name="amount_debit"/>
+												<field name="amount_credit"/>
+												<field name="account_id" required="1" 													
+													options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+												<field name="amount_biaya" string="Biaya Lain"/>												
+												<field name="move_id" readonly="1"/>																																																																																																								
+											</tree>
+											<form>
+												<group>																																																		
+													<field name="name" required="1"/>
+													<field name="type" required="1"/>													
+													<field name="amount_debit"
+														attrs="{'invisible': [('type', '=', 'Pengeluaran')]}"/>
+													<field name="amount_credit"
+														attrs="{'invisible': [('type', '=', 'Penerimaan')]}"/>
+													<field name="account_id" required="1" 													
+														options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+													<field name="is_credit_card"
+														attrs="{'invisible': [('type', '=', 'Pengeluaran')]}"/>																										
+													<field name="is_biaya"
+														attrs="{'invisible': [('type', '=', 'Pengeluaran')]}"/>																																																												
+												</group>
+												<group string="Detail Info" attrs="{'invisible': [('is_credit_card', '=', False)], 'required': [('is_credit_card', '=', True)]}">
+													<field name="point_of_sale_id"
+														options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"
+														attrs="{'invisible': [('is_credit_card', '=', False)]}"/>
+													<field name="pos_amount"/>
+													<label for="date" attrs="{'invisible': [('is_credit_card', '=', False)]}"/>
+													<div attrs="{'invisible': [('is_credit_card', '=', False)]}">
+														<field name="date" 
+															attrs="{'invisible': [('is_credit_card', '=', False)], 'required': [('is_biaya', '=', True)]}" class="oe_inline"/> - 
+														<field name="date_to" 
+															attrs="{'invisible': [('is_credit_card', '=', False)], 'required': [('is_biaya', '=', True)]}" class="oe_inline"/>
+													</div>												
+												</group>
+												<group string="Biaya Lain" attrs="{'invisible': [('is_biaya', '=', False)], 'required': [('is_biaya', '=', True)]}">
+													<field name="account_biaya_id"
+														attrs="{'invisible': [('is_biaya', '=', False)], 'required': [('is_biaya', '=', True)]}"/>
+													<field name="amount_biaya"
+														attrs="{'invisible': [('is_biaya', '=', False)], 'required': [('is_biaya', '=', True)]}"/>
+												</group>
+											</form>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>						
+					</sheet>					
+				</form>
+			</field>
+		</record>
+		
+		<!-- Lea Uang Muka -->
+		<record id="view_lea_uang_muka_tree" model="ir.ui.view">
+			<field name="name">Uang Muka</field>
+			<field name="model">lea.uang.muka</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Uang Muka">
+					<field name="name"/>
+					<field name="tanggal_input"/>
+					<field name="partner_id"/>
+					<field name="journal_id"/>
+					<field name="amount"/>
+					<field name="state"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_lea_uang_muka_form" model="ir.ui.view">
+			<field name="name">Uang Muka</field>
+			<field name="model">lea.uang.muka</field>
+			<field name="type">form</field>			
+			<field name="arch" type="xml">				
+				<form string="Uang Muka">
+					<header>						
+						<button name="button_post" string="Posting Biaya" type="object" states="Approved" class="oe_highlight"/>
+						<button name="button_approve" string="Approve" type="object" states="Draft" class="oe_highlight"/>
+						<button name="button_cancel" string="Cancel" type="object" states="Posted" class="oe_highlight"/>
+						<field name="state" readonly="1" widget="statusbar"/>
+					</header>		
+					<sheet>						
+						<div name="button_box" class="oe_button_box">		                    
+		                	    <button class="oe_stat_button" name="action_view_journal" type="object" icon="fa-files-o">
+		                        <field string="Journal" name="journal_count" widget="statinfo" />
+		                    </button>
+		                </div>						
+						<group>							
+							<field name="name" readonly="1" string="Nomor Dokumen"/>
+							<field name="tanggal_input" readonly="1"/>
+							<field name="partner_id" class="oe_inline"
+								attrs="{'readonly': [('state', '!=', 'Draft')]}"
+								options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+							<field name="journal_id" required="1" class="oe_inline"
+								attrs="{'readonly': [('state', '!=', 'Draft')]}"
+								options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+							<field name="journal_uang_muka_id" required="1" class="oe_inline"
+								attrs="{'readonly': [('state', '!=', 'Draft')]}"
+								options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+							<field name="amount" class="oe_inline" required="1"
+								attrs="{'readonly': [('state', '!=', 'Draft')]}"/>
+							<field name="amount_total"/>																														
+						</group>
+						<group>
+							<notebook>
+								<page string="Detail Biaya" attrs="{'invisible': [('state', '=', 'Draft')]}">
+									<group>
+										<field name="line_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'Approved')]}">
+											<tree editable="bottom">																																							
+												<field name="name" required="1"/>
+												<field name="account_id" required="1" 													
+													options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>																																																																			
+												<field name="amount" required="1"/>																										
+											</tree>
+											<form>
+												<group>																																						
+													<field name="name" required="1"/>
+													<field name="account_id" required="1" class="oe_inline" 													
+														options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>																																																	
+													<field name="amount" required="1" class="oe_inline"/>																																																	
+												</group>
+											</form>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>						
+					</sheet>					
+				</form>
+			</field>
+		</record>
+				
+		<!-- Lea Petty Cash -->
+		<record id="view_lea_petty_cash_tree" model="ir.ui.view">
+			<field name="name">Petty Cash</field>
+			<field name="model">lea.petty.cash</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Petty Cash">
+					<field name="name" required="1"/>
+					<field name="tanggal_input" required="1"/>
+					<field name="journal_id"/>
+					<field name="amount_total"/>
+					<field name="state"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_lea_petty_cash_form" model="ir.ui.view">
+			<field name="name">Petty Cash</field>
+			<field name="model">lea.petty.cash</field>
+			<field name="type">form</field>			
+			<field name="arch" type="xml">				
+				<form string="Petty Cash">
+					<header>						
+						<button name="button_post" string="Post" type="object" states="Draft" class="oe_highlight"/>
+						<button name="button_cancel" string="Cancel" type="object" states="Posted" class="oe_highlight"/>
+						<field name="state" readonly="1" widget="statusbar"/>
+					</header>		
+					<sheet>						
+						<div name="button_box" class="oe_button_box">		                    
+		                	    <button class="oe_stat_button" name="action_view_journal" type="object" icon="fa-files-o">
+		                        <field string="Journal" name="journal_count" widget="statinfo" />
+		                    </button>
+		                </div>						
+						<group>							
+							<field name="name" readonly="1" string="Nomor Dokumen"/>
+							<field name="tanggal_input" readonly="1"/>
+							<field name="partner_id" 									
+								options="{'no_create': True, 'no_create_edit': True,'no_quick_create': True}"/>
+							<field name="journal_id" required="1" class="oe_inline"
+								attrs="{'readonly': [('state', '!=', 'Draft')]}"
+								options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+							<field name="amount_total"/>																														
+						</group>
+						<group>
+							<notebook>
+								<page string="Detail Pengeluaran">
+									<group>
+										<field name="line_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'Draft')]}">
+											<tree editable="bottom">																																							
+												<field name="name" required="1"/>
+												<field name="account_id" required="1" 													
+													options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>																																																																			
+												<field name="amount" required="1"/>																										
+											</tree>
+											<form>
+												<group>																									
+													<field name="name" required="1"/>
+													<field name="account_id" required="1" class="oe_inline" 													
+														options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>																																																	
+													<field name="amount" required="1" class="oe_inline"/>																																																	
+												</group>
+											</form>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>						
+					</sheet>					
+				</form>
+			</field>
+		</record>
+				
+		<!-- Lea Discount -->
+		<record id="view_lea_discount_tree" model="ir.ui.view">
+			<field name="name">Discount</field>
+			<field name="model">lea.discount</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Discount" editable="bottom">
+					<field name="name" required="1"/>
+					<field name="disc1" required="1"/>
+					<field name="disc2"/>
+					<field name="disc3"/>					
+				</tree>
+			</field>
+		</record>
+			
+		<!-- Distribution Area -->
+		<record id="view_lea_area_tree" model="ir.ui.view">
+			<field name="name">Distribution Area</field>
+			<field name="model">lea.area</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Distribution Area" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Distribution Sub Area -->
+		<record id="view_lea_sub_area_tree" model="ir.ui.view">
+			<field name="name">Distribution Sub Area</field>
+			<field name="model">lea.sub.area</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Distribution Sub Area" editable="bottom">
+					<field name="name" required="1"/>
+					<field name="area_id" required="1" options="{'no_create_edit': True,'no_quick_create': True}"/>					
+				</tree>
+			</field>
+		</record>
+			
+		<!-- Identity Type -->
+		<record id="view_lea_identity_type_tree" model="ir.ui.view">
+			<field name="name">Identity Type</field>
+			<field name="model">lea.identity.type</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">				
+				<tree string="Identity Type" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>
+
+
+
+<!-- NEW ATTRIBUTES -->
+
+		<!-- Product Pocket -->
+		<record id="view_lea_product_pocket_tree" model="ir.ui.view">
+			<field name="name">Product Pocket</field>
+			<field name="model">lea.product.pocket</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Pocket" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Sleeve -->
+		<record id="view_lea_product_sleeve_tree" model="ir.ui.view">
+			<field name="name">Product Sleeve</field>
+			<field name="model">lea.product.sleeve</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Sleeve" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Color -->
+		<record id="view_lea_product_color_tree" model="ir.ui.view">
+			<field name="name">Product Color</field>
+			<field name="model">lea.product.color</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Color" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Embeded -->
+		<record id="view_lea_product_embeded_tree" model="ir.ui.view">
+			<field name="name">Product Embeded</field>
+			<field name="model">lea.product.embeded</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Embeded" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Raw Material -->
+		<record id="view_lea_product_raw_material_tree" model="ir.ui.view">
+			<field name="name">Product Raw Material</field>
+			<field name="model">lea.product.raw.material</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Raw Material" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Fitting Category -->
+		<record id="view_lea_product_fitting_category_tree" model="ir.ui.view">
+			<field name="name">Product Fitting Category</field>
+			<field name="model">lea.product.fitting.category</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Fitting Category" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Sex Category -->
+		<record id="view_lea_product_sex_category_tree" model="ir.ui.view">
+			<field name="name">Product Sex Category</field>
+			<field name="model">lea.product.sex.category</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Sex Category" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Style -->
+		<record id="view_lea_product_style_tree" model="ir.ui.view">
+			<field name="name">Product Style</field>
+			<field name="model">lea.product.style</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Style" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Moving Status -->
+		<record id="view_lea_product_moving_status_tree" model="ir.ui.view">
+			<field name="name">Product Moving Status</field>
+			<field name="model">lea.product.moving.status</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Moving Status" editable="bottom">
+					<field name="name" required="1"/>	
+					<field name="default_contribution"/>	
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Selling Group -->
+		<record id="view_lea_product_selling_group_tree" model="ir.ui.view">
+			<field name="name">Product Selling Group</field>
+			<field name="model">lea.product.selling.group</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Selling Group" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product QC Group -->
+		<record id="view_lea_product_qc_group_tree" model="ir.ui.view">
+			<field name="name">Product QC Group</field>
+			<field name="model">lea.product.qc.group</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product QC Group" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Product Class Category -->
+		<record id="view_lea_product_class_category_tree" model="ir.ui.view">
+			<field name="name">Product Class Category</field>
+			<field name="model">lea.product.class.category</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Class Category" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Category -->
+		<record id="view_lea_product_category_tree" model="ir.ui.view">
+			<field name="name">Product Category</field>
+			<field name="model">lea.product.category</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Category" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Label -->
+		<record id="view_lea_product_label_tree" model="ir.ui.view">
+			<field name="name">Product Label</field>
+			<field name="model">lea.product.label</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Label" editable="bottom">
+					<field name="name" required="1"/>									
+				</tree>
+			</field>
+		</record>
+		
+<!-- NEW ATTRIBUTES -->		
+		
+		
+									
+		<!-- Product Stock Type -->
+		<record id="view_lea_product_stock_type_tree" model="ir.ui.view">
+			<field name="name">Product Stock Type</field>
+			<field name="model">lea.product.stock.type</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Stock Type" editable="bottom">
+					<field name="name" required="1"/>	
+					<field name="desc" required="1"/>				
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Material Group -->
+		<record id="view_lea_product_material_group_tree" model="ir.ui.view">
+			<field name="name">Product Material Group</field>
+			<field name="model">lea.product.material.group</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Material Group" editable="bottom">
+					<field name="name" required="1"/>		
+					<field name="desc" required="1"/>			
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Material Type -->
+		<record id="view_lea_product_material_type_tree" model="ir.ui.view">
+			<field name="name">Product Material Type</field>
+			<field name="model">lea.product.material.type</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Material Type" editable="bottom">
+					<field name="name" required="1"/>
+					<field name="desc" required="1"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Material Category -->
+		<record id="view_lea_product_material_category_tree" model="ir.ui.view">
+			<field name="name">Product Material Category</field>
+			<field name="model">lea.product.material.category</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Material Category" editable="bottom">
+					<field name="name" required="1"/>
+					<field name="desc" required="1"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Sourcing -->
+		<record id="view_lea_product_sourcing_tree" model="ir.ui.view">
+			<field name="name">Product Sourcing</field>
+			<field name="model">lea.product.sourcing</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Sourcing" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>
+										
+		<!-- Product Brand -->
+		<record id="view_lea_product_brand_tree" model="ir.ui.view">
+			<field name="name">Product Brand</field>
+			<field name="model">lea.product.brand</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Brand" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>		
+				
+		<!-- Product Class -->
+		<record id="view_lea_product_class_tree" model="ir.ui.view">
+			<field name="name">Product Class</field>
+			<field name="model">lea.product.class</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Class" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Category 1 -->
+		<record id="view_lea_product_category1_tree" model="ir.ui.view">
+			<field name="name">Product Category 1</field>
+			<field name="model">lea.product.category1</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Category 1" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Category 2 -->
+		<record id="view_lea_product_category2_tree" model="ir.ui.view">
+			<field name="name">Product Category 2</field>
+			<field name="model">lea.product.category2</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Category 2" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Category 3 -->
+		<record id="view_lea_product_category3_tree" model="ir.ui.view">
+			<field name="name">Product Category 3</field>
+			<field name="model">lea.product.category3</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Category 3" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Category 4 -->
+		<record id="view_lea_product_category4_tree" model="ir.ui.view">
+			<field name="name">Product Category 4</field>
+			<field name="model">lea.product.category4</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Category 4" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Category 5 -->
+		<record id="view_lea_product_category5_tree" model="ir.ui.view">
+			<field name="name">Product Category 5</field>
+			<field name="model">lea.product.category5</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Category 5" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Category 6 -->
+		<record id="view_lea_product_category6_tree" model="ir.ui.view">
+			<field name="name">Product Category 6</field>
+			<field name="model">lea.product.category6</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Category 6" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>				
+		
+		<!-- Product Fitting -->
+		<record id="view_lea_product_fitting_tree" model="ir.ui.view">
+			<field name="name">Product Fitting</field>
+			<field name="model">lea.product.fitting</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Fitting" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Product Size -->
+		<record id="view_lea_product_size_tree" model="ir.ui.view">
+			<field name="name">Product Size</field>
+			<field name="model">lea.product.size</field>
+			<field name="type">tree</field>			
+			<field name="arch" type="xml">
+				<tree string="Product Size" editable="bottom">
+					<field name="name" required="1"/>					
+				</tree>
+			</field>
+		</record>		
+		
+		
+		<!-- Inherit Sale Report -->
+	    <record id="sale.view_order_product_pivot" model="ir.ui.view">
+	         <field name="name">sale.report.pivot</field>
+	         <field name="model">sale.report</field>
+	         <field name="arch" type="xml">
+	             <pivot string="Sales Analysis" disable_linking="True">	                 	                 
+	                 <field name="amount_total" type="measure"/>
+	             </pivot>
+	         </field>
+	    </record>		
+		<record id="view_order_product_search_lea" model="ir.ui.view">
+	        <field name="name">Sales Analysis</field>
+	        <field name="model">sale.report</field>
+	        <field name="inherit_id" ref="sale.view_order_product_search"/>
+	        <field name="arch" type="xml">
+	        	<filter name="Customer" position="after">
+	        		<filter string="Customer Type" name="customer_type" context="{'group_by':'customer_type'}"/>
+	        	</filter>
+	        </field>
+	    </record>
+
+
+		<!-- Inherit in Search Sale Order View -->
+		<record id="view_sale_order_inherit_search" model="ir.ui.view">
+			<field name="name">sale.order.search.expand.filter</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale"/>
+			<field name="arch" type="xml">
+			    <field name="name" position="after">
+			        <!-- <filter name="group_state" string="Status" icon="terp-go-month" domain="[]" context="{'group_by':'state'}"/> -->
+			        <filter string="Consigment" name="customer_consigment" domain="[('customer_type', '=', 'CONSIGNMENT')]"/>
+			        <filter string="Wholesale" name="customer_wholesale" domain="[('customer_type', 'in', ('WHOLESALE', 'JEANS STORE'))]"/>
+			    </field>
+			</field>
+		</record>
+		
+		
+		<!-- Inherit Product Menu in POS -->
+		<record id="point_of_sale.product_product_action" model="ir.actions.act_window">
+	        <field name="name">Products</field>
+	        <field name="type">ir.actions.act_window</field>
+	        <field name="res_model">product.product</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">tree,form</field>
+	        <field name="context" eval="{'search_default_filter_to_availabe_pos': 1}"/>
+	        <field name="domain" eval="[]"/>
+	        <field name="search_view_id" eval="False"/> <!-- Force empty -->
+	        <field name="view_id" eval="False"/> <!-- Force empty -->
+	        <field name="help" type="html">
+	            <p class="oe_view_nocontent_create">
+	                Click to add a new product.
+	            </p><p>
+	                You must define a product for everything you sell through
+	                the point of sale interface.
+	            </p><p>
+	                Do not forget to set the price and the point of sale category
+	                in which it should appear. If a product has no point of sale
+	                category, you can not sell it through the point of sale
+	                interface.
+	            </p>
+	        </field>
+	    </record>
+	    
+		
+		<!-- Inherit Sale -->
+		<record id="view_quotation_detail_tree" model="ir.ui.view">
+	        <field name="name">Quotation Detail</field>
+	        <field name="model">sale.order.line</field>
+	        <field name="type">tree</field>	        
+	        <field name="arch" type="xml">
+	        	<tree default_order='order_date desc' string="Quotation Detail" editable="top">
+	        		<field name="order_partner_id" readonly="1"/>
+	        		<field name="order_date" readonly="1"/>      
+	        		<field name="product_id" readonly="1"/> 
+	        		<field name="product_uom_qty" string="Qty" readonly="1" sum="Product Qty"/>
+	        		<field name="price_unit" readonly="1"/>
+	        		<field name="discount"/>                                
+                	<field name="price_subtotal" sum="Total" widget="monetary" readonly="1"/>
+                	<field name="order_id" readonly="1"/>        
+                	<field name="salesman_id" readonly="1"/>
+                	<field name="state" invisible="1"/>
+	        	</tree>	        	
+	        </field>
+	    </record>	    
+
+        <record id="sale.view_sales_order_line_filter" model="ir.ui.view">
+            <field name="name">sale.order.line.select</field>
+            <field name="model">sale.order.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Sales Order">
+                    <filter string="To Invoice" domain="[('qty_to_invoice','&lt;&gt;', 0)]"  help="Sales Order Lines ready to be invoiced"/>
+                    <separator/>
+                    <filter string="My Sales Order Lines" domain="[('salesman_id','=',uid)]" help="Sales Order Lines related to a Sales Order of mine"/>
+                    <filter string="Special Price" domain="[('is_special_price','=',True)]" help="Display only order with special price criteria (SP)"/>
+
+                    <field name="order_id"/>
+                    <field name="order_partner_id" operator="child_of"/>
+                    <field name="product_id"/>
+                    <field name="discount"/>
+                    <field name="salesman_id"/>
+                    <field name="order_date"/>
+
+                    <group expand="0" string="Group By">
+                        <filter string="Customer" domain="[]" context="{'group_by':'order_partner_id'}"/>
+                        <filter string="Product" domain="[]" context="{'group_by':'product_id'}"/>
+                        <filter string="Order" domain="[]" context="{'group_by':'order_id'}"/>
+                        <filter string="Salesperson" domain="[]" context="{'group_by':'salesman_id'}"/>
+                        <filter string="Date" domain="[]" context="{'group_by':'order_date:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        	    	    
+		<record id="sale.action_quotations" model="ir.actions.act_window">
+            <field name="name">Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="domain">[('state','in',('draft','cancel','sent'))]</field>
+            <field name="context">{'hide_sale': True}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Create a Quotation, the first step of a new sale.
+              </p><p>
+                Your next actions should flow efficiently: confirm the Quotation
+                to a Sale Order, then create the Invoice and collect the Payment.
+              </p><p>
+                Note that once a Quotation becomes a Sale Order, it will be moved
+                from the Quotations list to the Sales Order list.
+              </p>
+            </field>
+        </record>
+        <record id="view_quotation_tree_lea" model="ir.ui.view">
+	        <field name="name">Sales Order</field>
+	        <field name="model">sale.order</field>
+	        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+	        <field name="arch" type="xml">
+	        	<field name="amount_total" position="before">
+	        		<field name="amount_total_qty" sum="Total Qty"/>
+	        	</field>
+	        	<field name="partner_id" position="after">
+	        		<field name="customer_type"/>
+	        		<field name="reference_invoice"/>
+	        	</field>	        	
+	        </field>
+	    </record>
+        <record id="view_order_tree_lea" model="ir.ui.view">
+	        <field name="name">Sales Order</field>
+	        <field name="model">sale.order</field>
+	        <field name="inherit_id" ref="sale.view_order_tree"/>
+	        <field name="arch" type="xml">
+	        	<field name="amount_total" position="before">
+	        		<field name="amount_total_qty" sum="Total Qty"/>
+	        		<field name="total_available_stock" sum="Available Stock"/>
+	        	</field>
+	        	<field name="amount_total" position="after">	        		
+	        		<field name="total_available_value" sum="Total (Available)"/>
+	        	</field>
+	        	<field name="partner_id" position="after">
+	        		<field name="customer_type"/>
+	        		<field name="reference_invoice"/>
+	        	</field>
+	        </field>
+	    </record>
+		<record id="view_order_form_lea" model="ir.ui.view">
+	        <field name="name">Sales Order</field>
+	        <field name="model">sale.order</field>
+	        <field name="inherit_id" ref="sale.view_order_form"/>
+	        <field name="arch" type="xml">
+	        	<field name="partner_id" position="after">
+	        		<field name="partner_margin"/>
+	        		<field name="customer_type" invisible="1"/>
+	        	</field>
+	        	<field name="date_order" position="attributes">
+	        		<attribute name="readonly">0</attribute>
+	        	</field>
+	        	<field name="partner_id" position="replace">
+	        		<field name="partner_id" 
+	        			domain="[('customer','=',True),('status_margin','=','Accounting Approved'),('status_limit','=','Sales Approved')]" 
+	        			context="{'search_default_customer':1, 'show_address': 1}" 
+	        			options="{'always_reload': True, 'no_create_edit': True, 'no_quick_create': True}"/>	        			
+	        	</field>	        	
+	        	<group name="sale_total" position="replace">
+	        		<group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                        <field name="total_before_discount" string="Total Amount Before Tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="total_after_discount" string="Total After Disc" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="amount_untaxed" string="Total" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="1"/>
+                        <field name="amount_tax" invisible="0" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="total_margin" widget="monetary" options="{'currency_field': 'currency_id'}"/>                                                                                                                      
+                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                            <label for="amount_total"/>
+                            <button name="button_dummy" states="draft,sent" string="(update)" type="object" class="oe_edit_only oe_link"/>
+                        </div>
+                        <field name="amount_total" nolabel="1" string="Total"
+                        	class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>                        
+                    </group>	        		
+	        	</group>
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='price_subtotal']" position="before">
+	        		<field name="manual_discount"/>
+	        	</xpath>
+	        	
+	        	<!-- <xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
+	        		<field name="total_with_tax"/>
+	        	</xpath> -->
+
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='tax_id']" position="attributes">
+	        		<attribute name="invisible">0</attribute>
+	        	</xpath>	        		    	        			
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='product_uom']" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</xpath>
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='qty_delivered']" position="attributes">
+	        		<attribute name="invisible">0</attribute>
+	        	</xpath>
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='qty_invoiced']" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</xpath>
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='analytic_tag_ids']" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</xpath>
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='product_uom_qty']" position="attributes">
+	        		<attribute name="sum">Total Qty</attribute>
+	        	</xpath>
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='name']" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</xpath>        	       
+	        	<button name="%(sale.action_view_sale_advance_payment_inv)d"
+                        type="action" class="btn-primary"
+                        attrs="{'invisible': [('invoice_status', '!=', 'to invoice')]}" position="attributes">
+	        		<attribute name="groups">sales_team.group_sale_manager</attribute>
+	        	</button>
+	        	<button name="%(sale.action_view_sale_advance_payment_inv)d"
+                        type="action" context="{'default_advance_payment_method': 'percentage'}"
+                        attrs="{'invisible': ['|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_manager</attribute>    
+                </button>
+	        	<button name="action_confirm" states="sent" position="attributes">
+	        		<attribute name="groups">sales_team.group_sale_manager</attribute>
+	        	</button>
+	        	<button name="action_confirm" states="draft" position="attributes">
+	        		<attribute name="groups">sales_team.group_sale_manager</attribute>
+	        	</button>
+	        	<button name="action_cancel" position="attributes">
+	        		<attribute name="groups">sales_team.group_sale_manager</attribute>
+	        	</button>
+	        	<button name="action_cancel" position="attributes">
+	        		<attribute name="states">draft,sent,sale,done</attribute>
+	        	</button>
+	        	<button name="action_done" position="attributes">
+	        		<attribute name="groups">sales_team.group_sale_manager</attribute>
+	        	</button>
+	        	<button name="action_quotation_send" states="draft" position="attributes">
+	        		<attribute name="groups">sales_team.group_sale_manager</attribute>
+	        	</button>
+	        	<button name="action_quotation_send" states="sent,sale" position="attributes">
+	        		<attribute name="groups">sales_team.group_sale_manager</attribute>
+	        	</button>
+	        	<button name="print_quotation" states="draft" position="attributes">
+	        		<attribute name="groups">sales_team.group_sale_manager</attribute>
+	        	</button>
+	        	<button name="print_quotation" states="sent,sale" position="attributes">
+	        		<attribute name="groups">sales_team.group_sale_manager</attribute>
+	        	</button>
+	        	<button name="action_draft" position="attributes">
+	        		<attribute name="groups">sales_team.group_sale_manager</attribute>
+	        	</button>
+	        		        		        	        
+	        	<field name="partner_invoice_id" position="attributes">
+	        		<attribute name="domain">[('parent_id', '=', partner_id),('type','=','invoice')]</attribute>
+	        	</field>
+	        	<field name="partner_shipping_id" position="attributes">
+	        		<attribute name="domain">[('parent_id', '=', partner_id),('type','=','delivery')]</attribute>
+	        	</field>				
+	        	<field name="partner_invoice_id" position="attributes">
+	        		<attribute name="options">{'no_create_edit': True,'no_quick_create': True}</attribute>
+	        	</field>
+	        	<field name="partner_shipping_id" position="attributes">
+	        		<attribute name="options">{'no_create_edit': True,'no_quick_create': True}</attribute>
+	        	</field>	        		        			        		        		        		        	                 
+	        	<field name="date_order" position="after">
+	        		<field name="date_delivery"/>
+	        	</field>
+	        	<field name="validity_date" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+	        	<field name="pricelist_id" position="attributes">
+	        		<attribute name="readonly">1</attribute>
+	        	</field>	        	
+	        	<field name="user_id" position="attributes">
+	        		<attribute name="readonly">1</attribute>
+	        	</field>
+	        	<field name="team_id" position="attributes">
+	        		<attribute name="readonly">1</attribute>
+	        	</field>	        		        
+	        	<field name="payment_term_id" position="after">
+	        		<field name="amount_total_qty"/>
+	        		<field name="total_available_stock"/>
+	        		<field name="total_available_value"/>
+	        	</field>
+	        </field>
+        </record>
+        
+		<!-- Inherit Purchase Order -->
+        <record id="purchase_order_form_lea" model="ir.ui.view">
+	        <field name="name">Purchase Order</field>
+	        <field name="model">purchase.order</field>
+	        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+	        <field name="arch" type="xml">	        		        	
+	        	<field name="partner_id" position="attributes">
+	        		<attribute name="options">{'no_create_edit': True,'no_quick_create': True}</attribute>	        		
+	        	</field>
+	        	<field name="partner_id" position="after">
+	        		<field name="request_id" domain="[('state','=','Approved')]"/>
+	        	</field>
+	        </field>
+        </record>
+        
+		<!-- Inherit Products -->		
+	    <record id="product.product_template_action" model="ir.actions.act_window">
+	        <field name="name">Products</field>
+	        <field name="type">ir.actions.act_window</field>
+	        <field name="res_model">product.template</field>
+	        <field name="view_mode">tree,kanban,form</field>
+	        <field name="view_type">form</field>
+	        <field name="view_id" ref="product.product_template_tree_view"/>
+	        <field name="context">{"search_default_filter_to_sell":1}</field>
+	        <field name="help" type="html">
+	            <p class="oe_view_nocontent_create">
+	                Click to define a new product.
+	            </p><p>
+	                You must define a product for everything you sell, whether it's a physical product, a consumable or a service you offer to customers.
+	            </p><p>
+	                The product form contains information to simplify the sale process: price, notes in the quotation, accounting data, procurement methods, etc.
+	            </p>
+	        </field>
+	    </record>
+    		        
+		<record id="product_template_form_view_lea" model="ir.ui.view">
+	        <field name="name">Products</field>
+	        <field name="model">product.template</field>
+	        <field name="inherit_id" ref="product.product_template_form_view"/>
+	        <field name="arch" type="xml">	      
+	        	<xpath expr="/form/sheet/notebook/page[2]" position="before">
+	        		<page string="Finished Goods">
+	        			<group>
+	        				<group>	        					
+	        					<field name="barcode"/>	        			
+	        					<field name="product_brand_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+	        					<field name="product_size_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>	        								        				
+		        				<field name="product_class_category_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+							    <field name="product_category_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>		        				
+							    <field name="product_color_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+							    <field name="product_embeded_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+							    <field name="product_raw_material_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+		        				<field name="product_fitting_category_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>							    			        						        			
+	        				</group>
+	        				<group>	        						        					
+							    <field name="product_sex_category_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+		        				<field name="product_style_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+							    <field name="product_moving_status_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+							    <field name="product_selling_group_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+							    <field name="product_qc_group_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>							    
+							    <field name="product_label_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+		        				<field name="product_pocket_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+							    <field name="product_sleeve_id" 
+		        					options="{'no_create_edit': True,'no_quick_create': True}"/>	        					
+	        				</group>	        							        			
+	        			</group>
+	        		</page>
+	        		<page string="Raw Material">
+	        			<group>
+	        				<field name="product_material_type_id" class="oe_inline" 
+	        					options="{'no_create_edit': True,'no_quick_create': True}"/>
+			        		<field name="product_material_group_id" class="oe_inline" 
+			        			options="{'no_create_edit': True,'no_quick_create': True}"/>
+			        		<field name="product_material_category_id" class="oe_inline"
+			        			options="{'no_create_edit': True,'no_quick_create': True}"/>		
+	        			</group>
+	        		</page>
+	        		<page string="Racks">
+	        			<group>
+	        				<field name="racknew_ids" nolabel="1">
+	        					<tree editable="top" readonly="1">
+	        						<field name="column_id"/>
+	        						<field name="type"/>
+	        						<field name="available_stock"/>
+	        					</tree>
+	        				</field>		
+	        			</group>
+	        		</page>
+	        	</xpath>  		        		        		        	         		       
+	        </field>
+        </record>       
+        <record id="product_template_only_form_view_lea" model="ir.ui.view">
+	        <field name="name">Products</field>
+	        <field name="model">product.template</field>
+	        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+	        <field name="arch" type="xml">	        		        		        	
+	        	<field name="default_code" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+	        	<field name="default_code" position="before">
+	        		<field name="product_article_code"/>
+	        		<field name="product_short_name"/>
+	        		<field name="product_desc"/>
+	        	</field>	        
+	        	<field name="barcode" position="replace"/>	        			       
+	        </field>
+        </record> 
+		<record id="product_template_tree_view_lea" model="ir.ui.view">
+	        <field name="name">Products</field>
+	        <field name="model">product.template</field>
+	        <field name="inherit_id" ref="product.product_template_tree_view"/>
+	        <field name="arch" type="xml">	        			        	        
+	        	<field name="categ_id" position="replace">	        			        			        	
+	        		<field name="product_class_category_id"/>	     
+	        		<field name="product_category_id"/>	        		
+	        	</field>         		        	
+	        	<field name="type" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+	        	<field name="standard_price" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>	        	
+	        	<field name="uom_id" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+	        	<field name="default_code" position="replace">
+	        		<field name="product_article_code"/>
+	        		<field name="barcode"/>	        		
+	        	</field>	        	
+	        </field>
+        </record>
+        <record id="product_template_search_view_lea" model="ir.ui.view">
+	        <field name="name">Products</field>
+	        <field name="model">product.template</field>
+	        <field name="inherit_id" ref="product.product_template_search_view"/>
+	        <field name="arch" type="xml">
+	        	<field name="categ_id" position="replace">
+	        		<field name="product_brand_id"/> 				
+					<field name="product_size_id"/>					        								        			
+					<field name="product_class_category_id"/> 				
+					<field name="product_category_id"/>						        			
+					<field name="product_color_id"/> 			
+					<field name="product_embeded_id"/>
+					<field name="product_raw_material_id"/> 				
+					<field name="product_fitting_category_id"/> 											    			        						        					        						        				
+					<field name="product_sex_category_id"/> 
+					<field name="product_style_id"/> 				
+					<field name="product_moving_status_id"/> 				
+					<field name="product_selling_group_id"/> 				
+					<field name="product_qc_group_id"/> 											   
+					<field name="product_label_id"/> 				
+					<field name="product_pocket_id"/> 				
+					<field name="product_sleeve_id"/> 	        		
+       				<field name="product_material_type_id"/> 	        				
+	        		<field name="product_material_group_id"/> 			        			
+	        		<field name="product_material_category_id"/>			        			
+	        	</field>	        		        	
+	        	<field name="pricelist_id" position="after">
+	        		<group expand="0" string="Group By">
+	        			<filter name="group_by_product_brand_id" string="Brand" context="{'group_by':'product_brand_id'}"/> 				
+						<filter name="group_by_product_size_id" string="Size" context="{'group_by':'product_size_id'}"/>					        								        			
+						<filter name="group_by_product_class_category_id" string="Class Category" context="{'group_by':'product_class_category_id'}"/> 				
+						<filter name="group_by_product_category_id" string="Product Category" context="{'group_by':'product_category_id'}"/>						        			
+						<filter name="group_by_product_color_id" string="Color" context="{'group_by':'product_color_id'}"/> 			
+						<filter name="group_by_product_embeded_id" string="Embeded" context="{'group_by':'product_embeded_id'}"/>
+						<filter name="group_by_product_raw_material_id" string="Raw Material" context="{'group_by':'product_raw_material_id'}"/> 				
+						<filter name="group_by_product_fitting_category_id" string="Fitting Category" context="{'group_by':'product_fitting_category_id'}"/> 											    			        						        					        						        				
+						<filter name="group_by_product_sex_category_id" string="Sex Category" context="{'group_by':'product_sex_category_id'}"/> 
+						<filter name="group_by_product_style_id" string="Style" context="{'group_by':'product_style_id'}"/> 				
+						<filter name="group_by_product_moving_status_id" string="Moving Status" context="{'group_by':'product_moving_status_id'}"/> 				
+						<filter name="group_by_product_selling_group_id" string="Selling Group" context="{'group_by':'product_selling_group_id'}"/> 				
+						<filter name="group_by_product_qc_group_id" string="QC Group" context="{'group_by':'product_qc_group_id'}"/> 											   
+						<filter name="group_by_product_label_id" string="Label" context="{'group_by':'product_label_id'}"/> 				
+						<filter name="group_by_product_pocket_id" string="Pocket" context="{'group_by':'product_pocket_id'}"/> 				
+						<filter name="group_by_product_sleeve_id" string="Sleeve" context="{'group_by':'product_sleeve_id'}"/> 	        		
+	       				<filter name="group_by_product_material_type_id" string="Material Type" context="{'group_by':'product_material_type_id'}"/> 	        				
+		        		<filter name="group_by_product_material_group_id" string="Material Group" context="{'group_by':'product_material_group_id'}"/> 			        			
+		        		<filter name="group_by_product_material_category_id" string="Material Category" context="{'group_by':'product_material_category_id'}"/>		        		                                               
+                    </group>
+	        	</field>
+	        </field>
+	    </record>
+	                                		
+        <!-- Inherit Customer -->		
+		<record id="view_partner_form_lea" model="ir.ui.view">
+	        <field name="name">Customer</field>
+	        <field name="model">res.partner</field>
+	        <field name="inherit_id" ref="base.view_partner_form"/>
+	        <field name="arch" type="xml">
+
+	        	<!-- CONTACT FORM MODIFICATION -->
+				<xpath expr="//field[@name='child_ids']/form" position="replace">  
+                    <form string="Contact / Address">
+                        <sheet>
+                            <field name="type" required="1" widget="radio" options="{'horizontal': true}"/>
+                            <hr/>
+                            <group>
+                                <!-- <group attrs="{'invisible': [('type','=', 'contact')]}"> -->
+                                <group attrs="{'invisible': [('type','!=', 'technical')]}">
+                                    <label for="street" string="Address"/>
+                                    <div>
+                                        <div class="o_address_format" name="div_address">
+                                            <field name="street" placeholder="Street..." class="o_address_street"/>
+                                            <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                            <field name="city" placeholder="City" class="o_address_city"/>
+                                            <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}" context="{'country_id': country_id, 'zip': zip}"/>
+                                            <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                            <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                                        </div>
+                                    </div>
+                                </group>
+                                <group>
+                                    <field name="name" required="1" string="Name"/>
+
+					        		<label for="gender" string="Gender"/>
+				                    <div class="o_address_format">
+				                        <field name="gender" style="width:60%" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+				                        <field name="title" placeholder="Title" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" style="width:40%"/>
+				                    </div>
+
+                                    <field name="function" string="Job Position" placeholder="e.g. Sales Manager" attrs="{'invisible': [('type','!=', 'contact')]}"/>
+                                    <field name="mobile" widget="phone"/>
+                                    <field name="whatsapp" widget="phone"/>
+                                    <field name="email"/>
+                                    <field name="facebook_id" attrs="{'invisible': [('type','!=', 'contact')]}"/>
+                                    <field name="twitter_id" attrs="{'invisible': [('type','!=', 'contact')]}"/>
+                                    <field name="instagram_id" attrs="{'invisible': [('type','!=', 'contact')]}"/>
+                                    <field name="dob" attrs="{'invisible': [('type','!=', 'contact')]}"/>
+                                    <field name="comment" placeholder="Internal notes..." attrs="{'invisible': [('type','!=', 'technical')]}"/>
+                                </group>
+                            </group>
+                            <field name="supplier" invisible="True"/>
+                            <field name="customer" invisible="True"/>
+                            <field name="lang" invisible="True"/>
+                            <field name="image" invisible="True"/>
+                        </sheet>
+                    </form>
+                </xpath>
+
+	        	<sheet position="before">
+	        		<header>
+	        			<button name="button_approve_margin_sales" string="Approve Margin (Sales)" type="object" class="oe_highlight"
+	        				attrs="{'invisible': [('status_margin', '!=', 'To Approve')]}"/>
+	        			<button name="button_approve_margin_accounting" string="Approve Margin (Accounting)" type="object" class="oe_highlight"
+	        				attrs="{'invisible': [('status_margin', '!=', 'Sales Approved')]}"/>
+	        			<button name="button_approve_limit_sales" string="Approve Limit" type="object" class="oe_highlight"
+	        				attrs="{'invisible': [('status_limit', '!=', 'To Approve')]}"/>
+	        		</header>
+	        	</sheet>   	
+
+
+	        	<field name="function" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+
+	        	<field name="email" position="after">
+	        		<!-- <field name="dob" attrs="{'invisible': [('customer', '=', False)]}"/>
+	        		<field name="age" attrs="{'invisible': [('customer', '=', False)]}"/> -->
+	        		<field name="facebook_id"/>
+	        		<field name="twitter_id"/>
+	        		<field name="instagram_id"/>
+	        		<field name="website"/>
+	        	</field>
+
+	        	<field name="mobile" position="after">
+	        		<field name="whatsapp"/>
+	        	</field>
+
+	        	<field name="website" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+
+	        	<field name="category_id" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+	        	<field name="title" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+	        	<field name="lang" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+	        	<xpath expr="/form/sheet/notebook/page[1]" position="after">
+	    			<page string="Taxation" attrs="{'invisible': [('customer', '=', False)]}">
+	    				<group>
+		    				<group>
+		    					<field name="code_transaction" string="Kode Transaksi"/>
+		    					<field name="npwp_id" string="Tax ID (NPWP)"/>
+		    					<field name="pkp_id" string="No. PKP"/>
+		    					<field name="tanggal_pengukuhan" string="Tanggal PKP"/>
+		    					<field name="npwp_name" string="Tax Invoice Name"/>
+
+								
+	                            <label for="taxation_street" string="Tax Invoice Address"/>
+	                            <div class="o_address_format" name="div_taxation_address">
+									<field name="taxation_street"/>
+									<field name="taxation_street2"/>
+									<field name="taxation_blok" placeholder="Blok" style="width: 22%%"/>
+									<field name="taxation_nomor" placeholder="No." style="width: 22%%"/>
+				                    <field name="taxation_rt" placeholder="RT" style="width: 25%%"/>/
+				                    <field name="taxation_rw" placeholder="RW" style="width: 25%%"/>
+			                        <field name="taxation_kelurahan_id" options='{"no_open": True, "no_create": True}' placeholder="Kelurahan" style="width: 33%%"/>
+			                        <field name="taxation_kecamatan_id" options='{"no_open": True, "no_create": True}' placeholder="Kecamatan" style="width: 33%%"/>
+			                        <field name="taxation_kabupaten_id" options='{"no_open": True, "no_create": True}' class="oe_no_button" placeholder="Kabupaten" style="width: 32%"/>
+			                        <field name="taxation_state_id" options='{"no_open": True, "no_create": True}' placeholder="State" style="width: 60%"/>
+			                        <field name="taxation_postal_code" placeholder="Kode POS" style="width: 40%"/>
+			                        <field name="taxation_country_id" options='{"no_open": True, "no_create": True}' placeholder="Country"/>
+			                    </div>
+		    				</group>
+			    			<group>
+			    				<!-- anything here -->
+			    			</group>
+		    			</group>
+	    			</page>
+	    			<page string="Billing">
+	    				<group>
+		    				<group>
+		    					<field name="billing_name"/>
+	                            
+	                            <label for="billing_from_main" string="Address"/>
+		    					<div><field name="billing_from_main"/> Copy from main address</div>
+	                            
+	                            <label for="billing_street" string="Billing Address"/>
+	                            <div class="o_address_format" name="div_billing_address">
+									<field name="billing_street"/>
+									<field name="billing_street2"/>
+									<field name="billing_blok" placeholder="Blok" style="width: 22%%"/>
+									<field name="billing_nomor" placeholder="No." style="width: 22%%"/>
+				                    <field name="billing_rt" placeholder="RT" style="width: 25%%"/>/
+				                    <field name="billing_rw" placeholder="RW" style="width: 25%%"/>
+			                        <field name="billing_kelurahan_id" options='{"no_open": True, "no_create": True}' placeholder="Kelurahan" style="width: 33%%"/>
+			                        <field name="billing_kecamatan_id" options='{"no_open": True, "no_create": True}' placeholder="Kecamatan" style="width: 33%%"/>
+			                        <field name="billing_kabupaten_id" options='{"no_open": True, "no_create": True}' class="oe_no_button" placeholder="Kabupaten" style="width: 32%"/>
+			                        <field name="billing_state_id" options='{"no_open": True, "no_create": True}' placeholder="State" style="width: 60%"/>
+			                        <field name="billing_postal_code" placeholder="Kode POS" style="width: 40%"/>
+			                        <field name="billing_country_id" options='{"no_open": True, "no_create": True}' placeholder="Country"/>
+			                    </div>
+		    				</group>
+		    				<group>
+		    					<!-- anything here -->
+		    				</group>
+		    			</group>
+	    			</page>
+
+	    			<page string="Shipping">
+	    				<group>
+		    				<group>
+		    					<field name="shipping_name"/>
+	                            
+	                            <label for="shipping_from_main" string="Address"/>
+		    					<div><field name="shipping_from_main"/> Copy from main address</div>
+	                            
+	                            <label for="shipping_street" string="Shipping Address"/>
+	                            <div class="o_address_format" name="div_shipping_address">
+									<field name="shipping_street"/>
+									<field name="shipping_street2"/>
+									<field name="shipping_blok" placeholder="Blok" style="width: 22%%"/>
+									<field name="shipping_nomor" placeholder="No." style="width: 22%%"/>
+				                    <field name="shipping_rt" placeholder="RT" style="width: 25%%"/>/
+				                    <field name="shipping_rw" placeholder="RW" style="width: 25%%"/>
+			                        <field name="shipping_kelurahan_id" options='{"no_open": True, "no_create": True}' placeholder="Kelurahan" style="width: 33%%"/>
+			                        <field name="shipping_kecamatan_id" options='{"no_open": True, "no_create": True}' placeholder="Kecamatan" style="width: 33%%"/>
+			                        <field name="shipping_kabupaten_id" options='{"no_open": True, "no_create": True}' class="oe_no_button" placeholder="Kabupaten" style="width: 32%"/>
+			                        <field name="shipping_state_id" options='{"no_open": True, "no_create": True}' placeholder="State" style="width: 60%"/>
+			                        <field name="shipping_postal_code" placeholder="Kode POS" style="width: 40%"/>
+			                        <field name="shipping_country_id" options='{"no_open": True, "no_create": True}' placeholder="Country"/>
+			                    </div>
+		    				</group>
+		    				<group>
+		    					<!-- anything here -->
+		    				</group>
+		    			</group>
+	    			</page>
+
+	    			<page string="Contract">
+	    				<group>
+		    				<group>
+		    					<field name="contract_no"/>
+		    					<field name="contract_date"/>
+		    					<field name="contract_start_date"/>
+		    					<field name="contract_end_date"/>
+				        		<label for="credit_limit"/>
+				        		<div>
+				        			<field name="credit_limit" attrs="{'invisible': [('customer', '=', False)]}" class="oe_inline"/>
+				        			<field name="status_limit" readonly="1" class="oe_inline"
+				        				attrs="{'invisible': [('status_margin', '=', 'To Approve')]}"/>
+				        		</div>	
+				        		<label for="margin"/>
+				        		<div>
+				        			<field name="margin" attrs="{'invisible': [('customer', '=', False)]}" class="oe_inline"/>
+				        			<field name="status_margin" readonly="1" class="oe_inline"
+				        				attrs="{'invisible': [('status_margin', '=', 'To Approve')]}"/>
+				        		</div>
+				        		<field name="customer_type" attrs="{'invisible': [('customer', '=', False)]}"/>
+				        		<field name="area_id" string="Coverage Area" options="{'no_create_edit': True,'no_quick_create': True}"/>
+				        		<field name="sub_area_id" string="Coverage Sub-Area" options="{'no_create_edit': True,'no_quick_create': True}"/>
+				        		<field name="warehouse_code"/>
+		    				</group>
+		    				<group>
+		    					<!-- anything here -->
+		    				</group>
+		    			</group>
+
+		    			<group>
+		    				<group>
+		    					<field name="type_counting_margin"/>
+		    				</group>
+		    				<group>
+		    				</group>
+		    			</group>
+	    				<group string="Counting Margin">
+	    					<field name="counting_margin_ids" nolabel="1">
+	    						<tree editable="bottom">
+				        			<field name="discount_to_customer"/>	
+				        			<field name="share_discount"/>	
+				        			<field name="count_nett_margin"/>	
+				        			<field name="margin"/>	
+				        			<field name="nett_margin"/>	
+				        			<field name="start_date"/>	
+				        			<field name="end_date"/>	
+	    						</tree>
+	    					</field>	
+	    				</group>
+	    			</page>
+
+	    			<page string="Loyalty">
+	    				<group>
+		    				<group>
+		    					<field name="loyalty_lpc_no"/>
+		    					<field name="loyalty_lpc_date"/>
+		    					<field name="loyalty_lpc_valid_date"/>
+		    					<field name="loyalty_shopping_amount"/>
+		    					<field name="loyalty_lpc_class"/>
+
+				        		<label for="loyalty_dob" string="Date of Birth"/>
+				        		<div>
+				        			<field name="loyalty_dob" style="width:60%;" class="oe_inline"/>
+				        			<field name="loyalty_age" style="width:40%;margin-left:10px;" class="oe_inline"/>
+				        		</div>	
+
+				        		<label for="loyalty_gender" string="Gender"/>
+				        		<div>
+				        			<field name="loyalty_gender" style="width:60%" class="oe_inline"/>
+				        			<field name="loyalty_title" options="{'no_create_edit': True,'no_quick_create': True}" style="width:40%" class="oe_inline"/>
+				        		</div>	
+		    				</group>
+		    				<group string="POINTS">
+		    					<!-- <field name="reedemable_points_available"/> -->
+		    					<field name="loyalty_points_has_been_redeem"/>
+		    					<field name="loyalty_points_expired"/>
+
+		    				</group>
+		    			</group>
+	    			</page>
+
+	    			<!-- <page string="Identity" attrs="{'invisible': [('customer', '=', False)]}">
+	    				<group>
+	    					<field name="identity_ids" nolabel="1">
+	    						<tree editable="bottom">
+	    							<field name="identity_type" required="1" options="{'no_create_edit': True,'no_quick_create': True}"/>
+				        			<field name="identity_number" required="1"/>	
+				        			<field name="identity_file"/>
+	    						</tree>
+	    					</field>	    					
+	    				</group>
+	    			</page> -->
+	    		</xpath>	 
+
+	        	<field name="phone" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+
+	        	<field name="fax" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>
+
+	        	<field name="website" position="after">
+	        		
+	        		<label for="phone" string="Phone"/>
+                    <div class="o_address_format">
+                        <field name="phone" placeholder="Phone 1..." style="width:50%"/>
+                        <field name="phone_secondary" placeholder="Phone 2..." style="width:50%"/>
+                    </div>
+
+	        		<field name="fax"/>
+	        		<field name="customer_code" string="Partner Code"/>	
+
+	        		<label for="identity_type" string="Identity"/>
+                    <div class="o_address_format">
+                        <field name="identity_type" placeholder="Type..." style="width:20%"/>
+                        <field name="identity_number" placeholder="Number..." style="width:40%"/>
+		        		<field name="identity_file" filename="identity_filename" style="width:40%"/>
+		        		<field name="identity_filename" invisible="1"/>
+                    </div>
+
+	        	</field>
+
+	        </field>
+		</record>			
+		<record id="view_partner_tree_lea" model="ir.ui.view">
+	        <field name="name">Customer</field>
+	        <field name="model">res.partner</field>
+	        <field name="inherit_id" ref="base.view_partner_tree"/>
+	        <field name="arch" type="xml">	        		        	
+	        	<field name="display_name" position="before">
+	        		<field name="customer_code"/>
+	        		<field name="customer_type"/>	    	        			        				        	       
+	        	</field>	        		     
+	        	<field name="email" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</field>	        	  
+	        </field>
+		</record>							              			
+        
+        <!-- Inherit Warehouse -->		
+		<record id="view_warehouse_lea" model="ir.ui.view">
+	        <field name="name">Warehouse</field>
+	        <field name="model">stock.warehouse</field>
+	        <field name="inherit_id" ref="stock.view_warehouse"/>
+	        <field name="arch" type="xml">
+	        	<field name="code" position="before">
+	        		<field name="wh_code"/>
+	        		<field name="wh_type"/>
+	        		<field name="wh_area_id"/>
+	        		<field name="wh_subarea_id"/>
+	        		<field name="wh_grade"/>
+	        		<field name="wh_onstage"/>
+	        		<field name="wh_buffer"/>
+	        		<field name="wh_capacity"/>
+	        		<field name="wh_lead_time"/>
+	        		<field name="wh_avg_sales"/>
+	        		<field name="responsible_id"/>
+	        	</field>	
+
+	        	<!-- ITO  -->
+	        	<xpath expr="/form/sheet/notebook/page[1]" position="after">
+	        		<page string="ITO Product(s)">
+	        			<field name="ito_list" nolabel="1">
+	        				<tree string="ITO List" editable="bottom">
+				        		<field name="category_id"/>
+				        		<field name="ito_value"/>
+				        	</tree>
+			        	</field>
+		        	</page>
+	        	</xpath>
+
+	        </field>
+	    </record>
+	    
+        <!-- Inherit Location -->		
+		<record id="view_location_form_lea" model="ir.ui.view">
+	        <field name="name">Location</field>
+	        <field name="model">stock.location</field>
+	        <field name="inherit_id" ref="stock.view_location_form"/>
+	        <field name="arch" type="xml">
+	        	<field name="comment" position="before">
+	        		<notebook>
+	        			<page string="Allowed Users">
+	        				<group>
+	        					<field name="user_ids" nolabel="1">
+	        						<tree>
+	        							<field name="name"/>	        							
+	        						</tree>
+	        					</field>
+	        				</group>
+	        			</page>
+	        		</notebook>
+	        	</field>	
+	        </field>
+	    </record>	    
+	    
+	    <!-- Inherit Users -->		
+		<record id="view_users_form_lea" model="ir.ui.view">
+	        <field name="name">Users</field>
+	        <field name="model">res.users</field>
+	        <field name="inherit_id" ref="base.view_users_form"/>
+	        <field name="arch" type="xml">	
+	        	<field name="partner_id" position="after">
+	        		<field name="vendor_id"/>
+	        		<field name="pos_id"/>
+	        	</field>
+	        	<xpath expr="/form/sheet/notebook/page[1]" position="after">
+	        		<page string="Area">
+	        			<group>
+	        				<field name="area_id"/>
+	        				<field name="sub_area_id" domain="[('area_id','=',area_id)]"/>
+	        				<field name="warehouse_id"/>
+	        				<field name="target_sales"/>
+	        			</group>
+	        		</page>
+	        	</xpath>
+	        </field>
+	    </record>
+	    
+	    
+	    <!-- Inherit Invoice -->		
+		<record id="invoice_form_lea" model="ir.ui.view">
+	        <field name="name">Customer Invoices</field>
+	        <field name="model">account.invoice</field>
+	        <field name="inherit_id" ref="account.invoice_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="/form/sheet/notebook/page[1]" position="after">
+	        		<page string="Product by Article">
+	        			<group>
+	        				<field name="article_code_ids" nolabel="1" readonly="1">
+	        					<tree editable="top">
+	        						<field name="article_code"/>
+	        						<field name="qty"/>
+	        						<field name="price_unit"/>
+	        						<field name="price_subtotal"/>
+	        					</tree>
+	        				</field>
+	        			</group>
+	        		</page>
+	        	</xpath>
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[1]/tree/field[14]" position="after">
+	        		<!-- <field name="subtotal_invoice" string="Amount" widget="monetary"/> -->
+	        		<field name="price_discount" widget="monetary" string="Value Discount"/>
+	        		<field name="lea_share_discount" widget="monetary" string="Share Discount"/>
+	        		<field name="lea_margin" widget="monetary"/>
+	        		<field name="lea_dpp" widget="monetary" invisible="1"/>
+	        		<!-- <field name="lea_value_invoice" widget="monetary" string="Net" invisible="0"/> -->
+	        		<field name="lea_net_amount" widget="monetary" string="Net"/>
+	        	</xpath>
+
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[1]/tree/field[@name='price_subtotal']" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</xpath>
+
+	        	<xpath expr="/form/sheet/notebook/page[1]/field[1]/tree/field[@name='analytic_tag_ids']" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</xpath>
+
+	        	  <field name="price_subtotal" position="attributes">
+                		<attribute name="string">Subtotal</attribute>
+       			 </field>
+
+	        	  <field name="price_unit" position="after">
+                		<field name="lea_sell_price" widget="monetary"/>
+                		<field name="subtotal_invoice" string="Amount" widget="monetary"/>
+       			 </field>
+
+	        	  <field name="price_unit" position="attributes">
+                		<attribute name="invisible">1</attribute>
+       			 </field>
+
+       			 <xpath expr="/form/sheet/notebook/page[1]/group/field[1]" position="before">
+	        		<field name="total_before_discount" string="Total Amount" widget="monetary"/>
+	        		<field name="total_discount" widget="monetary"/>
+	        		<field name="total_margin_invoice" widget="monetary"/>
+	        	</xpath>
+
+	        	 <field name="amount_untaxed" position="attributes">
+                		<attribute name="string">Total DPP</attribute>
+       			 </field>
+
+       			 <xpath expr="/form/sheet/notebook/page[1]/field[1]/tree/field[14]" position="attributes">
+       			 	<attribute name="invisible">0</attribute>
+       			 </xpath>
+
+       			 <xpath expr="/form/sheet/notebook/page[1]/field[1]/tree/field[@name='uom_id']" position="attributes">
+       			 	<attribute name="invisible">1</attribute>
+       			 </xpath>
+
+       			 <xpath expr="/form/sheet/notebook/page[1]/field[1]/tree/field[@name='account_analytic_id']" position="attributes">
+       			 	<attribute name="invisible">1</attribute>
+       			 </xpath>
+
+       			 <xpath expr="/form/sheet/notebook/page[1]/field[1]/tree/field[@name='name']" position="attributes">
+       			 	<attribute name="invisible">1</attribute>
+       			 </xpath>
+
+       			 <field name="partner_id" position="after">
+	        		<field name="partner_margin_invoice"/>
+	        		<field name="amount_total_qty" invisible="1"/>
+	        	</field>
+
+				<field name="team_id" position="after">
+					<field name="number_internal_retur"/>
+					<field name="picking_id"/>
+					<field name="update_val" invisible="1"/>
+					<field name="first_invoice_id"/>
+				</field>
+
+				<field name="residual" position="after">
+					<button name="button_update_val" string="(update)" type="object"/>
+				</field>
+
+	        </field>
+	    </record>
+	    
+	    <!-- Inherit Journal -->		
+		<record id="view_account_journal_form_lea" model="ir.ui.view">
+	        <field name="name">Journal</field>
+	        <field name="model">account.journal</field>
+	        <field name="inherit_id" ref="account.view_account_journal_form"/>
+	        <field name="arch" type="xml">
+	        	<field name="type" position="after">
+	        		<field name="is_uang_muka"/>
+	        		<field name="is_credit_card" 
+	        			attrs="{'invisible': [('type', '!=', 'bank')]}"/>
+	        	</field>
+	        </field>
+	    </record>	 
+	    
+	    <!-- Inherit Picking -->			    	   
+	    <record id="vpicktree_lea" model="ir.ui.view">
+	        <field name="name">Stock Picking</field>
+	        <field name="model">stock.picking</field>
+	        <field name="inherit_id" ref="stock.vpicktree"/>
+	        <field name="arch" type="xml">
+	        	<field name="location_id" position="before">	        		
+	        		<field name="dokumen_referensi"/>
+	        		<field name="reference_document_id" invisible="1"/>
+	        	</field>
+	        	<field name="min_date" position="after">
+	        		<field name="received_date"/>
+	        	</field>
+	        	<field name="location_dest_id" position="after">
+	        		<field name="location_final_id"/>
+				<field name="amount_total_qty"/>
+	        		<field name="amount_total_qty_demmand"/>
+	        	</field>
+	        </field>
+	    </record>
+	        
+        <record id="stock.action_picking_tree_all" model="ir.actions.act_window">
+            <field name="name">Stock Operations</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar</field>
+            <field name="view_id" ref="stock.vpicktree"></field>
+            <field name="domain"></field>
+            <field name="context">{
+                    'contact_display': 'partner_address',
+            }
+            </field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create a new transfer.
+              </p><p>
+                You can either do it immediately or mark it as Todo for future processing. Use your scanner to validate the transferred quantity quicker.
+              </p>
+            </field>
+        </record>
+        		
+        <record id="stock.action_picking_tree_ready" model="ir.actions.act_window">
+            <field name="name">To Do</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar</field>
+            <field name="view_id" ref="stock.vpicktree"></field>
+            <field name="domain"></field>
+            <field name="context">{
+                    'search_default_picking_type_id': [active_id],
+                    'default_picking_type_id': active_id,
+                    'contact_display': 'partner_address',
+                    'search_default_available': 1,
+            }
+            </field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+             <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create a new transfer.
+              </p><p>
+                You can either do it immediately or mark it as Todo for future processing. Use your scanner to validate the transferred quantity quicker.
+              </p>
+            </field>
+       </record>
+       		
+		<record id="view_picking_form_lea" model="ir.ui.view">
+	        <field name="name">Stock Picking</field>
+	        <field name="model">stock.picking</field>
+	        <field name="inherit_id" ref="stock.view_picking_form"/>
+	        <field name="arch" type="xml">
+	        	<field name="picking_type_id" position="after">
+	        		<field name="putaway_id" readonly="1"/>
+	        	</field>
+	        	<button name="do_unreserve" position="before">
+	        		<button name="create_putaway" type="object" 
+	        			string="Create Putaway" class="oe_highlight"
+	        			attrs="{'invisible': ['|',('state', '!=', 'done'),('putaway_id', '!=', False)]}"/>	        		
+	        	</button>
+	        	<field name="partner_id" position="attributes">
+	        		<attribute name="options">{'no_create_edit': True,'no_quick_create': True, 'no_create': True}</attribute>
+	        	</field>
+	        	<field name="origin" position="after">
+	        		<field name="amount_total_qty"/>
+	        		<field name="amount_total_qty_demmand"/>
+	        		<field name="packing_list_id" readonly="True"/>
+	        		<field name="received_date" 
+	        			attrs="{'invisible': [('state', '!=', 'done')]}"/>
+	        	</field>
+	        	<button name="do_unreserve" position="attributes">
+	        		<attribute name="invisible">0</attribute>
+	        	</button>
+	        	<button name="do_unreserve" position="attributes">
+	        		<attribute name="groups">stock.group_stock_user</attribute>
+	        	</button>
+	        	<button name="do_new_transfer" position="attributes">
+	        		<attribute name="groups">stock.group_stock_user</attribute>
+	        	</button>
+	        	<button name="button_scrap" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</button>
+	        	<button name="force_assign" position="attributes">
+	        		<attribute name="invisible">1</attribute>
+	        	</button>
+	        	<field name="location_dest_id" position="after">
+	        		<field name="incoterm_id"
+	        			attrs="{'readonly': [('state', '=', 'done')]}"/>
+	        		<field name="resi"
+	        			attrs="{'readonly': [('state', '=', 'done')], 'invisible': [('origin', '=', True)]}"/>
+	        		<field name="so_created_date" attrs="{'invisible': [('origin', '=', False)]}"/>
+	        		<field name="so_approved_date" attrs="{'invisible': [('origin', '=', False)]}"/>	        		
+	        	</field>
+	        	<field name="min_date" position="before">
+	        		<field name="jumlah_collie"
+	        			attrs="{'readonly': [('state', '=', 'done')]}"/>
+	        		<field name="total_berat"
+	        			attrs="{'readonly': [('state', '=', 'done')]}"/>
+	        	</field>
+	        	<field name="picking_type_id" position="attributes">
+	        		<attribute name="options">{'no_create_edit': True,'no_quick_create': True, 'no_create': True}</attribute>
+	        	</field>	        	
+	        	<field name="location_dest_id" position="attributes">
+	        		<attribute name="options">{'no_create_edit': True,'no_quick_create': True, 'no_create': True}</attribute>
+	        	</field>
+	        	<field name="location_id" position="attributes">
+	        		<attribute name="options">{'no_create_edit': True,'no_quick_create': True, 'no_create': True}</attribute>
+	        	</field>
+	        	<field name="location_dest_id" position="attributes">
+	        		<attribute name="domain">[('usage','!=','view')]</attribute>
+	        	</field>
+	        	<field name="location_id" position="attributes">
+	        		<attribute name="domain">[('usage','!=','view')]</attribute>
+	        	</field>
+	        	<field name="location_dest_id" position="attributes">
+	        		<attribute name="string">To</attribute>
+	        	</field>
+	        	<field name="location_id" position="attributes">
+	        		<attribute name="string">From</attribute>
+	        	</field>
+	        	<field name="location_id" position="before">
+	        		<field name="partner_id" invisible="1"/>
+	        		<field name="is_transit"
+	        			attrs="{'readonly': [('state', '=', 'done')]}"/>
+	        	</field>
+	        	<field name="location_dest_id" position="after">
+	        		<field name="location_final_id"
+	        			domain="[('usage','=','internal')]"
+	        			attrs="{'invisible': [('is_transit', '=', False)], 'required': [('is_transit', '=', True)]}"
+	        			options="{'no_create_edit': True,'no_quick_create': True, 'no_create': True}"/>
+	        		<field name="dokumen_referensi"
+	        			attrs="{'readonly': [('origin', '=', False)]}"/>
+	        		<field name="reference_document_id" invisible="1"
+	        			attrs="{'readonly': [('origin', '=', False)]}"/>
+	        	</field>
+	        	<xpath expr="/form/sheet/notebook/page[2]/field[@name='move_lines']/kanban/field[@name='product_id']" position="attributes">
+	        		<attribute name="options">{'no_create_edit': True,'no_quick_create': True, 'no_create': True}</attribute>
+	        	</xpath>	        		        	
+	        	<xpath expr="/form/sheet/notebook/page[2]" position="after">
+	        		<page string="Product by Article and Size">
+	        			<group>
+	        				<field name="article_code_ids" nolabel="1" readonly="1">
+	        					<tree>
+	        						<field name="article_code"/>
+	        						<field name="size24"/>
+								    <field name="size25"/>
+								    <field name="size26"/>
+								    <field name="size27"/>
+								    <field name="size28"/>
+								    <field name="size29"/>
+								    <field name="size30"/>
+								    <field name="size31"/>										    	        								        							
+								    <field name="size32"/>
+								    <field name="size33"/>
+								    <field name="size34"/>
+								    <field name="size35"/>
+								    <field name="size36"/>
+								    <field name="size38"/>
+								    <field name="size40"/>										    
+								    <field name="size42"/>										    	        								        																		   										   
+								    <field name="sizexs"/>
+								    <field name="sizes"/>
+								    <field name="sizem"/>
+								    <field name="sizel"/>						
+								    <field name="sizexl"/>
+								    <field name="sizexxl"/>
+								    <field name="sizeal"/>				    	        								        																		   
+								    <field name="sizex"/>
+								    <field name="sizey"/>
+								    <field name="sizez"/>	        														    
+								    <field name="total_qty"/>
+	        					</tree>
+	        					<form>
+	        						<group>
+	        							<group>
+	        								<field name="size24"/>
+										    <field name="size25"/>
+										    <field name="size26"/>
+										    <field name="size27"/>
+										    <field name="size28"/>
+										    <field name="size29"/>
+										    <field name="size30"/>
+										    <field name="size31"/>										    
+	        							</group>
+	        							<group>	        								
+										    <field name="size32"/>
+										    <field name="size33"/>
+										    <field name="size34"/>
+										    <field name="size35"/>
+										    <field name="size36"/>
+										    <field name="size38"/>
+										    <field name="size40"/>										    
+										    <field name="size42"/>										    
+	        							</group>
+	        						</group>
+	        						<group>
+	        							<group>	        																		   										    
+										    <field name="sizexs"/>
+										    <field name="sizes"/>
+										    <field name="sizem"/>
+										    <field name="sizel"/>						
+										    <field name="sizexl"/>
+										    <field name="sizexxl"/>
+										    <field name="sizeal"/>				    
+	        							</group>
+	        							<group>	        																		    
+										    <field name="sizex"/>
+										    <field name="sizey"/>
+										    <field name="sizez"/>
+	        							</group>
+	        						</group>								    
+	        					</form>
+	        				</field>
+	        			</group>
+	        		</page>
+	        	</xpath>		        	 
+	        </field>
+	    </record>
+	    
+	    <record id="custom_pos_reference_search" model="ir.ui.view">
+			<field name="name">custom.pos.reference.search</field>
+			<field name="model">pos.order</field>
+			<field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+			<field name="arch" type="xml">
+			    <field name="name" position="after">
+			        <field name="pos_reference"/>
+			    </field>
+			</field>
+		</record>
+  
+        <record id="hq_warehouse_company_form_view" model="ir.ui.view">
+	        <field name="name">Company</field>
+	        <field name="model">res.company</field>
+	        <field name="inherit_id" ref="base.view_company_form"/>
+	        <field name="arch" type="xml">
+	        	<field name="website" position="after">
+	        		<field name="headquater_warehouse_id" options='{"no_open": True, "no_create": True}' required="1"/>
+	        	</field>
+	        </field>
+	    </record>
+
+	</data>
+</openerp>

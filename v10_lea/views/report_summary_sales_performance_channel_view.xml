@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_summary_sales_performance_channel">
+            <t t-call="report.html_container">              
+                <t t-call="report.internal_layout">
+                    <div class="page">                  
+
+                        <h2 style="text-align:center;">Summary Sales Performance per Channel</h2>
+                        
+                        <table class="table table-condensed" style="width:50%;margin-top:20px;">
+                            <tr>
+                                <td class="col-md-4">Periode</td>
+                                <td class="col-md-1"> : </td>
+                                <td class="col-md-7"><span t-esc="start_date"/> - <span t-esc="end_date"/></td>
+                            </tr>
+                            <tr>
+                                <td>Area</td>
+                                <td> : </td>
+                                <td><span t-esc="area"/></td>
+                            </tr>
+                            <tr>
+                                <td>Sub Area</td>
+                                <td> : </td>
+                                <td><span t-esc="subarea"/></td>
+                            </tr>
+                            <tr>
+                                <td>Channel Category</td>
+                                <td> : </td>
+                                <td><span t-esc="channel_category"/></td>
+                            </tr>
+                            <tr>
+                                <td>Print Info</td>
+                                <td> : </td>
+                                <td><span t-esc="print_info"/></td>
+                            </tr>
+                        </table>
+
+                        <br/>
+                            <table class="table table-condensed" style="margin-top:20px;">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">No.</th>
+                                        <th rowspan="2">Channels</th>
+                                        <t t-foreach="class_ids" t-as="c">
+                                            <th colspan="3"><span t-field="c.name"/></th>
+                                        </t>
+                                        <th rowspan="2">Total Qty</th>
+                                        <th rowspan="2">Total Value</th>
+                                        <th rowspan="2">(%)</th>
+                                    </tr>
+                                    <tr>
+                                        <t t-foreach="class_ids" t-as="c">
+                                            <th>Qty</th>
+                                            <th>Value</th>
+                                            <th>(%)</th>
+                                        </t>
+                                    </tr>
+                                </thead>
+                                    
+                                <tbody style="font-size:11px;">
+                                    <t t-set="index" t-value="1"/>
+                                    <t t-set="total_qty" t-value="0"/>
+                                    <t t-set="total_sales_value" t-value="0"/>
+                                    <t t-set="total_target_sales_value" t-value="0"/>
+                                    <t t-set="achieve" t-value="0"/>
+                                    <tr t-foreach="channel_ids" t-as="l">
+                                        <td><t t-esc="index"/>.</td>
+                                        <td><t t-esc="l['channel']"/></td>
+
+                                        <t t-foreach="l['class_category_line']" t-as="cl">
+                                            <td><span t-esc="'{0:,.0f}'.format(cl['total_qty'])"/></td>
+                                            <td>Rp. <span t-esc="'{0:,.2f}'.format(cl['total_value'])"/></td>
+                                            <td><span t-esc="cl['percentage']"/> %</td>
+                                        </t>
+
+                                        <td style="text-align:right;"><t t-esc="'{0:,.0f}'.format(l['total_qty'])"/></td>
+                                        <td style="text-align:right;">Rp. <t t-esc="'{0:,.2f}'.format(l['total_value'])"/></td>
+                                        <td style="text-align:right;"><t t-esc="'{0:,.2f}'.format(l['percentage'])"/> %</td>
+
+                                        <t t-set="index" t-value="index+1"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                </t>
+            </t>            
+        </template>
+
+
+    </data>
+</odoo>

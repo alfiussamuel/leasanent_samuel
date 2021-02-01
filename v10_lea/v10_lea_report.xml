@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+          id="report_pos_sale_outlet_menu"
+          string="POS Sale Outlet"
+          model="pos.order"
+          report_type="qweb-pdf"
+          file="v10_lea.report_pos_sale_outlet"
+          name="v10_lea.report_pos_sale_outlet"
+          menu="False"
+        />    
+<!-- 
+        <record id="pos_sale_outlet_report_paperformat" model="report.paperformat">
+            <field name="name">pos.outlet.report.custom</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">148</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">37</field>
+            <field name="margin_bottom">60</field>
+            <field name="margin_left">4</field>
+            <field name="margin_right">4</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">34</field>
+            <field name="dpi">300</field>
+        </record>
+
+        <record id="action_paperformat_pos_sale_outlet_report" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="v10_lea.pos_sale_outlet_report_paperformat"/>
+        </record>   -->      
+
+        <report
+          id="menu_report_summary_sales_performance_class"
+          string="Summary Sales Perfomance per Class"
+          model="sale.order"
+          report_type="qweb-html"
+          file="v10_lea.report_summary_sales_performance_class"
+          name="v10_lea.report_summary_sales_performance_class"
+          menu="False"
+        />    
+
+        <report
+          id="menu_report_summary_sales_performance_channel"
+          string="Summary Sales Perfomance per Channel"
+          model="sale.order"
+          report_type="qweb-html"
+          file="v10_lea.report_summary_sales_performance_channel"
+          name="v10_lea.report_summary_sales_performance_channel"
+          menu="False"
+        />    
+
+        <report
+          id="menu_report_summary_sales_performance_comparison"
+          string="Summary Sales Perfomance Comparison"
+          model="sale.order"
+          report_type="qweb-html"
+          file="v10_lea.report_summary_sales_performance_comparison"
+          name="v10_lea.report_summary_sales_performance_comparison"
+          menu="False"
+        />    
+
+    </data>
+</odoo>

@@ -1,0 +1,489 @@
+<odoo>
+	<data>
+
+		<record id="sales_target_salesman_tree_view" model="ir.ui.view">
+			<field name="name">lea.sales.target.salesman.tree.view</field>
+			<field name="model">lea.sales.target.salesman</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<tree string="Sales Target">
+					<field name="year"/>
+					<field name="revision"/>
+					<field name="total_target" string="Total Target Value (Rp.)"/>
+					<field name="avg_target" string="Avg. Target Value (Rp.)"/>
+					<field name="qty_total_target" string="Total Target Qty"/>
+					<field name="qty_avg_target" string="Avg. Target Qty"/>
+				</tree>
+			</field>
+		</record>
+
+
+		<record id="sales_target_salesman_form_view" model="ir.ui.view">
+			<field name="name">lea.sales.target.salesman.form.view</field>
+			<field name="model">lea.sales.target.salesman</field>
+			<field name="type">form</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button string="Generate Target (Value)" states='draft' type="object" name="button_generate_value" class="oe_highlight"/>
+						<button string="Generate Target (Qty)" states='draft' type="object" name="button_generate_qty" class="oe_highlight"/>
+						<button string="Approved" states='draft' type="object" name="button_approved" class="oe_highlight"/>
+						<button string="Cancel" states='draft' type="object" name="button_cancel" class="oe_highlight"/>
+						<button string="Reset to Draft" states='approved,cancel' type="object" name="button_reset_draft" class="oe_highlight"/>
+						<field name="state" widget="statusbar" readonly="1"/>
+					</header>
+					<sheet>
+						<group cols="2">
+							<group>
+						        <field name="year"/>
+							</group>
+							<group>
+						        <field name="revision"/>
+							</group>
+						</group>
+						<notebook>
+							<page string="Target by Value">
+								<group cols="2">
+									<group>
+								        <field name="total_target"/>
+								        <field name="avg_target"/>
+									</group>
+									<group>
+									</group>
+								</group>
+								<group col="3" string="Default Target Ratio (%)">
+									<group>
+								        <field name="default_month1"/>
+								        <field name="default_month2"/>
+								        <field name="default_month3"/>
+								        <field name="default_month4"/>
+									</group>
+									<group>
+								        <field name="default_month5"/>
+								        <field name="default_month6"/>
+								        <field name="default_month7"/>
+								        <field name="default_month8"/>
+									</group>
+									<group>
+								        <field name="default_month9"/>
+								        <field name="default_month10"/>
+								        <field name="default_month11"/>
+								        <field name="default_month12"/>
+									</group>
+								</group>
+								<notebook>
+									<page string="By Salesman">
+										<field name="channel_ids">
+											<tree>
+												<field name="salesman_id"/>
+												<field name="contribution" sum="Total Contribution (%)"/>
+												<field name="contribution_value" sum="Total Contribution (Rp)"/>
+												<field name="ratio_month1"/>
+												<field name="ratio_month2"/>
+												<field name="ratio_month3"/>
+												<field name="ratio_month4"/>
+												<field name="ratio_month5"/>
+												<field name="ratio_month6"/>
+												<field name="ratio_month7"/>
+												<field name="ratio_month8"/>
+												<field name="ratio_month9"/>
+												<field name="ratio_month10"/>
+												<field name="ratio_month11"/>
+												<field name="ratio_month12"/>
+												<!-- <field name="category_ids"/> -->
+											</tree>
+										</field>
+									</page>
+								</notebook>
+							</page>
+							<page string="Target by Qty">
+								<group cols="2">
+									<group>
+								        <field name="qty_total_target"/>
+								        <field name="qty_avg_target"/>
+									</group>
+									<group>
+									</group>
+								</group>
+								<group col="3" string="Default Target Ratio (%)">
+									<group>
+								        <field name="qty_default_month1"/>
+								        <field name="qty_default_month2"/>
+								        <field name="qty_default_month3"/>
+								        <field name="qty_default_month4"/>
+									</group>
+									<group>
+								        <field name="qty_default_month5"/>
+								        <field name="qty_default_month6"/>
+								        <field name="qty_default_month7"/>
+								        <field name="qty_default_month8"/>
+									</group>
+									<group>
+								        <field name="qty_default_month9"/>
+								        <field name="qty_default_month10"/>
+								        <field name="qty_default_month11"/>
+								        <field name="qty_default_month12"/>
+									</group>
+								</group>
+								<notebook>
+									<page string="By Salesman">
+										<field name="qty_channel_ids">
+											<tree>
+												<field name="salesman_id"/>
+												<field name="contribution" sum="Total Contribution (%)"/>
+												<field name="contribution_value" sum="Total Contribution (Rp)"/>
+												<field name="ratio_month1"/>
+												<field name="ratio_month2"/>
+												<field name="ratio_month3"/>
+												<field name="ratio_month4"/>
+												<field name="ratio_month5"/>
+												<field name="ratio_month6"/>
+												<field name="ratio_month7"/>
+												<field name="ratio_month8"/>
+												<field name="ratio_month9"/>
+												<field name="ratio_month10"/>
+												<field name="ratio_month11"/>
+												<field name="ratio_month12"/>
+												<!-- <field name="category_ids"/> -->
+											</tree>
+										</field>
+									</page>
+								</notebook>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- TARGET BY VALUE -->
+		<record id="sales_target_salesman_sales_form_view" model="ir.ui.view">
+			<field name="name">lea.sales.target.salesman.sales.form.view</field>
+			<field name="model">lea.sales.target.salesman.sales</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group cols="2">
+							<group>
+						        <field name="reference" readonly="1"/>
+						        <field name="salesman_id" readonly="1"/>
+							</group>
+							<group>
+						        <field name="contribution"/>
+								<field name="contribution_value"/>
+								<field name="avg_target"/>
+							</group>
+						</group>
+						<group col="3" string="Target Ratio (%)">
+							<group>
+						        <field name="ratio_month1"/>
+						        <field name="ratio_month2"/>
+						        <field name="ratio_month3"/>
+						        <field name="ratio_month4"/>
+							</group>
+							<group>
+						        <field name="ratio_month5"/>
+						        <field name="ratio_month6"/>
+						        <field name="ratio_month7"/>
+						        <field name="ratio_month8"/>
+							</group>
+							<group>
+						        <field name="ratio_month9"/>
+						        <field name="ratio_month10"/>
+						        <field name="ratio_month11"/>
+						        <field name="ratio_month12"/>
+							</group>
+						</group>
+						<notebook>
+							<page string="Category">
+								<field name="category_ids">
+									<!-- <tree editable="bottom"> -->
+									<tree>
+										<field name="category_id"/>
+										<field name="contribution" sum="Total Contribution (%)"/>
+										<field name="contribution_value" sum="Total Contribution (Rp)"/>
+										<field name="ratio_month1"/>
+										<field name="ratio_month2"/>
+										<field name="ratio_month3"/>
+										<field name="ratio_month4"/>
+										<field name="ratio_month5"/>
+										<field name="ratio_month6"/>
+										<field name="ratio_month7"/>
+										<field name="ratio_month8"/>
+										<field name="ratio_month9"/>
+										<field name="ratio_month10"/>
+										<field name="ratio_month11"/>
+										<field name="ratio_month12"/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="sales_target_salesman_sales_category_form_view" model="ir.ui.view">
+			<field name="name">lea.sales.target.salesman.sales.category.form.view</field>
+			<field name="model">lea.sales.target.salesman.sales.category</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group cols="2">
+							<group>
+						        <field name="reference" readonly="1"/>
+						        <field name="category_id" readonly="1"/>
+							</group>
+							<group>
+						        <field name="contribution"/>
+								<field name="contribution_value"/>
+							</group>
+						</group>
+						<group col="2" string="Target Ratio (%)">
+							<group>
+								<label for="ratio_month1"/>
+					            <div>
+					            	<field name="ratio_month1"/><br/>
+					            	Rp. <field name="value_month1"/>
+					            </div>
+								<label for="ratio_month2"/>
+					            <div>
+					            	<field name="ratio_month2"/><br/>
+					            	Rp. <field name="value_month2"/>
+					            </div>
+								<label for="ratio_month3"/>
+					            <div>
+					            	<field name="ratio_month3"/><br/>
+					            	Rp. <field name="value_month3"/>
+					            </div>
+								<label for="ratio_month4"/>
+					            <div>
+					            	<field name="ratio_month4"/><br/>
+					            	Rp. <field name="value_month4"/>
+					            </div>
+								<label for="ratio_month5"/>
+					            <div>
+					            	<field name="ratio_month5"/><br/>
+					            	Rp. <field name="value_month5"/>
+					            </div>
+								<label for="ratio_month6"/>
+					            <div>
+					            	<field name="ratio_month6"/><br/>
+					            	Rp. <field name="value_month6"/>
+					            </div>
+							</group>
+							<group>
+								<label for="ratio_month7"/>
+					            <div>
+					            	<field name="ratio_month7"/><br/>
+					            	Rp. <field name="value_month7"/>
+					            </div>
+								<label for="ratio_month8"/>
+					            <div>
+					            	<field name="ratio_month8"/><br/>
+					            	Rp. <field name="value_month8"/>
+					            </div>
+								<label for="ratio_month9"/>
+					            <div>
+					            	<field name="ratio_month9"/><br/>
+					            	Rp. <field name="value_month9"/>
+					            </div>
+								<label for="ratio_month10"/>
+					            <div>
+					            	<field name="ratio_month10"/><br/>
+					            	Rp. <field name="value_month10"/>
+					            </div>
+								<label for="ratio_month11"/>
+					            <div>
+					            	<field name="ratio_month11"/><br/>
+					            	Rp. <field name="value_month11"/>
+					            </div>
+								<label for="ratio_month12"/>
+					            <div>
+					            	<field name="ratio_month12"/><br/>
+					            	Rp. <field name="value_month12"/>
+					            </div>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- TARGET Y QTY -->
+		<record id="sales_target_qty_salesman_sales_form_view" model="ir.ui.view">
+			<field name="name">lea.sales.target.qty.salesman.sales.form.view</field>
+			<field name="model">lea.sales.target.qty.salesman.sales</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group cols="2">
+							<group>
+						        <field name="reference" readonly="1"/>
+						        <field name="salesman_id" readonly="1"/>
+							</group>
+							<group>
+						        <field name="contribution"/>
+								<field name="contribution_value"/>
+								<field name="avg_target"/>
+							</group>
+						</group>
+						<group col="3" string="Target Ratio (%)">
+							<group>
+						        <field name="ratio_month1"/>
+						        <field name="ratio_month2"/>
+						        <field name="ratio_month3"/>
+						        <field name="ratio_month4"/>
+							</group>
+							<group>
+						        <field name="ratio_month5"/>
+						        <field name="ratio_month6"/>
+						        <field name="ratio_month7"/>
+						        <field name="ratio_month8"/>
+							</group>
+							<group>
+						        <field name="ratio_month9"/>
+						        <field name="ratio_month10"/>
+						        <field name="ratio_month11"/>
+						        <field name="ratio_month12"/>
+							</group>
+						</group>
+						<notebook>
+							<page string="Category">
+								<field name="category_ids">
+									<!-- <tree editable="bottom"> -->
+									<tree>
+										<field name="category_id"/>
+										<field name="contribution" sum="Total Contribution (%)"/>
+										<field name="contribution_value" sum="Total Contribution (Rp)"/>
+										<field name="ratio_month1"/>
+										<field name="ratio_month2"/>
+										<field name="ratio_month3"/>
+										<field name="ratio_month4"/>
+										<field name="ratio_month5"/>
+										<field name="ratio_month6"/>
+										<field name="ratio_month7"/>
+										<field name="ratio_month8"/>
+										<field name="ratio_month9"/>
+										<field name="ratio_month10"/>
+										<field name="ratio_month11"/>
+										<field name="ratio_month12"/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="sales_target_qty_salesman_sales_category_form_view" model="ir.ui.view">
+			<field name="name">lea.sales.target.qty.salesman.sales.category.form.view</field>
+			<field name="model">lea.sales.target.qty.salesman.sales.category</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group cols="2">
+							<group>
+						        <field name="reference" readonly="1"/>
+						        <field name="category_id" readonly="1"/>
+							</group>
+							<group>
+						        <field name="contribution"/>
+								<field name="contribution_value"/>
+							</group>
+						</group>
+						<group col="2" string="Target Ratio (%)">
+							<group>
+								<label for="ratio_month1"/>
+					            <div>
+					            	<field name="ratio_month1"/><br/>
+					            	Rp. <field name="value_month1"/>
+					            </div>
+								<label for="ratio_month2"/>
+					            <div>
+					            	<field name="ratio_month2"/><br/>
+					            	Rp. <field name="value_month2"/>
+					            </div>
+								<label for="ratio_month3"/>
+					            <div>
+					            	<field name="ratio_month3"/><br/>
+					            	Rp. <field name="value_month3"/>
+					            </div>
+								<label for="ratio_month4"/>
+					            <div>
+					            	<field name="ratio_month4"/><br/>
+					            	Rp. <field name="value_month4"/>
+					            </div>
+								<label for="ratio_month5"/>
+					            <div>
+					            	<field name="ratio_month5"/><br/>
+					            	Rp. <field name="value_month5"/>
+					            </div>
+								<label for="ratio_month6"/>
+					            <div>
+					            	<field name="ratio_month6"/><br/>
+					            	Rp. <field name="value_month6"/>
+					            </div>
+							</group>
+							<group>
+								<label for="ratio_month7"/>
+					            <div>
+					            	<field name="ratio_month7"/><br/>
+					            	Rp. <field name="value_month7"/>
+					            </div>
+								<label for="ratio_month8"/>
+					            <div>
+					            	<field name="ratio_month8"/><br/>
+					            	Rp. <field name="value_month8"/>
+					            </div>
+								<label for="ratio_month9"/>
+					            <div>
+					            	<field name="ratio_month9"/><br/>
+					            	Rp. <field name="value_month9"/>
+					            </div>
+								<label for="ratio_month10"/>
+					            <div>
+					            	<field name="ratio_month10"/><br/>
+					            	Rp. <field name="value_month10"/>
+					            </div>
+								<label for="ratio_month11"/>
+					            <div>
+					            	<field name="ratio_month11"/><br/>
+					            	Rp. <field name="value_month11"/>
+					            </div>
+								<label for="ratio_month12"/>
+					            <div>
+					            	<field name="ratio_month12"/><br/>
+					            	Rp. <field name="value_month12"/>
+					            </div>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_sales_target_salesman" model="ir.actions.act_window">
+			<field name="name">Sales Target (Salesman)</field>
+			<field name="res_model">lea.sales.target.salesman</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new data
+				</p>
+				<p>klik tombol create untuk membuat Sales target Baru baru</p>
+			</field>
+		</record>
+		
+        <menuitem id="menu_lea_sales_target_salesman" name="Sales Target (Salesman)" parent="sales_team.menu_sale_config" action="action_sales_target_salesman" sequence="103"/>
+
+	</data>
+</odoo>

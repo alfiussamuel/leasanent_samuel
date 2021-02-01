@@ -1,0 +1,84 @@
+<odoo>
+	<data>
+
+		<record id="view_company_form_lea_view" model="ir.ui.view">
+			<field name="name">Company</field>
+          	<field name="model">res.company</field>
+          	<field name="inherit_id" ref="base.view_company_form"/>
+          	<field name="arch" type="xml">
+              	<field name="parent_id" position="after">
+                   	<field name="ppn_account_id"/>
+                    <field name="hpp_account_id"/>
+					<field name="hpp_account_id2"/>
+                    <field name="persediaan_account_id"/>
+              	</field>
+          	</field>
+      	</record>
+
+        <record id="account_invoice_form_lea_view" model="ir.ui.view">
+          <field name="name">account.invoice.form.lea.view</field>
+          <field name="model">account.invoice</field>
+          <field name="inherit_id" ref="account.invoice_form"/>
+          <field name="arch" type="xml">
+			  <xpath expr="/form/header/button[2]" position="after">
+				  	<button name="action_correct_paid" type="object" states="paid" string="Correction Paid" groups="base.user_root"/>
+				  	<button name="action_post_hpp" type="object" string="Post HPP Journal" attrs="{'invisible': [('is_hpp_journal', '=', True)]}"/>
+				  	<button name="action_unpost_hpp" type="object" string="UnPost HPP Journal" attrs="{'invisible': [('is_hpp_journal', '=', False)]}"/>
+			  </xpath>
+			  <field name="date_invoice" position="after">
+	          		<field name="is_internal"/>
+				    <field name="is_hpp_journal"/>
+			  </field>
+          </field>
+        </record>
+
+        <record id="view_invoice_tree_lea2" model="ir.ui.view">
+	        <field name="name">Account Invoice Customer</field>
+	        <field name="model">account.invoice</field>
+	        <field name="inherit_id" ref="account.invoice_tree"/>
+	        <field name="arch" type="xml">
+	        	<field name="partner_id" position="after">
+	        		<field name="is_internal"/>
+					<field name="is_hpp_journal"/>
+	        	</field>
+	        </field>
+	    </record>
+
+		<record id="account_invoice_form_supplier_lea_view" model="ir.ui.view">
+          <field name="name">account.invoice.form.supplier.lea.view</field>
+          <field name="model">account.invoice</field>
+          <field name="inherit_id" ref="account.invoice_supplier_form"/>
+          <field name="arch" type="xml">
+			  <field name="reference" position="after">
+				  <field name="no_faktur_vendor"/>
+				  <field name="no_po_vendor"/>
+			  </field>
+			   <xpath expr="/form/sheet/notebook/page[2]" position="after">
+				  	<page string="Shipment Information">
+						<field name="picking_lines">
+							<tree>
+								<field name="name"/>
+								<field name="date_done"/>
+								<field name="state"/>
+							</tree>
+						</field>
+					</page>
+			  </xpath>
+
+          </field>
+        </record>
+
+		<record id="account_invoice_form_supplier_purchase_lea_view" model="ir.ui.view">
+          <field name="name">account.invoice.form.supplier.purchase.lea.view</field>
+          <field name="model">account.invoice</field>
+          <field name="inherit_id" ref="purchase.view_invoice_supplier_purchase_form"/>
+          <field name="arch" type="xml">
+			  <field name="purchase_id" position="replace">
+				  <field name="purchase_id" options="{'no_create': True}"/>
+			  </field>
+          </field>
+        </record>
+
+	</data>
+</odoo>
+

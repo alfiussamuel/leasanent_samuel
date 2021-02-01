@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<template id="assets" inherit_id="point_of_sale.assets">
+          <xpath expr="." position="inside">
+              <script type="text/javascript" src="/pos_data_cache/static/src/js/pos.js"></script>
+          </xpath>
+        </template>
+
+        <record model="ir.cron" id="refresh_pos_partner_cache_cron">
+            <field name="name">Refresh POS Partner Cache</field>
+            <field name="active" eval="False"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'pos.data.cache'"/>
+            <field name="function" eval="'refresh_all_caches'"/>
+            <field name="args" eval="'()'"/>
+        </record>
+        <record model="ir.ui.view" id="view_pos_config_form">
+            <field name="name">pos.config.form.view</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='oldest_cache_time']" position="after">
+                    <field name='oldest_partner_cache_time'/>
+                    <button name='delete_partner_cache' type="object"
+                        string="Invalidate cache"
+                        attrs="{'invisible': [('oldest_partner_cache_time', '=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

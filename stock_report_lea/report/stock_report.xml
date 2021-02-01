@@ -1,0 +1,390 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+		<record id="report_stock_lea_wizard_form" model="ir.ui.view">
+            <field name="name">report.stock.lea.wizard.form</field>
+            <field name="model">report.stock.lea.wizard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="type" invisible="1" class="oe_inline"/>
+
+                            <field name="period_id" invisible="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                            <label for="date_from"/>
+                            <div>
+                                <field name="date_from" required="1" class="oe_inline"/> s/d <field name="date_to" required="1" class="oe_inline"/>
+                            </div>
+                            <field name="stock_type" required="1" class="oe_inline"/>
+                            <field name="location_main_wh_ids2" widget="many2many_tags" domain="[('is_main_wh_location','=', True)]" options="{'no_create': True}"/>
+                            <field name="wh_type" invisible="1"/>
+                            <field name="user_pds_id" attrs="{'invisible':[('stock_type','!=','ST')]}"/>
+                            <field name="location_ids3" options="{'no_create': True}" attrs="{'invisible':[('stock_type','!=','ST')]}"/>
+                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_stock_move_toko_report_excel" string="Generate" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_stock_lea_wizard_form" model="ir.actions.act_window">
+            <field name="name">Stock Move Per Toko</field>
+            <field name="res_model">report.stock.lea.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_stock_lea_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="report_replenishment_wizard_form" model="ir.ui.view">
+            <field name="name">report.replenishment.wizard.form</field>
+            <field name="model">report.replenishment.wizard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="period_id" invisible="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                            <label for="date_from"/>
+                            <div>
+                                <field name="date_from" required="1" class="oe_inline"/> s/d <field name="date_to" required="1" class="oe_inline"/>
+                            </div>
+                            <field name="product_category_ids2" options="{'no_create': True}" widget="many2many_tags" required="1"/>
+                            <field name="article_ids" options="{'no_create': True}" widget="many2many_tags" invisible="1"/>
+                            <field name="location_main_wh_ids2" widget="many2many_tags" domain="[('is_main_wh_location','=', True)]" options="{'no_create': True}" />
+                            <field name="wh_type" invisible="1"/>
+                            <field name="user_pds_id"/>
+                            <field name="location_ids2" options="{'no_create': True}"/>
+                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                        </group>
+                        <group string="Detail Info" invisible="1">
+                            <field name="is_stock_gudang"/>
+                            <field name="is_stock_awal"/>
+                            <field name="is_stock_in"/>
+                            <field name="is_stock_sale"/>
+                            <field name="is_stock_retur"/>
+                            <field name="is_stock_akhir"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_report" string="Generate" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_analisa_stock_replenishment_wizard_form" model="ir.actions.act_window">
+            <field name="name">Analisa stock Replenishment Toko</field>
+            <field name="res_model">report.replenishment.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_replenishment_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="report_analisa_level_stock_form" model="ir.ui.view">
+            <field name="name">report.analisa.level.stock.wizard.form</field>
+            <field name="model">report.analisa.level.stock.wizard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="type_pds" required="1" class="oe_inline"/>
+                            <label string="Period"/>
+                            <div>
+                                <field name="period_start" required="1" class="oe_inline" options="{'no_create': True}"/> s/d <field name="period_stop" required="1" class="oe_inline" options="{'no_create': True}"/>
+                            </div>
+                            <field name="user_pds_id" attrs="{'invisible':[('type_pds','!=','pds')]}"/>
+                            <field name="location_main_wh_ids2" widget="many2many_tags" domain="[('is_main_wh_location','=', True)]" options="{'no_create': True}" attrs="{'invisible':[('type_pds','!=','non-pds')]}" />
+                            <field name="location_ids2" options="{'no_create': True}" attrs="{'invisible':[('type_pds','!=','pds')]}"/>
+                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_report_excel" string="Generate" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_analisa_level_stock_form" model="ir.actions.act_window">
+            <field name="name">Analisa Level Stock dan Average Penjualan</field>
+            <field name="res_model">report.analisa.level.stock.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_analisa_level_stock_form"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <record id="report_analisa_product_thru_form" model="ir.ui.view">
+            <field name="name">report.analisa.analisa.product.thru.wizard.form</field>
+            <field name="model">report.analisa.product.thru.wizard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="type_pds" required="1" class="oe_inline"/>
+                            <label string="Period"/>
+                            <div>
+                                <field name="period_start" required="1" class="oe_inline" options="{'no_create': True}"/> s/d <field name="period_stop" required="1" class="oe_inline" options="{'no_create': True}"/>
+                            </div>
+                            <field name="product_category_ids2" options="{'no_create': True}" widget="many2many_tags" invisible="1"/>
+                            <field name="user_pds_id" attrs="{'invisible':[('type_pds','!=','pds')]}"/>
+                            <field name="location_main_wh_ids2" widget="many2many_tags" domain="[('is_main_wh_location','=', True)]" options="{'no_create': True}"/>
+                            <field name="location_ids2" options="{'no_create': True}" attrs="{'invisible':[('type_pds','!=','pds')]}"/>
+                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_report" string="Generate" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_analisa_product_thru_form" model="ir.actions.act_window">
+            <field name="name">Analisa Product Sell Thru, Average Sales, dan Level Stock</field>
+            <field name="res_model">report.analisa.product.thru.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_analisa_product_thru_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_analisa_product_thru_line_tree" model="ir.ui.view">
+			<field name="name">analisa.product.thru.wizard.line.tree</field>
+			<field name="model">analisa.product.thru.wizard.line</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Analisa Product dan Sell Thru" editable="Top">
+                    <field name="warehouse"/>
+                    <field name="mv_id"/>
+                    <field name="class_category_id"/>
+                    <field name="category_id"/>
+                    <field name="categ_id"/>
+                    <field name="product_id"/>
+                    <field name="stock_awal"/>
+                    <field name="stock_in"/>
+                    <field name="stock_retur"/>
+                    <field name="stock_sale"/>
+                    <field name="stock_akhir"/>
+                    <field name="sell_thru"/>
+                    <field name="avg_sale_month"/>
+                    <field name="stock_level"/>
+				</tree>
+			</field>
+		</record>
+
+        <record id="analisa_product_thru_line_pivot" model="ir.ui.view">
+	        <field name="name">analisa.product.thru.wizard.line.pivot</field>
+	        <field name="model">analisa.product.thru.wizard.line</field>
+	        <field name="arch" type="xml">
+	            <pivot string="Line Data">
+                    <field name="warehouse"/>
+                    <field name="category_id"/>
+                    <field name="stock_awal" type="measure"/>
+                    <field name="stock_in" type="measure"/>
+                    <field name="stock_retur" type="measure"/>
+                    <field name="stock_sale" type="measure"/>
+                    <field name="stock_akhir" type="measure"/>
+                    <field name="sell_thru" type="measure"/>
+                    <field name="avg_sale_month" type="measure"/>
+                    <field name="stock_level" type="measure"/>
+	            </pivot>
+	        </field>
+	    </record>
+
+
+        <record id="view_replenishment_wizard_line_tree" model="ir.ui.view">
+			<field name="name">replenishment.wizard.line.tree</field>
+			<field name="model">replenishment.wizard.line</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Stock Replenishment Toko" editable="Top">
+                    <field name="mv_id"/>
+                    <field name="class_category_id"/>
+                    <field name="category_id"/>
+                    <field name="categ_id"/>
+                    <field name="product_id"/>
+                    <field name="stock_awal"/>
+                    <field name="stock_in"/>
+                    <field name="stock_retur"/>
+                    <field name="stock_sale"/>
+                    <field name="stock_akhir"/>
+                    <field name="stock_gudang"/>
+				</tree>
+			</field>
+		</record>
+
+        <record id="replenishment_wizard_line_pivot" model="ir.ui.view">
+	        <field name="name">replenishment.wizard.line.pivot</field>
+	        <field name="model">replenishment.wizard.line</field>
+	        <field name="arch" type="xml">
+	            <pivot string="Line Data">
+                    <field name="warehouse_id"/>
+                    <field name="category_id"/>
+                    <field name="categ_id"/>
+                    <field name="product_id"/>
+                    <field name="stock_awal" type="measure"/>
+                    <field name="stock_in" type="measure"/>
+                    <field name="stock_retur" type="measure"/>
+                    <field name="stock_sale" type="measure"/>
+                    <field name="stock_akhir" type="measure"/>
+                    <field name="stock_gudang" type="measure" disable_linking="True"/>
+	            </pivot>
+	        </field>
+	    </record>
+
+
+        <record id="stock_lea_detail_wizard_form" model="ir.ui.view">
+            <field name="name">stock.lea.detail.wizard.form</field>
+            <field name="model">stock.lea.detail.wizard</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="type" invisible="1" class="oe_inline"/>
+
+                            <field name="period_id" invisible="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                            <label for="date_from"/>
+                            <div>
+                                <field name="date_from" required="1" class="oe_inline"/> s/d <field name="date_to" required="1" class="oe_inline"/>
+                            </div>
+                            <field name="stock_type" required="1" class="oe_inline"/>
+                            <field name="location_main_wh_ids2" domain="[('is_main_wh_location','=', True)]" options="{'no_create': True}" attrs="{'invisible':[('stock_type','=','ST')]}"/>
+                            <field name="location_ids3" options="{'no_create': True}" attrs="{'invisible':[('stock_type','!=','ST')]}"/>
+                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_stock_move_toko_report_excel" string="Generate" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_stock_lea_detail_wizard_form" model="ir.actions.act_window">
+            <field name="name">Stock Move Detail</field>
+            <field name="res_model">stock.lea.detail.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="stock_lea_detail_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="stock_lea_detail_wizard_line_pivot" model="ir.ui.view">
+	        <field name="name">stock.lea.detail.wizard.line.pivot</field>
+	        <field name="model">stock.lea.detail.wizard.line</field>
+	        <field name="arch" type="xml">
+	            <pivot string="Line Data">
+                    <field name="category_id"/>
+                    <field name="categ_id"/>
+                    <field name="product_id"/>
+                    <field name="stock_awal" type="measure"/>
+                    <field name="stock_in_mfg" type="measure"/>
+                    <field name="stock_in_rfg" type="measure"/>
+                    <field name="stock_out_mfg" type="measure"/>
+                    <field name="stock_out_rfg" type="measure"/>
+                    <field name="stock_sale" type="measure"/>
+                    <field name="stock_akhir" type="measure"/>
+	            </pivot>
+	        </field>
+	    </record>
+
+
+        <!-- Stock Inventory Value -->
+         <record id="report_inventory_value_acc_form" model="ir.ui.view">
+            <field name="name">report.inventory.value.acc.form</field>
+            <field name="model">report.inventory.value.acc</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="date" required="1" class="oe_inline"/>
+                            <field name="location_ids2" options="{'no_create': True}"/>
+                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                        </group>
+                        <newline/>
+                        <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_data_pivot" string="Generate" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_inventory_value_acc_form" model="ir.actions.act_window">
+            <field name="name">Stock Inventory Value</field>
+            <field name="res_model">report.inventory.value.acc</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_inventory_value_acc_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="report_inventory_value_acc_line_pivot" model="ir.ui.view">
+	        <field name="name">report.inventory.value.acc.pivot</field>
+	        <field name="model">report.inventory.value.acc.line</field>
+	        <field name="arch" type="xml">
+	            <pivot string="Line Data">
+                    <field name="location_id"/>
+                    <field name="product_id"/>
+                    <field name="stock_akhir" type="measure"/>
+                    <field name="cost_unit" type="measure"/>
+                    <field name="total" type="measure"/>
+
+	            </pivot>
+	        </field>
+	    </record>
+
+        <!-- Menu Stock Report -->
+        <menuitem id="menu_stock_report_lea_other_report" name="Stock Move Per Toko" parent="stock.menu_warehouse_report" action="action_stock_lea_wizard_form"/>
+        <menuitem id="menu_analisa_stock_replenishment_report3" name="Analisa stock Replenishment Toko" parent="stock.menu_warehouse_report" action="action_report_analisa_stock_replenishment_wizard_form"/>
+        <!--<menuitem id="menu_analisa_level_stock_report" name="Analisa Level Stock dan Average Penjualan" parent="stock.menu_warehouse_report" action="action_report_analisa_level_stock_form"/>-->
+        <menuitem id="menu_analisa_product_thru_report" name="Analisa Product Sell Thru, Avg Sales, dan Lvl Stock" parent="stock.menu_warehouse_report" action="action_report_analisa_product_thru_form"/>
+        <menuitem action="action_report_analisa_stock_replenishment_wizard_form" id="menu_analisa_stock_replenishment_report2" parent="point_of_sale.menu_point_rep" string="Report Store Stock"/>
+        <!-- Menu Stock Report -->
+        <menuitem action="action_stock_lea_detail_wizard_form" id="menu_analisa_stock_detail" parent="stock.menu_warehouse_report" string="Stock Move Detail"/>
+        <!-- Stock Inventory Value -->
+        <menuitem action="action_report_inventory_value_acc_form" id="report_inevntory_value_acc" parent="account.account_reports_business_intelligence_menu"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,85 @@
+<odoo>
+	<data>				
+
+		<!-- Replenishment -->
+		<record id="sequence_lea_replenishment" model="ir.sequence">  
+          <field name="name">LEA Replenishment</field>  
+          <field name="code">lea.replenishment</field>  
+          <field name="prefix">REP/%(y)s/%(month)s/</field>  
+          <field name="padding">5</field>  
+          <field eval="1" name="number_increment"/>  
+        </record>
+        		
+		<!-- Petty Cash -->
+		<record id="sequence_lea_petty_cash" model="ir.sequence">  
+          <field name="name">LEA Petty Cash</field>  
+          <field name="code">lea.petty.cash</field>  
+          <field name="prefix">CASH/%(y)s/%(month)s/</field>  
+          <field name="padding">5</field>  
+          <field eval="1" name="number_increment"/>  
+        </record>
+        
+        <!-- Bank Statement -->
+		<record id="sequence_lea_bank_statement" model="ir.sequence">  
+          <field name="name">LEA Bank Statement</field>  
+          <field name="code">lea.bank.statement</field>  
+          <field name="prefix">BANK/%(y)s/%(month)s/</field>  
+          <field name="padding">5</field>  
+          <field eval="1" name="number_increment"/>  
+        </record>
+        
+        <!-- Uang Muka -->
+		<record id="sequence_lea_uang_muka" model="ir.sequence">  
+          <field name="name">LEA Uang Muka</field>  
+          <field name="code">lea.uang.muka</field>  
+          <field name="prefix">UM/%(y)s/%(month)s/</field>  
+          <field name="padding">5</field>  
+          <field eval="1" name="number_increment"/>  
+        </record>
+        
+        <!-- Purchase Request -->
+		<record id="sequence_lea_purchase_request" model="ir.sequence">  
+          <field name="name">LEA Purchase Request</field>  
+          <field name="code">lea.purchase.request</field>  
+          <field name="prefix">PR/%(y)s/%(month)s/</field>  
+          <field name="padding">5</field>  
+          <field eval="1" name="number_increment"/>  
+        </record>
+        
+        <!-- Picking List -->
+		<record id="sequence_lea_picking_list" model="ir.sequence">  
+          <field name="name">LEA Picking List</field>  
+          <field name="code">lea.picking.list</field>  
+          <field name="prefix">PICK/%(y)s/%(month)s/</field>  
+          <field name="padding">5</field>  
+          <field eval="1" name="number_increment"/>  
+        </record>
+        
+        <!-- Packing List -->
+		<record id="sequence_lea_packing_list" model="ir.sequence">  
+          <field name="name">LEA Packing List</field>  
+          <field name="code">lea.packing.list</field>  
+          <field name="prefix">PACK/%(y)s/%(month)s/</field>  
+          <field name="padding">5</field>  
+          <field eval="1" name="number_increment"/>  
+        </record>        
+        
+		<!-- Rack Mutation -->
+		<record id="sequence_lea_rack_mutation" model="ir.sequence">  
+          <field name="name">LEA Rack Mutation</field>  
+          <field name="code">lea.rack.mutation</field>  
+          <field name="prefix">RACK/%(y)s/%(month)s/</field>  
+          <field name="padding">5</field>  
+          <field eval="1" name="number_increment"/>  
+        </record>        			
+ 
+ 		<!-- Putaway -->
+		<record id="sequence_lea_putaway" model="ir.sequence">  
+          <field name="name">LEA Putaway</field>  
+          <field name="code">lea.putaway</field>  
+          <field name="prefix">PUT/%(y)s/%(month)s/</field>  
+          <field name="padding">5</field>  
+          <field eval="1" name="number_increment"/>  
+        </record>
+	</data>
+</odoo>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="report_replenishment_qweb">
+		<t t-call="report.html_container">
+			<t t-as="o" t-foreach="docs">
+				<div class="page">
+					<div class="row">
+						<div class="col-xs-6">
+							<h2 t-if="o.create_uid.company_id">
+								<span t-field="o.create_uid.company_id.name"/>
+								<br/>
+							</h2>
+							<table>
+								<tr>
+									<td>Replenishment No.</td>
+									<td style="padding-left:10px;padding-right:10px;">: </td>
+									<td>
+										<span t-field="o.name" t-if="o.name"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Created Date</td>
+									<td style="padding-left:10px;padding-right:10px;">: </td>
+									<td>
+										<span t-esc="datetime.datetime.strptime(o.date, '%Y-%m-%d').strftime('%d %B %Y')" t-if="o.date"/>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-xs-12">
+							<table class="table table-bordered">
+								<t t-set="no" t-value="1"/>
+								<t t-set="total" t-value="0"/>
+								<thead>
+									<tr>
+										<th class="text-center">No.</th>
+										<th class="text-center">Barcode</th>
+										<th class="text-center">From</th>
+										<th class="text-center">To</th>
+										<th class="text-center">Qty (Pcs)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<t t-as="l" t-foreach="o.line_ids">
+										<tr>
+											<td>
+												<span t-esc="no"/>
+											</td>
+											<t t-set="no" t-value="no + 1"/>
+											<td class="text-center">
+												<span t-field="l.product_id.name"/>
+											</td>
+											<td class="text-center">
+												<span t-field="l.column_from.name"/>
+											</td>
+											<td class="text-center">
+												<span t-field="l.column_to.name"/>
+											</td>
+											<td class="text-center">
+												<span t-field="l.qty"/>
+											</td>
+											<t t-set="total" t-value="total+l.qty"/>
+										</tr>
+									</t>
+									<tr>
+										<td colspan="4">
+											<span>Total  : </span>
+										</td>
+										<td class="text-center">
+											<span t-esc="total"/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<br/>
+							<br/>
+						</div>
+					</div>
+				</div>
+				<div class="footer last-page" style="font-size: 12px;">
+					<div class="row">
+						<div class="col-xs-12">
+							<table width="100%">
+								<tr>
+									<td width="250px">Created By :</td>
+									<td width="50px"/>
+									<td width="250px">Doing By :</td>
+									<td width="50px"/>
+								</tr>
+								<tr>
+									<td height="80px"/>
+								</tr>
+								<tr>
+									<td style="border-top: 1px solid black;" width="250px">name &amp; sign.</td>
+									<td width="50px"/>
+									<td style="border-top: 1px solid black;" width="250px">name &amp; sign.</td>
+									<td width="50px"/>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</t>
+		</t>
+	</template>
+</odoo>

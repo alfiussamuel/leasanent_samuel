@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+<!-- ################### website voucher config views ####################### -->
+		<record id="voucher_config_form" model="ir.ui.view">
+			<field name="name">voucher.config.form</field>
+			<field name="model">voucher.config</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="New Gift Voucher Configuration">
+					<sheet>
+						<group>
+							<group>
+								<field name="name" required="1"/>
+								<field name="product_id" required="1"/>
+								<field name="default_value" required="1"/>
+								<field name="default_availability" required="1"/>
+								<!-- <field name="voucher_usage"/> -->
+								<field name="max_expiry_date" required="1"/>
+							</group>
+							<group >
+								<field name="active"/>
+							</group>
+						</group>
+						<notebook>
+							<page string="Default Config" name="default_config">
+								<separator string="To save Time, Choose default values to be put while creating Vouchers( -1 for unlimited ):"/>
+								<group col="4">
+									<field name="default_name"/>
+									<field name="default_validity"/>
+									
+									<field name="min_amount" required="1" />
+									<field name="max_amount" required="1"/>
+									<field name="customer_type"/>
+									
+								</group>
+							</page>
+							<page string="Advanced Config">
+								<group col="4">
+									<field name="partially_use"/>
+									<field name="partial_limit" attrs="{'invisible':[('partially_use','=',False)]}"/>
+									<field name="use_minumum_cart_value"/>
+									<field name="minimum_cart_amount" attrs="{'invisible':[('use_minumum_cart_value','=',False)]}"/>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="voucher_config_tree" model="ir.ui.view">
+			<field name="name">voucher.config.tree</field>
+			<field name="model">voucher.config</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Gift Voucher Configuration" >					
+					<field name="name"/>				
+					<field name="product_id"/>
+					<field name="min_amount"/>	
+					<field name="max_amount"/>
+					<field name="max_expiry_date"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="voucher_config_action" model="ir.actions.act_window">
+			<field name="name">Create New Voucher Configuration</field>
+			<field name="res_model">voucher.config</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="voucher_config_tree"/>
+		</record>
+
+        <menuitem  id="voucher_config_form_menu_id" name="Vouchers"  parent="sales_team.menu_sale_config" action="voucher_config_action" sequence="1"/>
+	</data>
+</openerp>

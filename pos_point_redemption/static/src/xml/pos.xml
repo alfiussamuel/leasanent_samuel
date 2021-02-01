@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="PaymentScreen-Paymentlines">
+		<t t-jquery=".paymentlines" t-operation="after">
+			<table class="paymentlines paymentline-point">
+				<tr class="paymentline selected" style="background:#6EC89B;">
+					<td colspan="1" style="padding: 0px !important;">
+						<input type="text" name="redeem_point" id="number-of-point" class="point-input" placeholder="Enter Points"/>
+					</td>
+					<td colspan="4" style="padding: 0px !important;"/>
+				</tr>
+			</table>
+            <div class='paymentlines-point-msg'>
+                <div class='msg-font'>
+                	<p id="available-point-lable" style="text-align:center;background:none 0% 0% repeat scroll rgb(220, 220, 220);"/>
+                    <p id="point-earning-text-msg" style="text-align:center;background:none 0% 0% repeat scroll rgb(220, 220, 220);"/>
+                </div>
+            </div>
+		</t>
+	</t>
+	<t t-extend="PosTicket">
+    	<t t-jquery=".receipt-change" t-operation="after">
+            <div width="1" height="1" class="recipt-sperator"></div>
+            <t t-if="order.get_client_name().length>0">
+					Note: You earned <t t-esc="order.get_point_gained()" /> point(s) on this order
+ 			</t>
+            <t t-if="order.get_client_name().length==0">
+					Note: You missed <t t-esc="order.get_missed_points()" /> point(s) on this order
+ 			</t>
+    	</t>
+	</t>	
+</templates>

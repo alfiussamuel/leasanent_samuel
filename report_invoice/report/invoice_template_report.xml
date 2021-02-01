@@ -1,0 +1,1200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="invoice_template_report_pkp">
+		<t t-call="report.html_container">
+			<t t-as="o" t-foreach="docs">
+				<t t-set="comp" t-value="request.env['res.company'].search([], order='id desc', limit=1)"/>
+				<div class="header">
+					<div class="row">
+						<div class="col-xs-4 pull-left"/>
+						<div align="center" class="col-xs-4">
+							<h3 style="text-align: center;">
+								<b>INVOICE</b>
+							</h3>
+						</div>
+						<div class="col-xs-4 pull-right">
+							<p/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<table class="first">
+								<tr>
+									<t t-if="o and 'company_id' in o">
+										<t t-set="company" t-value="o.company_id"/>
+									</t>
+									<t t-if="not o or not 'company_id' in o">
+										<t t-set="company" t-value="res_company"/>
+									</t>
+									<td>
+										<p>
+											<span t-field="company.street"/>
+											<t t-if="company.street2">
+												<t t-esc="company.street2"/>
+											</t>
+											<br/>
+											<span t-field="company.city"/>
+											<span t-field="company.state_id.name"/>- 
+											<span t-field="company.country_id.name"/></p>
+										<br/>
+										<t t-if="company.vat">
+											<p>NPWP : <span t-field="company.vat"/></p>
+										</t>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="first">
+								<tr>
+									<td width="40%">
+										<b>Page</b>
+									</td>
+									<td width="10%">: </td>
+									<td>
+										<span class="page"/> of <span class="topage"/>
+										PRINT <span t-field="o.number_of_print"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Invoice No.</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.number">
+											<!-- <span t-field="o.number"/> -->
+											<span t-field="o.nomor_faktur_id.tahun_penerbit"/>.<span t-field="o.nomor_faktur_id.nomor_urut"/>
+										</t>
+										<t t-else="">
+											<span>invoice not yet validate</span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Invoice Date</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.date_invoice">
+											<span t-esc="datetime.datetime.strptime(o.date_invoice, '%Y-%m-%d').strftime('%d %B %Y')"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Due Date</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.date_due">
+											<span t-esc="datetime.datetime.strptime(o.date_due, '%Y-%m-%d').strftime('%d %B %Y')"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>TOP</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.payment_term_id">
+											<span t-esc="o.payment_term_id.name"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Salesman</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.user_id.name">
+											<span t-esc="o.user_id.name"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4" style="margin-top:-32px;">
+							<table class="first">
+								<tr>
+									<td>
+										<span>
+											<b>To :</b>
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>
+											<span t-field="o.partner_id.npwp_name"/>
+										</b>
+									</td>
+								</tr>
+							
+								<tr>
+									<td>
+										<span t-field="o.partner_id.taxation_street"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span t-field="o.partner_id.taxation_street2"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span t-field="o.partner_id.taxation_kabupaten_id.name"/>
+										<span t-field="o.partner_id.taxation_postal_code"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span>NPWP : <span t-field="o.partner_id.npwp_id"/></span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<br/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span t-field="o.partner_id.warehouse_code"/> - <span t-field="o.partner_id.name"/>
+									</td>
+								</tr>
+
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="page">
+					<div class="col-xs-12">
+						<table class="table table-condensed" width="100%" >
+							<t t-set="product_category" t-value="[]"/>
+							<t t-set="no" t-value="1"/>
+							<t t-set="category" t-value="False"/>
+							<t t-set="group" t-value="False"/>
+							<thead>
+							<tr>
+								<th style="width: 5%">No.</th>
+								<th style="width: 15%">Article No.</th>
+								<th style="width: 20%">Item Descriptions</th>
+								<th class="text-right" style="width: 12%">UOM</th>
+								<th class="text-right" style="width: 10%">Qty</th>
+								<th class="text-right" style="width: 15%">Price (Rp.)</th>
+								<th class="text-right" style="width: 15%">Amount (Rp.)</th>
+							</tr>
+						</thead>
+
+							<tr t-as="l" t-foreach="o.invoice_line_ids">
+								<t t-set="product_category" t-value="product_category+[l.product_id.categ_id]"/>
+							</tr>
+							<tr t-as="category" t-foreach="set(product_category)">
+								<t t-set="qty" t-value="0"/>
+								<t t-set="total" t-value="0"/>
+								<t t-set="article_code" t-value="False"/>
+								<t t-set="description" t-value="False"/>
+								<t t-set="uom" t-value="False"/>
+								<t t-set="price" t-value="0"/>
+								<t t-set="total" t-value="0"/>
+								<tr t-as="l" t-foreach="o.invoice_line_ids">
+									<t t-if="category.id == l.product_id.categ_id.id">
+										<td style="display:none;">
+											<span t-esc="no"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="l.product_id.product_article_code"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="l.product_id.product_category_id.name"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="l.uom_id.name"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="int(l.quantity)"/>
+										</td>
+										<td style="display:none;">
+											<!-- <span t-field="l.price_unit" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;}"/> -->
+											<span t-esc="'{0:,.2f}'.format(l.lea_sell_price)"/>
+										</td>
+										<td style="display:none;">
+											<!-- <span t-field="l.subtotal_invoice" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;}"/> -->
+											<span t-esc="'{0:,.2f}'.format(l.subtotal_invoice)"/>
+										</td>
+										<t t-set="qty" t-value="qty+l.quantity"/>
+										<t t-set="article_code" t-value="l.product_id.product_article_code"/>
+										<t t-set="description" t-value="l.product_id.product_category_id.name"/>
+										<t t-set="uom" t-value="l.uom_id.name"/>
+										<!-- <t t-set="price" t-value="l.price_unit"/>
+										<t t-set="total" t-value="total+l.subtotal_invoice"/> -->
+										<t t-set="price" t-value="l.lea_sell_price"/>
+										<t t-set="total" t-value="total+(l.lea_sell_price*l.quantity)"/>
+									</t>
+								</tr>
+								<tr style="border-bottom:1px solid black;">
+									<td>
+										<span t-esc="no"/>
+									</td>
+									<t t-set="no" t-value="no + 1"/>
+									<td>
+										<span t-esc="article_code"/>
+									</td>
+									<td>
+										<span t-esc="description"/>
+									</td>
+									<td class="text-right">
+										<span t-esc="uom"/>
+									</td>
+									<td class="text-right">
+										<span t-esc="int(qty)"/>
+									</td>
+									<td class="text-right">
+										<!-- <span t-esc="price" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/> -->
+										<span t-esc="'{0:,.2f}'.format(price)"/>
+									</td>
+									<td class="text-right">
+										<span t-esc="total" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+									</td>
+								</tr>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+				<div class="footer">
+					<div class="col-xs-6">
+						<div class="row">
+							<div class="col-xs-12 pull-left">
+								<span class="text-left">printed </span>
+								<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"/>
+								<span>by  :</span>
+								<span t-esc="o.create_uid.partner_id.name"/>
+								<br/>
+								<br/>
+								<span style="margin-left:100px;">Validation; </span>
+								<br/>
+								<span class="text-center">Sales Admin </span>
+								<span style="margin-left:120px;">Accounting </span>
+								<br/>
+								<br/>
+								<br/>
+								<br/>
+								<span class="text-center">________________</span>
+								<span style="margin-left:70px;">_________________</span>
+								<br/>
+								<span class="text-center">name, sign </span>
+								<span style="margin-left:120px;">name, sign, co stamp</span>
+							</div>
+
+							<div class="col-xs-12">
+								<b>
+									<span>DO No. :
+                                        </span>
+								</b>
+								<t t-if="o.origin">
+									<span t-esc="get_sale[0]['do_number']"/>
+								</t>
+								<t t-else="">
+									<span>- </span>
+								</t>
+							</div>
+							<div class="col-xs-12">
+								<b>
+									<span>Ref. :
+                                        </span>
+								</b>
+								<span t-field="o.number"/>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xs-6 pull-right last-page" style="page-break-inside: avoid;">
+						<table class="table table-condensed">
+							<tr class="border-black">
+								<td>
+									<strong>Subtotal</strong>
+								</td>
+								<td class="text-right"> <span t-field="o.amount_total_qty"/> Pcs </td>
+								<td class="text-right">
+								</td>
+								<td class="text-right">
+									<span t-esc="o.total_before_discount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+									<!-- <span t-esc="o.amount_untaxed+o.total_discount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/> -->
+								</td>
+							</tr>
+							<tr class="border-black">
+								<t t-set="total_disc" t-value="o.total_discount+o.total_margin_invoice"/>
+								<td>
+									<strong>Discount</strong>
+								</td>
+								<td> </td>
+								<td class="text-right">
+									<span> (
+										<span t-esc="'{0:,.2f}'.format((o.total_margin_invoice/(o.total_before_discount)*100))"/>%
+										+ 
+										<span t-esc="'{0:,.2f}'.format((o.total_discount/(o.total_before_discount)*100))"/>%
+										)
+									</span>
+								</td>
+								<td class="text-right">
+									<span t-esc="total_disc" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+								</td>
+							</tr>
+							<tr class="border-black">
+								<td>
+									<strong>DPP</strong>
+								</td>
+								<td> </td>
+								<td class="text-right"/>
+								<td class="text-right">
+									<span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+								</td>
+							</tr>
+							<tr class="border-black">
+								<td>
+									<strong>PPN</strong>
+								</td>
+								<td> </td>
+								<td class="text-right">
+									<span> (DPP x 10%)</span>
+								</td>
+								<td class="text-right">
+									<span t-esc="int(o.amount_tax)" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+								</td>
+							</tr>
+							<tr class="border-black">
+								<td>
+									<strong>Total</strong>
+								</td>
+								<td> </td>
+								<td class="text-right">
+									<span>(DPP + PPN) </span>
+								</td>
+								<td class="text-right">
+									<span t-esc="o.amount_untaxed + o.amount_tax" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+								</td>
+							</tr>
+						</table>
+					
+						<div class="col-xs-12" style="clear:both;">
+							<strong>Total terbilang :</strong>
+							<span t-esc="o.total_terbilang(o.amount_total)"/>
+							<br/>
+						</div>
+					</div>
+				</div>
+
+			</t>
+		</t>
+	</template>
+
+	<!-- NON PKP -->
+	<template id="invoice_template_report_non_pkp">
+		<t t-call="report.html_container">
+			<t t-as="o" t-foreach="docs">
+				<t t-set="comp" t-value="request.env['res.company'].search([], order='id desc', limit=1)"/>
+				<div class="header">
+					<!-- <div class="pull-right">
+						<div class="row">
+							<center>
+								<span>Page </span>
+								<span class="page"/>OF 
+								<span class="topage"/>
+							</center>
+						</div>
+					</div> -->
+					<div class="row">
+						<div class="col-xs-4 pull-left"/>
+						<div align="center" class="col-xs-4">
+							<h3 style="text-align: center;">
+								<b>INVOICE</b>
+							</h3>
+						</div>
+						<div class="col-xs-4 pull-right">
+							<p/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4"/>
+						<div class="col-xs-4">
+							<table class="first">
+								<tr>
+									<td width="40%">
+										<b>Page</b>
+									</td>
+									<td width="10%">: </td>
+									<td>
+										<span class="page"/> of <span class="topage"/>
+										PRINT <span t-field="o.number_of_print"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Invoice No.</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.number">
+											<span t-field="o.number"/>
+										</t>
+										<t t-else="">
+											<span>invoice not yet validate</span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Invoice Date</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.date_invoice">
+											<span t-esc="datetime.datetime.strptime(o.date_invoice, '%Y-%m-%d').strftime('%d %B %Y')"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Due Date</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.date_due">
+											<span t-esc="datetime.datetime.strptime(o.date_due, '%Y-%m-%d').strftime('%d %B %Y')"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>TOP</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.payment_term_id">
+											<span t-esc="o.payment_term_id.name"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Salesman</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.user_id.name">
+											<span t-esc="o.user_id.name"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4" style="margin-top:-32px;">
+							<table class="first">
+								<tr>
+									<td>
+										<span>
+											<b>To :</b>
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>
+											<span t-field="o.partner_id.billing_name"/>
+										</b>
+									</td>
+								</tr>
+								<t t-if="o.partner_id.billing_from_main">
+									<tr>
+										<td>
+											<span t-field="o.partner_id.street"/>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span t-field="o.partner_id.street2"/>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span t-field="o.partner_id.kabupaten_id.name"/>
+											<span t-field="o.partner_id.zip"/>
+										</td>
+									</tr>
+								</t>
+								<t t-else="">
+									<tr>
+										<td>
+											<span t-field="o.partner_id.billing_street"/>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span t-field="o.partner_id.billing_street2"/>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span t-field="o.partner_id.billing_kabupaten_id.name"/>
+											<span t-field="o.partner_id.billing_postal_code"/>
+										</td>
+									</tr>
+								</t>
+								<tr>
+									<td>
+										<br/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span t-field="o.partner_id.warehouse_code"/> - <span t-field="o.partner_id.name"/>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="page">
+					<div class="col-xs-12" style="page-break-after: always;">
+						<table class="table table-condensed" width="100%">
+							<t t-set="product_category" t-value="[]"/>
+							<t t-set="no" t-value="1"/>
+							<t t-set="category" t-value="False"/>
+							<t t-set="group" t-value="False"/>
+							<tr>
+								<th style="width: 5%">No.</th>
+								<th style="width: 15%">Article No.</th>
+								<th style="width: 20%">Item Descriptions</th>
+								<th class="text-right" style="width: 12%">UOM</th>
+								<th class="text-right" style="width: 10%">Qty</th>
+								<th class="text-right" style="width: 15%">Price (Rp.)</th>
+								<th class="text-right" style="width: 15%">Amount (Rp.)</th>
+							</tr>
+							<tr t-as="l" t-foreach="o.invoice_line_ids">
+								<t t-set="product_category" t-value="product_category+[l.product_id.categ_id]"/>
+							</tr>
+							<tr t-as="category" t-foreach="set(product_category)">
+								<t t-set="qty" t-value="0"/>
+								<t t-set="article_code" t-value="False"/>
+								<t t-set="description" t-value="False"/>
+								<t t-set="uom" t-value="False"/>
+								<t t-set="price" t-value="0"/>
+								<t t-set="total" t-value="0"/>
+								
+								<tr t-as="l" t-foreach="o.invoice_line_ids">
+									<t t-if="category.id == l.product_id.categ_id.id">
+										<td style="display:none;">
+											<span t-esc="no"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="l.product_id.product_article_code"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="l.product_id.product_category_id.name"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="l.uom_id.name"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="int(l.quantity)"/>
+										</td>
+										<td style="display:none;">
+											<!-- <span t-field="l.price_unit" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;}"/> -->
+											<span t-esc="'{0:,.2f}'.format(l.lea_sell_price)"/>
+										</td>
+										<td style="display:none;">
+											<!-- <span t-field="l.subtotal_invoice" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;}"/> -->
+											<span t-esc="'{0:,.2f}'.format(l.subtotal_invoice)"/>
+										</td>
+										<t t-set="qty" t-value="qty+l.quantity"/>
+										<t t-set="article_code" t-value="l.product_id.product_article_code"/>
+										<t t-set="description" t-value="l.product_id.product_category_id.name"/>
+										<t t-set="uom" t-value="l.uom_id.name"/>
+										<!-- <t t-set="price" t-value="l.price_unit"/> -->
+										<t t-set="price" t-value="l.lea_sell_price"/>
+										<t t-set="total" t-value="total+l.subtotal_invoice"/>
+									</t>
+								</tr>
+								<tr style="border-bottom:1px solid black;">
+									<td>
+										<span t-esc="no"/>
+									</td>
+									<t t-set="no" t-value="no + 1"/>
+									<td>
+										<span t-esc="article_code"/>
+									</td>
+									<td>
+										<span t-esc="description"/>
+									</td>
+									<td class="text-right">
+										<span t-esc="uom"/>
+									</td>
+									<td class="text-right">
+										<span t-esc="int(qty)"/>
+									</td>
+									<td class="text-right">
+										<!-- <span t-esc="price" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/> -->
+										<!-- <span t-esc="'{0:,.2f}'.format(price)"/> -->
+										<span t-esc="'{0:,.2f}'.format(price*1.1)"/>
+									</td>
+									<td class="text-right">
+										<!-- <span t-esc="total" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/> -->
+										<!-- <span t-esc="'{0:,.2f}'.format(total)"/> -->
+										<span t-esc="'{0:,.2f}'.format(total*1.1)"/>
+									</td>
+								</tr>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="footer">
+					<div class="col-xs-6">
+						<div class="row">
+							<div class="col-xs-12 pull-left">
+								<span class="text-left">printed </span>
+								<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"/>
+								<span>by  :</span>
+								<span t-esc="o.create_uid.partner_id.name"/>
+								<br/>
+								<br/>
+								<span style="margin-left:100px;">Validation; </span>
+								<br/>
+								<span class="text-center">Sales Admin </span>
+								<span style="margin-left:120px;">Accounting </span>
+								<br/>
+								<br/>
+								<br/>
+								<br/>
+								<span class="text-center">________________</span>
+								<span style="margin-left:70px;">_________________</span>
+								<br/>
+								<span class="text-center">name, sign </span>
+								<span style="margin-left:120px;">name, sign, co stamp</span>
+							</div>
+
+							<div class="col-xs-12">
+								<b>
+									<span>DO No. :
+                                        </span>
+								</b>
+								<t t-if="o.origin">
+									<span t-esc="get_sale[0]['do_number']"/>
+								</t>
+								<t t-else="">
+									<span>- </span>
+								</t>
+							</div>
+							<div class="col-xs-12">
+								<b>
+									<span>Ref. :
+                                        </span>
+								</b>
+								<t t-if="o.partner_id.type_counting_margin in ['ds1p','ds2p','tpp']">
+									<span t-field="o.nomor_faktur_id.name"/>
+								</t>
+								<t t-else="">
+									<span t-field="o.number"/>
+								</t>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xs-6 pull-right last-page" style="page-break-inside: avoid;">
+						<table class="table table-condensed">
+							<tr class="border-black">
+									<td>
+									  <strong>Subtotal</strong>
+									</td>
+									<td class="text-right"> <span t-field="o.amount_total_qty"/> Pcs </td>
+									<td class="text-right"></td>
+									<td class="text-right">
+										<span t-esc="o.total_before_discount*1.1" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+									</td>
+							</tr>
+							<tr class="border-black">
+								<t t-set="total_disc" t-value="o.total_discount+o.total_margin_invoice"/>
+								<td>
+									<strong>Discount</strong>
+								</td>
+								<td class="text-right"></td>
+								<td class="text-right">
+									<span> (
+										<span t-esc="'{0:,.2f}'.format((o.total_margin_invoice/(o.total_before_discount)*100))"/>%
+										+ 
+										<span t-esc="'{0:,.2f}'.format((o.total_discount/(o.total_before_discount)*100))"/>%
+										)
+									</span>
+								</td>
+								<td class="text-right">
+										<span t-esc="(o.total_discount+o.total_margin_invoice)*1.1" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+									</td>
+							</tr>
+							<tr class="border-black">
+								<td>
+									<strong>Total</strong>
+								</td>
+								<td class="text-right"></td>
+								<td class="text-right">
+								</td>
+								<td class="text-right">
+									<span t-esc="o.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+								</td>
+							</tr>
+						</table>
+
+						<div class="col-xs-12 pull-right">
+							<strong>Total terbilang :</strong>
+							<span t-esc="o.total_terbilang(o.amount_total)"/>
+							<br/>
+						</div>
+					</div>
+				</div>
+			</t>
+		</t>
+	</template>
+
+	<!-- Invoice Retur -->
+	<template id="invoice_template_report_retur">
+		<t t-call="report.html_container">
+			<t t-as="o" t-foreach="docs">
+				<t t-set="comp" t-value="request.env['res.company'].search([], order='id desc', limit=1)"/>
+				<div class="header">
+					<div class="row">
+						<div class="col-xs-4 pull-left"/>
+						<div align="center" class="col-xs-4">
+							<h3 style="text-align: center;">
+								<b>INVOICE RETUR</b>
+							</h3>
+						</div>
+						<div class="col-xs-4 pull-right">
+							<p/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<table class="first">
+								<tr>
+									<t t-if="o and 'company_id' in o">
+										<t t-set="company" t-value="o.company_id"/>
+									</t>
+									<t t-if="not o or not 'company_id' in o">
+										<t t-set="company" t-value="res_company"/>
+									</t>
+									<td>
+										<p>
+											<span t-field="company.street"/>
+											<t t-if="company.street2">
+												<t t-esc="company.street2"/>
+											</t>
+											<br/>
+											<span t-field="company.city"/>
+											<span t-field="company.state_id.name"/>-
+											<span t-field="company.country_id.name"/></p>
+										<br/>
+										<t t-if="company.vat">
+											<p>NPWP : <span t-field="company.vat"/></p>
+										</t>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4">
+							<table class="first">
+								<tr>
+									<td width="40%">
+										<b>Page</b>
+									</td>
+									<td width="10%">: </td>
+									<td>
+										<span class="page"/> of <span class="topage"/>
+										PRINT <span t-field="o.number_of_print"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>No Retur.</b>
+									</td>
+									<td>: </td>
+									<td>
+
+										 <span t-field="o.nomor_faktur_id.tahun_penerbit"/>.<span t-field="o.nomor_faktur_id.nomor_urut"/>
+										 <t t-if="o.partner_id.type_counting_margin in ['ds1p','ds2p','tpp']">
+											<span t-field="o.nomor_faktur_id.name"/>
+										 </t>
+										 <t t-else="">
+											<span t-field="o.number_internal_retur"/>
+										 </t>
+
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Invoice Date</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.date_invoice">
+											<span t-esc="datetime.datetime.strptime(o.date_invoice, '%Y-%m-%d').strftime('%d %B %Y')"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Due Date</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.date_due">
+											<span t-esc="datetime.datetime.strptime(o.date_due, '%Y-%m-%d').strftime('%d %B %Y')"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>TOP</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.payment_term_id">
+											<span t-esc="o.payment_term_id.name"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Salesman</b>
+									</td>
+									<td>: </td>
+									<td>
+										<t t-if="o.user_id.name">
+											<span t-esc="o.user_id.name"/>
+										</t>
+										<t t-else="">
+											<span>- </span>
+										</t>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-4" style="margin-top:-32px;">
+							<table class="first">
+								<tr>
+									<td>
+										<span>
+											<b>To :</b>
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>
+											<span t-field="o.partner_id.billing_name"/>
+										</b>
+									</td>
+								</tr>
+								<t t-if="o.partner_id.billing_from_main">
+									<tr>
+										<td>
+											<span t-field="o.partner_id.street"/>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span t-field="o.partner_id.street2"/>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span t-field="o.partner_id.kabupaten_id.name"/>
+											<span t-field="o.partner_id.zip"/>
+										</td>
+									</tr>
+								</t>
+								<t t-else="">
+									<tr>
+										<td>
+											<span t-field="o.partner_id.billing_street"/>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span t-field="o.partner_id.billing_street2"/>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span t-field="o.partner_id.billing_kabupaten_id.name"/>
+											<span t-field="o.partner_id.billing_postal_code"/>
+										</td>
+									</tr>
+								</t>
+								<tr>
+									<td>
+										<br/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span t-field="o.partner_id.warehouse_code"/> - <span t-field="o.partner_id.name"/>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="page">
+					<div class="col-xs-12">
+						<table class="table table-condensed" width="100%" >
+							<t t-set="product_category" t-value="[]"/>
+							<t t-set="no" t-value="1"/>
+							<t t-set="category" t-value="False"/>
+							<t t-set="group" t-value="False"/>
+							<thead>
+							<tr>
+								<th style="width: 5%">No.</th>
+								<th style="width: 15%">Article No.</th>
+								<th style="width: 20%">Item Descriptions</th>
+								<th class="text-right" style="width: 12%">UOM</th>
+								<th class="text-right" style="width: 10%">Qty</th>
+								<th class="text-right" style="width: 15%">Price (Rp.)</th>
+								<th class="text-right" style="width: 15%">Amount (Rp.)</th>
+							</tr>
+						</thead>
+
+							<tr t-as="l" t-foreach="o.invoice_line_ids">
+								<t t-set="product_category" t-value="product_category+[l.product_id.categ_id]"/>
+							</tr>
+							<tr t-as="category" t-foreach="set(product_category)">
+								<t t-set="qty" t-value="0"/>
+								<t t-set="total" t-value="0"/>
+								<t t-set="article_code" t-value="False"/>
+								<t t-set="description" t-value="False"/>
+								<t t-set="uom" t-value="False"/>
+								<t t-set="price" t-value="0"/>
+								<t t-set="total" t-value="0"/>
+								<tr t-as="l" t-foreach="o.invoice_line_ids">
+									<t t-if="category.id == l.product_id.categ_id.id">
+										<td style="display:none;">
+											<span t-esc="no"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="l.product_id.product_article_code"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="l.product_id.product_category_id.name"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="l.uom_id.name"/>
+										</td>
+										<td style="display:none;">
+											<span t-esc="int(l.quantity)"/>
+										</td>
+										<td style="display:none;">
+											<!-- <span t-field="l.price_unit" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;}"/> -->
+											<span t-esc="'{0:,.2f}'.format(l.lea_sell_price)"/>
+										</td>
+										<td style="display:none;">
+											<!-- <span t-field="l.subtotal_invoice" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;}"/> -->
+											<span t-esc="'{0:,.2f}'.format(l.subtotal_invoice)"/>
+										</td>
+										<t t-set="qty" t-value="qty+l.quantity"/>
+										<t t-set="article_code" t-value="l.product_id.product_article_code"/>
+										<t t-set="description" t-value="l.product_id.product_category_id.name"/>
+										<t t-set="uom" t-value="l.uom_id.name"/>
+										<!-- <t t-set="price" t-value="l.price_unit"/>
+										<t t-set="total" t-value="total+l.subtotal_invoice"/> -->
+										<t t-set="price" t-value="l.lea_sell_price"/>
+										<t t-set="total" t-value="l.lea_net_amount"/>
+									</t>
+								</tr>
+								<tr style="border-bottom:1px solid black;">
+									<td>
+										<span t-esc="no"/>
+									</td>
+									<t t-set="no" t-value="no + 1"/>
+									<td>
+										<span t-esc="article_code"/>
+									</td>
+									<td>
+										<span t-esc="description"/>
+									</td>
+									<td class="text-right">
+										<span t-esc="uom"/>
+									</td>
+									<td class="text-right">
+										<span t-esc="int(qty)"/>
+									</td>
+									<td class="text-right">
+										<!-- <span t-esc="price" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/> -->
+										<span t-esc="'{0:,.2f}'.format(price)"/>
+									</td>
+									<td class="text-right">
+										<span t-esc="total" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+									</td>
+								</tr>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+				<div class="footer">
+					<div class="col-xs-6">
+						<div class="row">
+							<div class="col-xs-12 pull-left">
+								<span class="text-left">printed </span>
+								<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"/>
+								<span>by  :</span>
+								<span t-esc="o.create_uid.partner_id.name"/>
+								<br/>
+								<br/>
+								<span style="margin-left:100px;">Validation; </span>
+								<br/>
+								<span class="text-center">Sales Admin </span>
+								<span style="margin-left:120px;">Accounting </span>
+								<br/>
+								<br/>
+								<br/>
+								<br/>
+								<span class="text-center">________________</span>
+								<span style="margin-left:70px;">_________________</span>
+								<br/>
+								<span class="text-center">name, sign </span>
+								<span style="margin-left:120px;">name, sign, co stamp</span>
+							</div>
+
+							<div class="col-xs-12">
+								<b>
+									<span>DO No. :
+                                        </span>
+								</b>
+
+								<span t-field="o.picking_id.name"/>
+
+							</div>
+							<div class="col-xs-12">
+								<b>
+									<span>Ref. :
+                                        </span>
+								</b>
+								 <span t-field="o.first_invoice_id.nomor_faktur_id.tahun_penerbit"/>.<span t-field="o.first_invoice_id.nomor_faktur_id.nomor_urut"/>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xs-6 pull-right last-page" style="page-break-inside: avoid;">
+						<table class="table table-condensed">
+							<tr class="border-black">
+								<td>
+									<strong>Subtotal</strong>
+								</td>
+								<td class="text-right"> <span t-field="o.amount_total_qty"/> Pcs </td>
+								<td class="text-right">
+								</td>
+								<td class="text-right">
+									<span t-esc="o.total_before_discount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+									<!-- <span t-esc="o.amount_untaxed+o.total_discount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/> -->
+								</td>
+							</tr>
+							<tr class="border-black">
+								<t t-set="total_disc" t-value="o.total_discount+o.total_margin_invoice"/>
+								<td>
+									<strong>Discount</strong>
+								</td>
+								<td> </td>
+								<td class="text-right">
+									<span> (
+										<span t-esc="'{0:,.2f}'.format((o.total_margin_invoice/(o.total_before_discount)*100))"/>%
+										+
+										<span t-esc="'{0:,.2f}'.format((o.total_discount/(o.total_before_discount)*100))"/>%
+										)
+									</span>
+								</td>
+								<td class="text-right">
+									<span t-esc="total_disc" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+								</td>
+							</tr>
+							<tr class="border-black">
+								<td>
+									<strong>DPP</strong>
+								</td>
+								<td> </td>
+								<td class="text-right"/>
+								<td class="text-right">
+									<span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+								</td>
+							</tr>
+							<tr class="border-black">
+								<td>
+									<strong>PPN</strong>
+								</td>
+								<td> </td>
+								<td class="text-right">
+									<span> (DPP x 10%)</span>
+								</td>
+								<td class="text-right">
+									<span t-esc="int(o.amount_tax)" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+								</td>
+							</tr>
+							<tr class="border-black">
+								<td>
+									<strong>Total</strong>
+								</td>
+								<td> </td>
+								<td class="text-right">
+									<span>(DPP + PPN) </span>
+								</td>
+								<td class="text-right">
+									<span t-esc="o.amount_untaxed + o.amount_tax" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+								</td>
+							</tr>
+						</table>
+
+						<div class="col-xs-12" style="clear:both;">
+							<strong>Total terbilang :</strong>
+							<span t-esc="o.total_terbilang(o.amount_total)"/>
+							<br/>
+						</div>
+					</div>
+				</div>
+
+			</t>
+		</t>
+	</template>
+</odoo>

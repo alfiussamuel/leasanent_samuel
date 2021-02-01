@@ -1,0 +1,139 @@
+<odoo>
+	<data>
+
+		<record id="lea_stock_replenishment_tree_view" model="ir.ui.view">
+			<field name="name">lea.stock.replenishment.tree.view</field>
+			<field name="model">lea.stock.replenishment</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<tree string="Stock Replenishment">
+					<field name="date"/>
+					<field name="month"/>
+					<field name="state"/>
+					<field name="warehouse_id"/>
+					<field name="group_moving_id"/>
+					<field name="product_category_ids"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="lea_stock_replenishment_form_view" model="ir.ui.view">
+			<field name="name">lea.stock.replenishment.tree.view</field>
+			<field name="model">lea.stock.replenishment</field>
+			<field name="type">form</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button string="Display Category" states='draft' type="object" name="button_generate" class="oe_highlight"/>
+						<button string="Preview Replenishment" states='draft' type="object" name="button_generate_2" class="oe_highlight"/>
+						<button string="Create Draft Replenishment" states='draft' type="object" name="button_create_replenishment" class="oe_highlight" confirm="Yakin anda akan membuat draft internal transfer dengan data ini ?"/>
+						<field name="state" widget="statusbar" readonly="1"/>
+					</header>
+					<sheet>
+						<div name="button_box" class="oe_button_box">		                    
+		                    <button class="oe_stat_button" name="action_view_replenishment" type="object" icon="fa-files-o">
+		                        <field string="Replenishment" name="replenishment_count" widget="statinfo" />
+		                    </button>
+		                </div>
+						<label for="name" class="oe_edit_only" />
+						<h1>
+							<field name="name" readonly="1"/>
+						</h1>						
+						<group cols="2">
+							<group>
+						        <field name="date" required="1"/>
+						        <field name="area_id" required="1" options='{"no_open": True, "no_create": True}'/>
+						        <field name="warehouse_id" required="1" options='{"no_open": True, "no_create": True}' domain="[('wh_area_id','=',area_id)]"/>
+						        <field name="group_moving_id" required="1" options='{"no_open": True, "no_create": True}'/>
+							</group>
+							<group>
+								<field name="year" required="1"/>
+						        <field name="month" required="1"/>
+						        <field name="start_date"/>
+						        <field name="end_date"/>
+						        <field name="start_date_avg_sales" string="Transaction Start Date"/>
+						        <field name="end_date_avg_sales" string="Transaction End Date"/>
+							</group>
+						</group>
+
+						<group>
+						   	<field name="product_category_ids" options='{"no_open": True, "no_create": True}' required="1" widget="many2many_tags"/>
+						</group>
+
+						<group cols="2" string="Warehouse Information">
+							<group>
+						        <field name="stock_onstage"/>
+						        <field name="stock_buffer"/>
+						        <field name="stock_total"/>
+							</group>
+							<group>
+						        <field name="lead_time" required="1"/>
+						        <field name="avg_sales" required="1"/>
+						        <field name="total_avg_sales" invisible="1"/>
+						        <field name="trigger_total_average_sales" invisible="0"/>
+							</group>
+						</group>
+
+						<group string="Category(s)">
+							<field name="product_category_line" nolabel="1">
+								<tree editable="bottom" readonly="1">
+									<field name="category_id" options='{"no_open": True, "no_create": True}'/>
+									<field name="ito"/>
+									<field name="ratio"/>
+									<field name="stock_capacity"/>
+									<field name="stock_min"/>
+									<field name="stock_max"/>
+								</tree>
+							</field>
+						</group>
+
+						<group string="Product(s)">
+							<field name="product_line" nolabel="1">
+								<tree editable="bottom" readonly="1">
+									<field name="product_id" options='{"no_open": True, "no_create": True}'/>
+									<field name="theory_beginning" readonly="1" sum="Total Beginning"/>
+									<field name="theory_received" readonly="1" sum="Total Received"/>
+									<field name="theory_sales" readonly="1" sum="Total Sales"/>
+									<field name="theory_internal" readonly="1" sum="Total Internal"/>
+									<field name="theory_intransit" readonly="1" sum="Total In Transit"/>
+									<field name="theory_adjustment" readonly="1" sum="Total Adjustment"/>
+									<field name="theory_ending" readonly="1" sum="Total Ending"/>
+									<field name="avg_sales"/>
+									<field name="contribution" sum="Total Contribution"/>
+									<field name="over_stock" sum="Total Over Stock"/>
+									<field name="draft_suggest" sum="Total Suggest"/>
+									<field name="draft_headquater" sum="Total Stock HQ" readonly="1"/>
+									<field name="draft_replenishment" sum="Total Replenishment"/>
+								</tree>
+							</field>
+						</group>
+
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="action_lea_stock_replenishment" model="ir.actions.act_window">
+			<field name="name">Stock Replenishment</field>
+			<field name="res_model">lea.stock.replenishment</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new data
+				</p>
+				<p>klik tombol create untuk membuat Replenishment baru</p>
+			</field>
+		</record>
+
+
+        <menuitem id="menu_lea_inventory_stock_replenishment" 
+			name="Replenishment" 			
+			sequence="12" 
+			parent="stock.menu_stock_warehouse_mgmt"/>
+
+        <menuitem id="menu_lea_stock_replenishment" name="Stock Replenishment" parent="v10_lea.menu_lea_inventory_stock_replenishment" action="action_lea_stock_replenishment" sequence="102"/>
+
+	</data>
+</odoo>

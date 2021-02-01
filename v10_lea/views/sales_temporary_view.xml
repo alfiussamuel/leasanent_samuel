@@ -1,0 +1,78 @@
+<odoo>
+	<data>
+
+		<record id="lea_sales_summary_tree_view" model="ir.ui.view">
+			<field name="name">lea.sales.summary.tree.view</field>
+			<field name="model">lea.sales.summary</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<tree string="Sales Summary">
+					<field name="year"/>
+					<field name="warehouse_id"/>
+					<field name="product_id"/>
+					<field name="total_qty_1"/>
+					<field name="total_qty_2"/>
+					<field name="total_qty_3"/>
+					<field name="total_qty_4"/>
+					<field name="total_qty_5"/>
+					<field name="total_qty_6"/>
+					<field name="total_qty_7"/>
+					<field name="total_qty_8"/>
+					<field name="total_qty_9"/>
+					<field name="total_qty_10"/>
+					<field name="total_qty_11"/>
+					<field name="total_qty_12"/>
+					<field name="total_sales"/>
+				</tree>
+			</field>
+		</record>
+
+<!-- 
+		<record id="lea_sales_summary_form_view" model="ir.ui.view">
+			<field name="name">lea.sales.summary.form.view</field>
+			<field name="model">lea.sales.summary</field>
+			<field name="type">form</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group cols="2">
+							<group>
+						        <field name="month" required="1"/>
+						        <field name="warehouse_id" options='{"no_open": True, "no_create": True}'/>
+							</group>
+							<group>
+						        <field name="year" required="1"/>
+						        <field name="total_sales"/>
+							</group>
+						</group>
+
+						<group string="Product(s)">
+							<field name="product_ids" nolabel="1">
+								<tree editable="bottom">
+									<field name="product_id" options='{"no_open": True, "no_create": True}' required="1"/>
+									<field name="total_sales" required="1"/>
+								</tree>
+							</field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record> -->
+
+		<record id="action_lea_sales_summary" model="ir.actions.act_window">
+			<field name="name">Sales Summary (Inject)</field>
+			<field name="res_model">lea.sales.summary</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new data
+				</p>
+				<p>klik tombol create untuk membuat sales summary baru</p>
+			</field>
+		</record>
+
+        <menuitem id="menu_lea_sales_summary" name="Sales Summary (Inject)" parent="v10_lea.menu_lea_inventory_stock_replenishment" action="action_lea_sales_summary" sequence="103"/>
+
+	</data>
+</odoo>

@@ -1,0 +1,5 @@
+import report_pos_sale_outlet
+import report_pos_order
+import report_summary_sales_performance_class
+import report_summary_sales_performance_channel
+import report_summary_sales_performance_comparison

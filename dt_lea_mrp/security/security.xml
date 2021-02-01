@@ -1,0 +1,9 @@
+<odoo>
+  <data noupdate="0">
+    
+    <!-- <record id="group_staf" model="res.groups">
+      <field name="name">Pemasaran / Staf</field>
+    </record> -->
+
+  </data>
+</odoo>

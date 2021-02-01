@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	
+    <record id="as_accounting_report_view" model="ir.ui.view">
+        <field name="name">Accounting Report</field>
+        <field name="model">as.accounting.report</field>
+        <field name="arch" type="xml">
+			<form string="Accounting Report">
+				<field invisible="1" name="state_x"/>
+				<group attrs="{'invisible':[('state_x','!=','get')]}">
+					<separator colspan="4" string="Report telah berhasil digenerate, klik link dibawah untuk men-download... "/>
+					<field name="name" invisible="1" width="100"/>
+					<field name="data_x" nolabel="1" readonly="0" width="100" filename="name"/>
+				</group>
+
+				<group col="4">
+                    <field name="company_id" options="{'no_create':'1','no_open':'1'}"  required="1"/>
+                    <field name="account_report_id" options="{'no_create':'1','no_open':'1'}" domain="[('parent_id','=',False),('company_id','=',company_id),('is_detail','=',False)]"/>
+					<field name="target_move" widget="radio"/>
+					<field name="year"/>
+					<field name="month"/>
+					<field name="date_from" invisible="0"/>
+					<field name="date_to" invisible="0"/>
+				</group>
+				<group>
+					<field name="journal_ids" widget="many2many_tags" options="{'no_create': True}" invisible="1"/>
+				</group>
+				<newline/>
+				<footer attrs="{'invisible':[('state_x','=','get')]}" >
+					<button name="check_report" string="Print" type="object" default_focus="1" class="oe_highlight"/>
+					or
+					<button string="Cancel" class="oe_link" special="cancel" />
+				</footer>
+			</form>
+        </field>
+    </record>
+
+
+    <record id="action_account_report" model="ir.actions.act_window">
+        <field name="name">Financial Reports</field>
+        <field name="res_model">as.accounting.report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="as_accounting_report_view"/>
+        <field name="target">new</field>
+    </record>
+
+	<menuitem id="menu_account_report_excel" name="Excel" parent="account.menu_finance_reports" groups="account.group_account_user"/>
+    <menuitem id="menu_account_financial_report" name="Financial Report" action="action_account_report" parent="menu_account_report_excel" sequence="1"/>
+
+	</data>
+</odoo>

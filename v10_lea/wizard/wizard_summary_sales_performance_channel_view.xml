@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+		<record id="wizard_summary_sales_performance_channel_form_view" model="ir.ui.view">
+			<field name="name">Summary Sales Performance per Channel</field>
+			<field name="model">wizard.summary.sales.performance.channel</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>	
+						<group>											
+            				<field name="start_date"/>						
+            				<field name="end_date"/>
+            			</group>
+						<group>						
+            				<field name="channel_id_store"/>
+            				<field name="channel_id_consignment"/>
+            				<field name="channel_id_toko_putus"/>
+            				<field name="channel_id_corporate"/>
+            				<field name="area_id"/>
+            				<field name="subarea_id"/>
+            				<field name="class_category_id" required="1" widget="many2many_tags"/>
+            			</group>
+					</group>
+					<footer>
+						<button name="print_report" string="Print Report" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-default" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_wizard_summary_sales_performance_channel" model="ir.actions.act_window">
+			<field name="name">Summary Sales Performance per Channel</field>
+			<field name="res_model">wizard.summary.sales.performance.channel</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="wizard_summary_sales_performance_channel_form_view"/>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem id="menu_wizard_summary_sales_performance_channel" name="Summary Sales Performance per Channel" action="action_wizard_summary_sales_performance_channel" parent="point_of_sale.menu_point_rep" sequence="22"/> 
+
+	</data>
+</odoo>

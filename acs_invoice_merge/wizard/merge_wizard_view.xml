@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Split Record -->
+    <record id="view_merge_wizard" model="ir.ui.view">
+        <field name="name">merge.wizard.form</field>
+        <field name="model">merge.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Split Record">
+                <group>
+                    <p class="text-muted">** Only Draft Record can be merged. <br/>** Select option 'Create New record' if you want to cancel all records and create new merged record.<br/>
+                    ** Select option 'Merge in Existing Record' if you want to merge all other records in that record.<br/>
+                    ** Records of Same Customer/Partner can be merged only.<br/>
+                    ** Lines with Same product, unit price and discount will be merged.<br/>
+                    ** Avoid merging system generated records.<br/>
+                    </p>
+                </group>
+                <group>
+                    <group>
+                        <field name="partner_id" invisible="1"/>
+                        <field name="create_new_record" attrs="{'invisible':[('merge_in_record','=',True)]}"/>
+                        <field name="merge_in_record" attrs="{'invisible':[('create_new_record','=',True)]}"/>
+                        <field name="order_todo"/>
+                    </group>
+                </group>
+                <group>
+                    <group attrs="{'invisible':[('create_new_record','=',True)]}">
+                        <field name="invoice_id" attrs="{'required':[('merge_in_record', '=', True)]}" domain="[('partner_id', '=', partner_id), ('state', '=', 'draft')]"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="merge_record" type="object" string="Merge" class="oe_highlight"/>
+                    or
+                    <button special="cancel" string="Cancel" type="object"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+
+    <record id="action_merge_wizard" model="ir.actions.act_window">
+        <field name="name">Merge Records</field>
+        <field name="res_model">merge.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_merge_wizard"/>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.values" id="multi_action_merge_wizard_invoice">
+        <field name="model_id" ref="account.model_account_invoice" />
+        <field name="name">Merge Invoices</field>
+        <field name="key2">client_action_multi</field>
+        <field name="value" eval="'ir.actions.act_window,' + str(ref('action_merge_wizard'))" />
+        <field name="key">action</field>
+        <field name="model">account.invoice</field>
+    </record>
+
+</odoo>

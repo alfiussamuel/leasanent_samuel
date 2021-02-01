@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+		<record id="report_buku_kasbank_wizard" model="ir.ui.view">
+            <field name="name">buku.kasbank.report</field>
+            <field name="model">buku.kasbank</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="state_position" invisible="1"/>
+                            <field name="journal_id" invisible="0" required="1" domain="[('type','in',['bank','cash'])]"/>
+                            <field name="account_id" invisible="0" required="1"/>
+                            <field name="partner_id" invisible="0"/> 
+                            <field name="state_move" invisible="0"/>               
+                            <field name="date_from" invisible="0" required="1"/>
+                            <field name="date_to" invisible="0" required="1"/>
+                            <field name="company_id" invisible="0" required="1"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <separator colspan="3" string="Download by click link below." attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="name" invisible="1" width="100" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                            <field name="data" nolabel="1" readonly="0" width="100" filename="name" attrs="{'invisible':[('state_position','=','choose')]}"/>
+                        </group>
+                       
+                       <footer attrs="{'invisible':[('state_position','=','get')]}">
+                            <button name="generate_report" string="Generate" type="object" class="btn-primary"/>
+                            <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+                    </group>
+                    <group attrs="{'invisible':[('state_position','=','choose')]}">
+                        <field name="mutasi_lines" nolabel="1" readonly="1">
+                            <tree string="Daftar Mutasi">
+                            	<field name="date"/>
+                            	<field name="mutasi_debit"/>
+                            	<field name="mutasi_credit"/>
+                            	<field name="desc"/>
+                            </tree>
+                         </field>
+                    </group>
+                    <group attrs="{'invisible':[('state_position','=','choose')]}">
+                         <field name="init_balance" readonly="1"/>
+                         <field name="current_debit"  readonly="1"/>
+                         <field name="current_credit" readonly="1"/>
+                         <field name="ending_balance" readonly="1"/>
+                     </group>
+                  
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_buku_kasbank_wizard" model="ir.actions.act_window">
+            <field name="name">Buku Kas dan Bank</field>
+            <field name="res_model">buku.kasbank</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_buku_kasbank_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_buku_bank_kas"  name="Buku Kas dan Bank" action="action_report_buku_kasbank_wizard" parent="adh_precast_keuangan.menu_finance_keuangan" sequence="8"/> 
+	</data>
+</odoo>

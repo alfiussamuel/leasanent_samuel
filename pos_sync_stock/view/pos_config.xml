@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_pos_config_stock">
+            <field name="name">pos.config.stock</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='features']" position="after">
+                    <group name="stock" string="Syncing stock">
+                        <group>
+                            <field name="allow_order_out_of_stock"/>
+                            <field name="allow_syncing_stock"/>
+                        </group>
+                        <group>
+                            <field name="display_onhand"/>
+                            <!--<field name="display_forecast"/>-->
+                            <!--<field name="display_incoming"/>-->
+                            <!--<field name="display_outgoing"/>-->
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

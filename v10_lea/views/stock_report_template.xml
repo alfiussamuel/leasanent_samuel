@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="stock_report">
+			<div class="row">
+				<t t-call="v10_lea.stock_report_body"/>
+			</div>
+		</template>
+
+		<template id="stock_report_body">				
+				<div class="page">
+					<h3 style="text-align: center;padding:3px;">STOCK REPORT</h3><br/>										
+                    <b>Location: <span t-esc="data['location_name']"/></b><br/>
+                                                           
+					<table class="table table-condensed table-bordered">
+						<thead style="background-color: #eff0f2;">
+							<tr>
+	          					<td width="120px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						Article
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						24
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						25
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						26
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						27
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						28
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						29
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						30
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						31
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						32
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						33
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						34
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						35
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						36
+	          					</td>          					
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						38
+	          					</td>          					
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						40
+	          					</td>          					
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						42
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						XS
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						S
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						M
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						L
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						XL
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						XXL
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						AL
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						X
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						Y
+	          					</td>
+	          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						Z
+	          					</td>
+	          					<td width="60px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+	          						Total
+	          					</td>	          					          				
+	          				</tr>
+						</thead>
+						<tbody>
+							<t t-foreach="get_barcode(data)" t-as="aml">
+								<tr>                      				       							  									
+									<td width="120px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+          								<span t-esc="aml.get('article_name')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size24')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size25')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size26')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size27')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size28')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size29')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size30')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size31')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size32')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size33')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size34')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size35')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size36')"/>
+		          					</td>          					
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size38')"/>
+		          					</td>          					
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size40')"/>
+		          					</td>          					
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('size42')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('sizexs')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('sizes')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('sizem')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('sizel')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('sizexl')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('sizexxl')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('sizeal')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('sizex')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('sizey')"/>
+		          					</td>
+		          					<td width="25px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('sizez')"/>
+		          					</td>
+		          					<td width="60px" style="padding:3px;border:1px solid black;text-align:center;font-size:11px;">
+		          						<span t-esc="aml.get('total_qty')"/>
+		          					</td>		          									                           							
+       							</tr>
+   							</t>   							
+						</tbody>
+					</table>					
+				</div>
+		</template>
+	</data>
+</odoo>

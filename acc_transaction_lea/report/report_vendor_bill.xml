@@ -1,0 +1,371 @@
+<odoo>
+  <data>
+    <report
+       id="report_vendor_bill_id"
+       string="Vendor Bill"
+       model="account.invoice"
+       report_type="qweb-pdf"
+       file="acc_transaction_lea.report_vendor_bill_new"
+       name="acc_transaction_lea.report_vendor_bill_new"
+    />
+
+    <template id="report_vendor_bill_new">
+      <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+          <t t-call="acc_transaction_lea.report_vendor_bill_new_document"/>
+          <t t-call="acc_transaction_lea.header_vendor_bill"/>
+        </t>
+      </t>
+    </template>
+
+    <template id="header_vendor_bill">
+      <div class="header">
+
+        <br/><br/>
+        <center><b>VOUCHER PAYABLE</b></center>
+        <table width="100%">
+          <tbody>
+            <tr>
+              <td colspan="2"  style="text-align:left;margin-left:10px">
+                  <table>
+                      <tr>
+                          <td style="font-size:12px">
+                            Invoice
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <div style="margin-left:5px"><span t-field="o.number"/></div>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            Supplier
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            Tgl. Inv
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <div style="margin-left:5px"><span t-field="o.date_invoice" t-field-options='{"format": "MM/dd/yyyy"}'/></div>
+                          </td>
+                      </tr>
+                       <tr>
+                          <td style="font-size:12px">
+                            PO. No
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <div style="margin-left:5px"><span t-field="o.origin"/></div>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            Keterangan
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+              <td width="30%">
+
+              </td>
+              <td colspan="2" width="40%">
+                   <table>
+                      <tr>
+                          <td style="font-size:12px">
+                            MR No
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            Tgl. Brg. Masuk
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+
+                          </td>
+                      </tr>
+                      <tr>
+                          <td style="font-size:12px">
+                            Term
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <div style="margin-left:5px"><span t-field="o.payment_term_id.name"/></div>
+                          </td>
+                      </tr>
+                       <tr>
+                          <td style="font-size:12px">
+                            Tgl. Jt. Temp
+                          </td>
+                          <td style="font-size:12px">
+                            :
+                          </td>
+                          <td style="font-size:12px">
+                            <div style="margin-left:5px"><span t-field="o.date_due" t-field-options='{"format": "MM/dd/yyyy"}'/></div>
+                          </td>
+                      </tr>
+
+                  </table>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+          <br/>
+      </div>
+    </template>
+
+    <template id="report_vendor_bill_new_document">
+      <div class="page">
+
+        <table style="margin-top:10px;" width="100%">
+          <tr>
+            <td rowspan="1" style="padding:3px;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>No</center></strong>
+            </td>
+            <td rowspan="1" style="padding:3px;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Nama Barang</center></strong>
+            </td>
+            <td rowspan="1" style="padding:3px;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Satuan</center></strong>
+            </td>
+            <td rowspan="1" style="padding:3px;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Banyaknya</center></strong>
+            </td>
+            <td rowspan="1" style="padding:3px;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Harga</center></strong>
+            </td>
+            <td rowspan="1" style="padding:3px;border-top:1px solid black;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <strong><center>Jumlah</center></strong>
+            </td>
+          </tr>
+
+          <tr t-foreach="o.invoice_line_ids" t-as="f">
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+              <div style="margin-left:5px"><span t-esc="f_index+1"/></div>
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+              <div style="margin-left:5px"><span t-field="f.product_id.name"/></div>
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="text-align:right;font-size:12px">
+               <div style="margin-left:5px"><span t-field="f.uom_id.name"/></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="text-align:right;font-size:12px">
+              <div style="margin-left:5px"><span t-field="f.quantity"/></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="text-align:right;font-size:12px">
+              <div style="margin-left:5px"><t t-esc="'{0:,.0f}'.format(f.price_unit)"/></div>
+            </td>
+            <td rowspan="1" class="img-responsive" style="text-align:right;font-size:12px">
+              <div style="margin-left:5px"><t t-esc="'{0:,.0f}'.format(f.price_subtotal)"/></div>
+            </td>
+          </tr>
+
+           <tr >
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+                <br/> <br/> <br/> <br/> <br/>
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td colspan="3" class="img-responsive" style="text-align:right;font-size:12px">
+
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="text-align:right;font-size:12px">
+
+            </td>
+          </tr>
+
+          <tr >
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td colspan="3" class="img-responsive" style="text-align:left;font-size:12px">
+                <div style="margin-left:5px"><b>Nilai Bruto</b></div>
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="text-align:right;font-size:12px">
+              <div style="margin-left:5px"><b><t t-esc="'{0:,.0f}'.format(o.amount_untaxed)"/></b></div>
+            </td>
+          </tr>
+
+          <tr >
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td colspan="3" class="img-responsive" style="text-align:left;font-size:12px">
+                <div style="margin-left:5px"><b>Discount</b></div>
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="padding:3px;border-bottom:1px solid black;vertical-align:middle;font-size:12px">
+              <div style="margin-left:5px"></div>
+            </td>
+
+          </tr>
+
+          <tr >
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td colspan="3" class="img-responsive" style="text-align:left;font-size:12px">
+                <div style="margin-left:5px"><b>Subtotal</b></div>
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="text-align:right;font-size:12px">
+              <div style="margin-left:5px"><b><t t-esc="'{0:,.0f}'.format(o.amount_untaxed)"/></b></div>
+            </td>
+          </tr>
+
+          <tr t-foreach="o.tax_line_ids" t-as="f">
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td colspan="3" class="img-responsive" style="text-align:left;font-size:12px">
+                <div style="margin-left:5px"><b><span t-field="f.name"/></b></div>
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="text-align:right;font-size:12px">
+              <div style="margin-left:5px"><b><t t-esc="'{0:,.0f}'.format(f.amount)"/></b></div>
+            </td>
+          </tr>
+
+          <tr >
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="font-size:12px">
+
+            </td>
+
+            <td colspan="3" class="img-responsive" style="text-align:left;font-size:12px">
+                <div style="margin-left:5px"><b>Nilai Netto</b></div>
+            </td>
+
+            <td rowspan="1" class="img-responsive" style="text-align:right;border-top:1px solid black;font-size:12px">
+              <div style="margin-left:5px"><b><t t-esc="'{0:,.0f}'.format(o.amount_total)"/></b></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="footer">
+          <div style="bottom:-500px;">
+               <table width="100%">
+                  <tr>
+                    <td style="font-size:12px" width="20%" align="center">
+                        Approved By :
+                    </td>
+                    <td style="font-size:12px" width="20%" align="center">
+                        Check By :
+                    </td>
+                    <td style="font-size:12px" width="20%" align="center">
+                        Prepared By :
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px" width="20%" align="center">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        (_______________________)
+                    </td>
+                    <td style="font-size:12px" width="20%" align="center">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        (_______________________)
+                    </td>
+                    <td style="font-size:12px" width="20%" align="center">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        (_______________________)
+                    </td>
+                  </tr>
+
+               </table>
+              <br/>
+          </div>
+        </div>
+    </template>
+
+    <record id="vendor_bill_new_paperformat" model="report.paperformat">
+            <field name="name">Vendor Bill Format</field>
+            <field name="default" eval="False" />
+            <field name="format">custom</field>
+            <field name="page_height">200</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">35</field>
+            <field name="margin_bottom">55</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="report_vendor_bill_id" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="acc_transaction_lea.vendor_bill_new_paperformat"/>
+        </record>
+  </data>
+</odoo>

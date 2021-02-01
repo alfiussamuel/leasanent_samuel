@@ -1,0 +1,41 @@
+.qty_available {
+    position: absolute;
+    line-height: 13px;
+    top: 5px;
+    font-size: 18px;
+    left: 0px;
+    color: #00b0ff;
+}
+.virtual_available {
+    position: absolute;
+    line-height: 13px;
+    top: 30px;
+    font-size: 18px;
+    color: green;
+    left: 0px;
+}
+.incoming_qty {
+    position: absolute;
+    line-height: 13px;
+    border-radius: 2px;
+    top: 55px;
+    font-size: 18px;
+    color: blueviolet;
+    left: 0px;
+}
+.outgoing_qty {
+    position: absolute;
+    line-height: 13px;
+    top: 80px;
+    font-size: 18px;
+    color: grey;
+    left: 0px;
+}
+.pos .product .product-img img {
+    max-height: 60px;
+    max-width: 60px;
+    vertical-align: middle;
+    border-radius: 3px;
+    padding-left: 30px;
+    padding-top: 20px;
+}

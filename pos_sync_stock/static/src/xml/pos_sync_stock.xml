@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="Product">
+        <t t-jquery=".product-img" t-operation="append">
+            <t t-if="widget.pos.config.display_onhand">
+                <span class="qty_available">
+                    <t t-if="product.qty_available &lt;= 0">
+                        <i class="fa fa-expeditedssl"/>
+                    </t>
+                    <t t-if="product.qty_available &gt; 0">
+                        <i class="fa fa-unlock"/>
+                    </t>
+                    <t t-esc="product.qty_available"/>
+                </span>
+            </t>
+        </t>
+    </t>
+
+
+</templates>

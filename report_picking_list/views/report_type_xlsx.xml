@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+	    id="picking_list_xlsx"
+	    model="lea.picking.list"
+	    string="Picking List Excel"
+	    report_type="xlsx"
+	    name="lea.picking.list.xlsx"
+	    file="lea.picking.list.xlsx"
+	    attachment_use="False"
+	/>
+</odoo>
