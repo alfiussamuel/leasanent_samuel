@@ -19,13 +19,13 @@
             	<div class="col-xs-6">	                	
                 	<table class="table table-condensed" style="font-family:'Arial'">
 	                	<tr>
-	                		<td width="450px" style="font-size:16px;padding:5px;border:0px;">
+	                		<td width="40%" style="font-size:16px;padding:5px;border:0px;">
 	                			Putaway No.
 	                		</td>
-	                		<td width="5px" style="font-size:16px;padding:5px;border:0px;">
+	                		<td width="1%" style="font-size:16px;padding:5px;border:0px;">
 	                		 : 
 	                		</td>
-	                		<td width="500px" style="font-size:16px;padding:5px;border:0px;">
+	                		<td width="60%" style="font-size:16px;padding:5px;border:0px;">
 	                			<span t-if="doc.name" t-field="doc.name"/>
 	                		</td>
 	                	</tr>
@@ -39,18 +39,7 @@
 	                		<td style="font-size:16px;padding:5px;border:0px;">
 	                			<span t-if="doc.picking_id" t-field="doc.picking_id.name"/>
 	                		</td>
-	                	</tr>
-	                	<tr>
-	                		<td style="font-size:16px;padding:5px;border:0px;">
-	                			Source Location
-	                		</td>
-	                		<td style="font-size:16px;padding:5px;border:0px;">
-	                		: 
-	                		</td>
-	                		<td style="font-size:16px;padding:5px;border:0px;">
-	                			<span t-if="doc.picking_id" t-field="doc.picking_id.location_id.name"/>/>
-	                		</td>
-	                	</tr>	                	
+	                	</tr>	               	                	
 	                	<tr>
 	                		<td style="font-size:16px;padding:5px;border:0px;">
 	                			Receiving Date
@@ -64,13 +53,13 @@
 	                	</tr>
 	                	<tr>
 	                		<td style="font-size:16px;padding:5px;border:0px;">
-	                			Supplier
+	                			Supplier / Toko
 	                		</td>
 	                		<td style="font-size:16px;padding:5px;border:0px;">
 	                		: 
 	                		</td>
 	                		<td style="font-size:16px;padding:5px;border:0px;">
-	                			<span t-if="doc.picking_id" t-field="doc.picking_id.partner_id.name"/>/>
+	                			<span t-if="doc.picking_id" t-field="doc.picking_id.partner_id.name"/>
 	                		</td>
 	                	</tr>	                	
                 	</table>
@@ -107,8 +96,16 @@
 	                				<td style="font-size:16px;padding:5px;border:1px solid black;text-align:right;">
 	                					<span t-field="l.qty"/>
 	                				</td>
-	                			</tr>	                			
+	                			</tr>
 	                		</t>
+	                		<tr>
+                				<td colspan="2" style="font-size:16px;padding:5px;border:1px solid black;text-align:right;">
+                					<strong>Total</strong>
+                				</td>
+                				<td style="font-size:16px;padding:5px;border:1px solid black;text-align:right;">
+                					<strong><span t-field="doc.total_qty"/></strong>
+                				</td>	                		
+	                		</tr>
 	                	</tbody>
                 	</table>
                 	<table class="table table-condensed" style="margin-top:0px;">

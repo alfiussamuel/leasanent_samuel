@@ -4,15 +4,15 @@
         <field name="name">Format Packing List QWEB</field>
         <field name="default" eval="True" />
         <field name="format">custom</field>
-        <field name="page_height">240</field>
-        <field name="page_width">280</field>
+        <field name="page_height">280</field>
+        <field name="page_width">220</field>
         <field name="orientation">Portrait</field>
-        <field name="margin_top">20</field>
-        <field name="margin_bottom">38</field>
+        <field name="margin_top">80</field>
+        <field name="margin_bottom">30</field>
         <field name="margin_left">5</field>
         <field name="margin_right">5</field>
         <field name="header_line" eval="False"/>
-        <field name="header_spacing">10</field>
+        <field name="header_spacing">69</field>
         <field name="dpi">90</field>
     </record> 
     <report 

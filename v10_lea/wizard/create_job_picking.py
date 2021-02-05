@@ -19,84 +19,93 @@ class WizardCreateJobPicking(models.TransientModel):
                 total_qty += pack.product_qty
 
         for pick in pickings:
-	    picking_list = self.env['lea.picking.list'].create({
-                                                            'date': fields.Date.today(),
-                                                            'gate_id': self.gate_id.id,
-                                                            'picker_id': self.picker_id.id,
-							    'picking_id': pick.id
-                                                            })
+            picking_list = self.env['lea.picking.list'].create({
+                'date': fields.Date.today(),
+                'gate_id': self.gate_id.id,
+                'picker_id': self.picker_id.id,
+                'picking_id': pick.id
+            })
 
             for pack in pick.pack_operation_ids:
                 remaining_qty = pack.product_qty   
-                rack_stock_ids = self.env['lea.product.column'].search([('reference','=',pack.product_id.id),('type','=','Stock')])                     
+                # rack_stock_ids = self.env['lea.product.rack'].search([('reference','=',pack.product_id.id),('type','=','Stock')])                     
+                if pack.product_id.racknew_ids:
+                    for rack in pack.product_id.racknew_ids:
+                        if rack.type == "Stock":
+                            if remaining_qty > 0:                        
+                                if rack.available_stock >= remaining_qty and rack.available_stock > 0:                                                                      
+                                    self.env['lea.picking.list.line'].create({
+                                        'reference': picking_list.id,
+                                        'rack_id': rack.column_id.id,
+                                        'product_id': pack.product_id.id,
+                                        'qty': pack.product_qty,
+                                        'qty_scan': pack.product_qty,
+                                        'delivery_id': pick.id,                                                          
+                                    })   
 
-		for rack in pack.product_id.rack_ids:
-                    if rack.type == "Stock":
-                         if remaining_qty > 0:                        
-                             if rack.available_stock >= remaining_qty:
-                                                                                              
-               self.env['lea.picking.list.line'].create({
-                                                          'reference': picking_list.id,
-                                                          'rack_id': False,
-                                                          'product_id': pack.product_id.id,
-                                                          'qty': pack.product_qty,
-                                                          'qty_scan': pack.product_qty,
-                                                          'delivery_id': pick.id,                                                          
-                                                          })                            
-                #===============================================================
-                #             else:
-                #                 self.env['lea.picking.list.line'].create({
-                #                                                           'reference': picking_list.id,
-                #                                                           'rack_id': rack.id,
-                #                                                           'product_id': pack.product_id.id,
-                #                                                           'qty': rack.available_stock,
-                #                                                           'delivery_id': pick.id,                                                          
-                #                                                           })                     
-                #                 
-                #                 remaining_qty = pack.product_qty - rack.available_stock
-                # 
-                # rack_reserved_ids = self.env['lea.product.column'].search([('reference','=',pack.product_id.id),('type','=','Reserved')])                     
-                # for rack in pack.product_id.rack_ids:
-                #     if rack.type == "Reserved":
-                #         if remaining_qty > 0:                        
-                #             if rack.available_stock >= remaining_qty:                                                                                             
-                #                 self.env['lea.picking.list.line'].create({
-                #                                                           'reference': picking_list.id,
-                #                                                           'rack_id': rack.id,
-                #                                                           'product_id': pack.product_id.id,
-                #                                                           'qty': remaining_qty,
-                #                                                           'delivery_id': pick.id,                                                          
-                #                                                           })                            
-                #             else:
-                #                 self.env['lea.picking.list.line'].create({
-                #                                                           'reference': picking_list.id,
-                #                                                           'rack_id': rack.id,
-                #                                                           'product_id': pack.product_id.id,
-                #                                                           'qty': rack.available_stock,
-                #                                                           'delivery_id': pick.id,                                                          
-                #                                                           })                     
-                #                 remaining_qty = remaining_qty - rack.available_stock
-                #===============================================================
-                                                        
+                                elif rack.available_stock < remaining_qty:
+                                    self.env['lea.picking.list.line'].create({
+                                        'reference': picking_list.id,
+                                        'rack_id': rack.column_id.id,
+                                        'product_id': pack.product_id.id,
+                                        'qty': rack.available_stock,
+                                        'delivery_id': pick.id,                                                          
+                                    })                     
+                                    
+                                remaining_qty = pack.product_qty - rack.available_stock
+                    
+                    # rack_reserved_ids = self.env['lea.product.rack'].search([('reference','=',pack.product_id.id),('type','=','Reserved')])                     
+                    for rack in pack.product_id.racknew_ids:
+                        if rack.type == "Reserved":
+                            if remaining_qty > 0:                        
+                                if rack.available_stock >= remaining_qty and rack.available_stock > 0:                                                                                             
+                                    self.env['lea.picking.list.line'].create({
+                                        'reference': picking_list.id,
+                                        'rack_id': rack.column_id.id,
+                                        'product_id': pack.product_id.id,
+                                        'qty': remaining_qty,
+                                        'delivery_id': pick.id,                                                          
+                                    })
+
+                                elif rack.available_stock < remaining_qty:
+                                    self.env['lea.picking.list.line'].create({
+                                        'reference': picking_list.id,
+                                        'rack_id': rack.column_id.id,
+                                        'product_id': pack.product_id.id,
+                                        'qty': rack.available_stock,
+                                        'delivery_id': pick.id,                                                          
+                                    })
+                                    
+                                remaining_qty = remaining_qty - rack.available_stock     
+                else:
+                    self.env['lea.picking.list.line'].create({
+                        'reference': picking_list.id,
+                        'product_id': pack.product_id.id,
+                        'qty': pack.product_qty,
+                        'delivery_id': pick.id,                                                          
+                    })
                 
-                current_product = self.env['lea.picking.list.summary'].search([('reference','=',picking_list.id),('product_id','=',pack.product_id.id)])
+                current_product = self.env['lea.picking.list.summary'].search([
+                    ('reference','=',picking_list.id),
+                    ('product_id','=',pack.product_id.id)
+                ])
+
                 qty = 0
                 if not current_product:
                     self.env['lea.picking.list.summary'].create({
-                                                                 'reference': picking_list.id,                                                          
-                                                                 'product_id': pack.product_id.id,
-                                                                 'qty': pack.product_qty,                                                                                                            
-                                                                 })
+                        'reference': picking_list.id,                                                          
+                        'product_id': pack.product_id.id,
+                        'qty': pack.product_qty,                                                                                                            
+                    })
+
                 else:
                     qty = current_product[0].qty
-                    current_product[0].write({
-                                              'qty': qty + pack.product_qty
-                                              })
+                    current_product[0].write({'qty': qty + pack.product_qty})
         
         for pick in pickings:
             pick.write({
-                        'is_picking_list': True,
-                        'picking_list_id': picking_list.id,
-                        })
+                'is_picking_list': True,
+                'picking_list_id': picking_list.id,
+            })
             
         return {'type': 'ir.actions.act_window_close'}

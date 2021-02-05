@@ -87,6 +87,16 @@ class LeaPutaway(models.Model):
         ('Done','Done')],
         string='Status', default='Draft')
 
+    total_qty = fields.Integer(compute='_get_total_qty', string='Total Qty', digits=dp.get_precision('Product Unit of Measure'))
+    
+    @api.depends('line_ids.qty')
+    def _get_total_qty(self):
+        for res in self:
+            total_qty = 0
+            for line in res.line_ids:
+                total_qty += line.qty 
+            res.total_qty = total_qty
+
     @api.depends('picking_id')
     def _get_detail(self):
         for res in self:
@@ -139,10 +149,10 @@ class LeaPackingListLine(models.Model):
     coli = fields.Char('Coli No.')
     
 
-class LeaPackingListColiProduct(models.Model):
-    _name = 'lea.packing.list.coli.product'
+class LeaPackingListBoxProduct(models.Model):
+    _name = 'lea.packing.list.box.product'
         
-    reference = fields.Many2one('lea.packing.list.coli', 'Reference')
+    reference = fields.Many2one('lea.packing.list.box', 'Reference')
     product_id = fields.Many2one('product.product', 'Barcode')
     categ_id = fields.Many2one('product.category', 'Article')            
     qty = fields.Integer('Quantity')
@@ -227,15 +237,15 @@ class LeaPackingListColiProduct(models.Model):
 
             res.total_qty = total_product   
         
-class LeaPackingListColi(models.Model):
-    _name = 'lea.packing.list.coli'
+class LeaPackingListBox(models.Model):
+    _name = 'lea.packing.list.box'
     _order = 'coli asc'
         
     reference = fields.Many2one('lea.packing.list', 'Reference')            
     coli = fields.Char('Coli No.')
     total_qty = fields.Integer(compute="_get_total_qty", string='Total Qty', digits=dp.get_precision('Product Unit of Measure'))
     weight = fields.Float('Weight (Kg)')    
-    product_ids = fields.One2many('lea.packing.list.coli.product', 'reference', 'Products')
+    product_ids = fields.One2many('lea.packing.list.box.product', 'reference', 'Products')
     
     @api.depends('product_ids')
     def _get_total_qty(self):
@@ -244,7 +254,8 @@ class LeaPackingListColi(models.Model):
             if res.product_ids:
                 total_qty = 0
                 for line in res.product_ids:
-                    total_qty += line.qty
+                    total_qty += line.total_qty
+    
             res.total_qty = total_qty
             
     @api.multi
@@ -259,7 +270,7 @@ class LeaPackingListColi(models.Model):
                 if line:
                     line.qty_remaining += product.qty                                        
                                     
-        return super(LeaPackingListColi, self).unlink()
+        return super(LeaPackingListBox, self).unlink()
                 
 class LeaPackingList(models.Model):
     _name = 'lea.packing.list'
@@ -274,11 +285,11 @@ class LeaPackingList(models.Model):
     sale_date = fields.Date('SO Date')
     partner_id = fields.Many2one('res.partner', 'Customer')    
     line_ids = fields.One2many('lea.packing.list.line', 'reference', 'Lines')
-    coli_ids = fields.One2many('lea.packing.list.coli', 'reference', 'Summary per Coli')
+    coli_ids = fields.One2many('lea.packing.list.box', 'reference', 'Summary per Coli')
     coli_qty = fields.Integer(compute="_get_coli_qty", string="Qty Coli")
     total_scanned = fields.Integer("Total Scanned")
     total_qty_coli = fields.Integer("Total Qty Coli")
-    total_weight = fields.Float(compute="_get_total_weight", string="Total Weight")    
+    total_weight = fields.Float(compute="_get_total_weight", string="Total Weight", digits=dp.get_precision('OneDecimal'))   
     total_picked = fields.Integer(compute='_get_total_picked', string='Total Picked Qty', digits=dp.get_precision('Product Unit of Measure'))
     total_packed = fields.Integer(compute='_get_total_packed', string='Total Packed Qty', digits=dp.get_precision('Product Unit of Measure'))
     total_coli = fields.Integer(compute='_get_total_coli', string='Total Coli', digits=dp.get_precision('Product Unit of Measure'))
@@ -454,7 +465,7 @@ class LeaPackingList(models.Model):
             if not res.coli:
                 raise Warning('Please Input Coli Number')
             elif res.coli:
-                current_coli = self.env['lea.packing.list.coli'].search([
+                current_coli = self.env['lea.packing.list.box'].search([
                     ('coli','=',res.coli),
                     ('reference','=',res.id)
                 ])
@@ -462,7 +473,7 @@ class LeaPackingList(models.Model):
                 if current_coli:
                     coli_id = current_coli[0]                    
                 else:
-                    coli_id = self.env['lea.packing.list.coli'].create({
+                    coli_id = self.env['lea.packing.list.box'].create({
                         'reference': res.id,
                         'coli': res.coli,                                                                                                          
                     })
@@ -470,7 +481,7 @@ class LeaPackingList(models.Model):
                 for line in res.line_ids:
                     if line.qty_packed > 0:
                         qty = 0
-                        current_product = self.env['lea.packing.list.coli.product'].search([
+                        current_product = self.env['lea.packing.list.box.product'].search([
                             ('categ_id','=',line.product_id.categ_id.id),
                             ('reference.reference','=',res.id),
                             ('reference','=',coli_id.id)
@@ -648,7 +659,7 @@ class LeaPackingList(models.Model):
                             elif qty_42 > 0:
                                 str_qty_42 = str(qty_42)
                                 
-                            self.env['lea.packing.list.coli.product'].create({
+                            self.env['lea.packing.list.box.product'].create({
                                   'reference': coli_id.id,
                                   'categ_id': line.product_id.categ_id.id,
                                   'qty': line.qty_packed,
@@ -728,12 +739,23 @@ class LeaPickingList(models.Model):
     gate_id = fields.Many2one('lea.gate', 'Gate')
     picker_id = fields.Many2one('lea.picker', 'Picker')
     picking_id = fields.Many2one('stock.picking', 'DO Document')
-    total_qty = fields.Integer(compute='_get_total_qty', string='Total Qty', digits=dp.get_precision('Product Unit of Measure'))
+    partner_id = fields.Many2one(related='picking_id.partner_id', comodel_name='res.partner', string='Customer/Toko')
     total_do = fields.Integer(compute='_get_total_do', string='Total DO', digits=dp.get_precision('Product Unit of Measure'))
     total_picked = fields.Integer(compute='_get_total_picked', string='Total Picked', digits=dp.get_precision('Product Unit of Measure'))
     line_ids = fields.One2many('lea.picking.list.line', 'reference', 'Lines')
     summary_ids = fields.One2many('lea.picking.list.summary', 'reference', 'Summary')
     state = fields.Selection([('Draft','Draft'),('Done','Done')], string='Status', default='Draft')
+
+    total_qty = fields.Integer(compute='_get_total_qty', string='Total Qty', digits=dp.get_precision('Product Unit of Measure'))
+
+    @api.depends('line_ids.qty')
+    def _get_total_qty(self):
+        for res in self:
+            total_qty = 0
+            for line in res.line_ids:
+                total_qty += line.qty 
+            res.total_qty = total_qty
+
 
     @api.onchange('barcode','barcode_summary')
     def barcode_scanning(self):
@@ -782,15 +804,7 @@ class LeaPickingList(models.Model):
         for res in self:
             if res.gate_id:                        
                 res.location_id = res.gate_id.location_id.id
-            
-    @api.depends('line_ids.qty')
-    def _get_total_qty(self):
-        for res in self:
-            total_qty = 0
-            for line in res.line_ids:
-                total_qty += line.qty 
-            res.total_qty = total_qty
-            
+                        
     @api.depends('line_ids.qty_scan')
     def _get_total_picked(self):
         for res in self:
@@ -815,6 +829,17 @@ class LeaPickingList(models.Model):
         for res in self:     
             if res.total_picked > res.total_qty:
                 raise Warning('Qty Picked cannot more than Qty Order')
+            
+            for line in res.line_ids:
+                self.env['lea.rack.level.column.detail'].create({
+                   'reference': line.rack_id.id,
+                   'qty': line.qty_scan,
+                   'type': "Outgoing",
+                   'date': fields.Date.today(),
+                   # 'putaway_id': res.id,
+                   # 'putaway_line_id': line.id,
+                })
+
             res.state = 'Done'
             
     @api.multi

@@ -4,14 +4,14 @@
         <t t-call="report.html_container">
             <t t-as="o" t-foreach="docs">
             	<div class="header">
-            		<div class="pull-right">
+            		<!-- <div class="pull-right">
 						<div class="row">
 							<center>
 								<span>Page </span>
 								<span class="page"/>of 
 								<span class="topage"/></center>
 						</div>
-					</div>
+					</div> -->
 				</div>
                 <div class="page">
 					<div class="row">
@@ -25,249 +25,243 @@
 							<p/>
 						</div>
 					</div>
+
 					<br></br>
+
 					<div class="row">
-						<div class="col-xs-4">
-								<table class="first">
-											<tr>
-												<td>
-													<span>
-														<b>Ship To :</b>
-													</span>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<b>
-														<span t-field="o.partner_id.name"/>
-													</b>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<span t-field="o.partner_id.street"/>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<span t-field="o.partner_id.city"/>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<span t-field="o.partner_id.state_id.name"/>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<span t-field="o.partner_id.country_id"/>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<span>Telp :  <span t-field="o.partner_id.phone"/></span>
-												</td>
-											</tr>
-										</table>
-						</div>
 						<div class="col-xs-4">
 							<table class="first">
 								<tr>
-									<td width="30%">
+									<td>
+										<span>
+											<b>Ship To :</b>
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>
+											<span t-field="o.partner_id.name"/>
+										</b>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span t-field="o.partner_id.street"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span t-field="o.partner_id.city"/>, <t t-if="o.partner_id.state_id"> <span t-field="o.partner_id.state_id.name"/></t>, <t t-if="o.partner_id.zip"><span t-field="o.partner_id.zip"/></t>
+									</td>
+								</tr>
+							</table>
+						</div>
+
+						<div class="col-xs-4">
+							<table class="first">
+								<tr>
+									<td width="28%">
 										<b>DO No.</b>
 									</td>
-									<td width="10%">: </td>
+									<td width="5%">: </td>
 									<td>
 										<span t-field="o.name"/>
 									</td>
 								</tr>
 								<tr>
-									<td width="30%">
+									<td width="28%">
 										<b>SO No.</b>
 									</td>
-									<td width="10%">: </td>
+									<td width="5%">: </td>
 									<td>
 										<span t-field="o.origin"/>
 									</td>
 								</tr>
 								<tr>
-									<td width="30%">
+									<td width="28%">
 										<b>Courier</b>
 									</td>
-									<td width="10%">: </td>
+									<td width="5%">: </td>
 									<td>
 										<span t-field="o.incoterm_id"/>
 									</td>
 								</tr>
 							</table>
 						</div>
+
 						<div class="col-xs-4">
 							<table class="first">
 								<tr>
-								<td><b>DO Date</b></td>
-		                		<td style="padding-left:10px;padding-right:10px;"> : </td>
-		                		<td><span t-esc="datetime.datetime.strptime(o.min_date, '%Y-%m-%d %H:%M:%S').strftime('%d %B %Y')"/></td>
+									<td><b>DO Date</b></td>
+		                			<td style="padding-left:10px;padding-right:10px;"> : </td>
+		                			<td>
+		                				<span t-esc="datetime.datetime.strptime(o.min_date, '%Y-%m-%d %H:%M:%S').strftime('%d %B %Y')"/>
+		                			</td>
 								</tr>
+								<t t-if="o.so_created_date">
+									<tr>
+										<td><b>SO Date</b></td>
+			                			<td style="padding-left:10px;padding-right:10px;"> : </td>
+			                			<td>
+			                				<span t-esc="datetime.datetime.strptime(o.so_created_date, '%Y-%m-%d %H:%M:%S').strftime('%d %B %Y')"/>
+			                			</td>
+									</tr>
+								</t>
 								<tr>
-								<td><b>SO Date</b></td>
-		                		<td style="padding-left:10px;padding-right:10px;"> : </td>
-		                		<td><span t-esc="datetime.datetime.strptime(o.so_created_date, '%Y-%m-%d %H:%M:%S').strftime('%d %B %Y')"/></td>
-								</tr>
-								<tr>
-								<td><b>Packing No.</b></td>
-		                		<td style="padding-left:10px;padding-right:10px;"> : </td>
-		                		<td><t t-if="o.packing_list_id">
-										<span t-field="o.packing_list_id"/>
-									</t>
-									<t t-else=''>
-										<span> - </span>
-									</t>
-								</td>
+									<td><b>Packing No.</b></td>
+		                			<td style="padding-left:10px;padding-right:10px;"> : </td>
+		                			<td>
+		                				<t t-if="o.packing_list_id">
+											<span t-field="o.packing_list_id"/>
+										</t>
+										<t t-else=''>
+											<span> - </span>
+										</t>
+									</td>
 								</tr>
 							</table>
 						</div>
 					</div>
+
 					<br></br>
-					<div class="col-xs-12">
-						<table class="table table-condensed" width="100%">
-							<t t-set="product_category" t-value="[]"/>
-							<t t-set="no" t-value="1"/>
-							<t t-set="category" t-value="False"/>
-							<t t-set="group" t-value="False"/>
-							<tr>
-								<th class="text-center" style="width: 5%; border: 1px solid black;">No.</th>
-								<th class="text-center" style="width: 10%; border: 1px solid black;">Brand</th>
-								<th class="text-center" style="width: 16%; border: 1px solid black;">Product Category</th>
-								<th class="text-center" style="width: 12%; border: 1px solid black;">Qty(pcs)</th>
-								<th class="text-center" style="width: 13%; border: 1px solid black;">Checklist Courier</th>
-								<th class="text-center" style="width: 13%; border: 1px solid black;">Checklist Receiver</th>
-								<th class="text-center" style="width: 20%; border: 1px solid black;">Notes</th>
-							</tr>
+
+					<table class="table table-condensed" width="100%">
+						<t t-set="product_category" t-value="[]"/>
+						<t t-set="no" t-value="1"/>
+						<t t-set="category" t-value="False"/>
+						<t t-set="group" t-value="False"/>
+						<tr>
+							<th class="text-center" style="width: 5%; border: 1px solid black;">No.</th>
+							<th class="text-center" style="width: 10%; border: 1px solid black;">Brand</th>
+							<th class="text-center" style="width: 16%; border: 1px solid black;">Product Category</th>
+							<th class="text-center" style="width: 12%; border: 1px solid black;">Qty(pcs)</th>
+						</tr>
+						<tr t-as="l" t-foreach="o.pack_operation_product_ids">
+							<t t-set="product_category" t-value="product_category+[l.product_id.product_class_category_id]"/>
+						</tr>
+						<tr t-as="category" t-foreach="set(product_category)">
+							<t t-set="qty" t-value="0"/>
+							<t t-set="total" t-value="0"/>
+							<t t-set="brand" t-value="False"/>
+							<t t-set="category_name" t-value="False"/>
 							<tr t-as="l" t-foreach="o.pack_operation_product_ids">
-								<t t-set="product_category" t-value="product_category+[l.product_id.product_category_id]"/>
-							</tr>
-							<tr t-as="category" t-foreach="set(product_category)">
-								<t t-set="qty" t-value="0"/>
-								<t t-set="total" t-value="0"/>
-								<t t-set="brand" t-value="False"/>
-								<t t-set="category_name" t-value="False"/>
-								<tr t-as="l" t-foreach="o.pack_operation_product_ids">
-									<t t-if="category.id == l.product_id.product_category_id.id">
-										<td style="border: 1px solid black; display:none;">
-											<span t-esc="no"/>
-										</td>
-										<td style="border: 1px solid black; display:none;">
-											<span t-esc="l.product_id.product_brand_id.name"/>
-										</td>
-										<td style="border: 1px solid black; display:none;">
-											<span t-esc="l.product_id.product_category_id.name"/>
-										</td>
-										<td style="border: 1px solid black; display:none;">
-											<span t-esc="l.product_id.product_article_code"/>
-										</td>
-										<td style="border: 1px solid black; display:none;">
-											<span> </span>
-										</td>
-										<td style="border: 1px solid black; display:none;">
-											<span> </span>
-										</td>
-										<td style="border: 1px solid black; display:none;">
-											<span> </span>
-										</td>
-										<t t-set="qty" t-value="qty+l.product_qty"/>
-										<t t-set="brand" t-value="l.product_id.product_brand_id.name"/>
-										<t t-set="category_name" t-value="l.product_id.product_category_id.name"/>
-									</t>
-								</tr>
-								<tr>
-									<td style="border: 1px solid black;">
+								<t t-if="category.id == l.product_id.product_class_category_id.id">
+									<td style="border: 1px solid black; display:none;">
 										<span t-esc="no"/>
 									</td>
-									<t t-set="no" t-value="no + 1"/>
-									<td class="text-center" style="border: 1px solid black;">
-										<span t-esc="brand"/>
+									<td style="border: 1px solid black; display:none;">
+										<span t-esc="l.product_id.product_brand_id.name"/>
 									</td>
-									<td class="text-center" style="border: 1px solid black;">
-										<span t-esc="category_name"/>
+									<td style="border: 1px solid black; display:none;">
+										<span t-esc="l.product_id.product_class_category_id.name"/>
 									</td>
-									<td class="text-center" style="border: 1px solid black;">
-										<span t-esc="qty"/>
+									<td style="border: 1px solid black; display:none;">
+										<span t-esc="l.product_id.product_article_code"/>
 									</td>
-									<td class="text-center" style="border: 1px solid black;">
-										<span> </span>
-									</td>
-									<td class="text-center" style="border: 1px solid black;">
-										<span> </span>
-									</td>
-									<td class="text-center" style="border: 1px solid black;">
-										<span> </span>
-									</td>
-								</tr>
-
-
+									<t t-set="qty" t-value="qty+l.product_qty"/>
+									<t t-set="brand" t-value="l.product_id.product_brand_id.name"/>
+									<t t-set="category_name" t-value="l.product_id.product_class_category_id.name"/>
+								</t>
 							</tr>
-						</table>
-					</div>
-					<div class="col-xs-12" style="margin-top: 5px;">
-						<table width="100%">
-                    <tr>
-                    	 <td width="100px" style="padding:2px; border: 1px solid black;"><center>Total Koli</center></td>
-                        <td width="10px"></td>
-                        <td width="100px" style="padding:2px; border: 1px solid black;"><center>Total Weight (Kg)</center></td>
-                        <td width="10px"></td>
-                        <td width="100px" style="padding:2px; border: 1px solid black;"><center>Total Qty</center></td>
-                        <td width="10px"></td>
-                        <td width="100px" style="padding:2px; border: 1px solid black;"><center>Total Article</center></td>
-                        <td width="10px"></td>
-                        <td width="5px" style="padding:2px; border-left: 1px solid black; border-top: 1px solid black;"></td>
-                        <td style="padding:2px; border-right: 1px solid black; border-top: 1px solid black;">NOTES :</td>
-                    </tr>
-                    <tr>
-                    	<td width="100px" height="25px" style="text-align:center;padding:2px; border: 1px solid black;"><span t-field="o.packing_list_id.total_coli"/></td>
-                        <td width="10px"></td>
-                        <td width="100px" style="text-align:center;padding:2px; border: 1px solid black;"> <span t-esc="int(o.packing_list_id.total_weight)"/></td>
-                        <td width="10px"></td>
-                        <td width="100px" style="text-align:center;padding:2px; border: 1px solid black;"><span t-field="o.amount_total_qty"/></td>
-                        <td width="10px"></td>
-                        <td width="100px" style="text-align:center;padding:2px; border: 1px solid black;"><span t-field="o.packing_list_id.total_article"/></td>
-                        <td width="10px"></td>
-                        <td width="5px" style="padding:2px; border-left: 1px solid black; border-bottom: 1px solid black;"></td>
-                        <td style="padding:2px; border-right: 1px solid black; border-bottom: 1px solid black;"><span t-if="not o.packing_list_id">Not yet packing DO, please packing first</span> </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-            <div class="footer" style="font-size: 12px;">
-        <div class="row">
-            <div class="col-xs-12">
-                <table width="100%">
-                    <tr>
-                        <td width="18%">Head Warehouse :</td>
-                        <td width="2%"> </td>
-                        <td width="18%">Courier :</td>
-                        <td width="2%"> </td>
-                        <td width="18%">Security Pass :</td>
-                        <td width="2%"> </td>
-                        <td width="20%">Receive Date :</td>
-                        <td width="20%">Receiver :</td>
-                    </tr>
-                    <tr>
-                        <td height="100px"></td>
-                    </tr>
-                    <tr>
-                        <td width="18%" style="border-top: 1px solid black;">name &amp; sign.</td>
-                         <td width="2%"> </td>
-                        <td width="18%" style="border-top: 1px solid black;">name &amp; sign.</td>
-                         <td width="2%"> </td>
-                        <td width="18%" style="border-top: 1px solid black;">name &amp; sign &amp; stamp</td>
-                         <td width="2%"> </td>
-                         <td width="20%"> </td>
-                        <td width="20%" style="border-top: 1px solid black;">name, sign &amp; co stamp.</td>
-                    </tr>
-                </table>  
-            </div>
-        </div>
-    </div>
+							<tr>
+								<td class="text-center" style="border: 1px solid black;">
+									<span t-esc="no"/>
+								</td>
+								<t t-set="no" t-value="no + 1"/>
+								<td class="text-center" style="border: 1px solid black;">
+									<span t-esc="brand"/>
+								</td>
+								<td class="text-center" style="border: 1px solid black;">
+									<span t-esc="category_name"/>
+								</td>
+								<td class="text-center" style="border: 1px solid black;">
+									<span t-esc="qty"/>
+								</td>
+							</tr>
+						</tr>
+					</table>
+					
+					<table width="100%">
+	                    <tr>
+	                    	<td width="100px" style="padding:5px; border: 1px solid black;">
+	                    		<center>Total Koli</center>
+	                    	</td>
+	                        <td width="10px"></td>
+	                        <td width="100px" style="padding:5px; border: 1px solid black;">
+	                        	<center>Total Weight (Kg)</center>
+	                        </td>
+	                        <td width="10px"></td>
+	                        <td width="100px" style="padding:5px; border: 1px solid black;">
+	                        	<center>Total Qty</center>
+	                        </td>
+	                        <td width="10px"></td>
+	                        <td width="100px" style="padding:5px; border: 1px solid black;">
+	                        	<center>Total Article</center>
+	                        </td>
+	                        <td width="10px"></td>
+	                        <td width="5px" style="padding:5px; border-left: 1px solid black; border-top: 1px solid black;"></td>
+	                        <td style="padding:2px; border-right: 1px solid black; border-top: 1px solid black;">
+	                        	NOTES :
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                    	<td width="100px" style="text-align:center;padding:5px; border: 1px solid black;">
+	                    		<span t-field="o.packing_list_id.total_coli"/>
+	                    	</td>
+	                        <td width="10px"></td>
+	                        <td width="100px" style="text-align:center;padding:5px; border: 1px solid black;">
+	                        	<span t-esc="'{0:,.1f}'.format(o.packing_list_id.total_weight)"/>
+	                        	
+	                        </td>
+	                        <td width="10px"></td>
+	                        <td width="100px" style="text-align:center;padding:5px; border: 1px solid black;">
+	                        	<span t-field="o.amount_total_qty"/>
+	                        </td>
+	                        <td width="10px"></td>
+	                        <td width="100px" style="text-align:center;padding:5px; border: 1px solid black;">
+	                        	<span t-field="o.packing_list_id.total_article"/>
+	                        </td>
+	                        <td width="10px"></td>
+	                        <td width="5px" style="padding:5px; border-left: 1px solid black; border-bottom: 1px solid black;"></td>
+	                        <td style="padding:3px; border-right: 1px solid black; border-bottom: 1px solid black;">
+	                        	<span t-if="not o.packing_list_id">Not yet packing DO, please packing first</span>
+	                        </td>
+	                    </tr>
+                	</table>
+                </div>
+
+		        <div class="footer" style="font-size: 12px;">
+			        <div class="row">
+			            <div class="col-xs-12">
+			                <table width="100%">
+			                    <tr>
+			                        <td width="18%">Head Warehouse :</td>
+			                        <td width="2%"> </td>
+			                        <td width="18%">Courier :</td>
+			                        <td width="2%"> </td>
+			                        <td width="18%">Security Pass :</td>
+			                        <td width="2%"> </td>
+			                        <td width="20%">Receive Date :</td>
+			                        <td width="20%">Receiver :</td>
+			                    </tr>
+			                    <tr>
+			                        <td height="100px"></td>
+			                    </tr>
+			                    <tr>
+			                        <td width="18%" style="border-top: 1px solid black;">name &amp; sign.</td>
+			                         <td width="2%"> </td>
+			                        <td width="18%" style="border-top: 1px solid black;">name &amp; sign.</td>
+			                         <td width="2%"> </td>
+			                        <td width="18%" style="border-top: 1px solid black;">name &amp; sign &amp; stamp</td>
+			                         <td width="2%"> </td>
+			                         <td width="20%"> </td>
+			                        <td width="20%" style="border-top: 1px solid black;">name, sign &amp; co stamp.</td>
+			                    </tr>
+			                </table>  
+			            </div>
+			        </div>
+			    </div>
 			</t>
 		</t>
     </template>

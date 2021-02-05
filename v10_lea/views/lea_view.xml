@@ -58,7 +58,8 @@
 					<field name="name"/>
 					<field name="type"/>
 					<field name="picking_id"/>
-					<field name="inventory_id"/>					
+					<field name="inventory_id"/>
+					<field name="total_qty"/>					
 					<field name="state"/>													
 				</tree>
 			</field>
@@ -72,21 +73,26 @@
 				<form string="Putaway">
 					<header>
 						<button string="Confirm" type="object" name="button_confirm" class="oe_highlight" states="Draft"/>
-						<button string="Done" type="object" name="button_done" class="oe_highlight" states="Progress"/>
+						<button string="Mark as Done" type="object" name="button_done" class="oe_highlight" states="Progress"/>
 						<button string="Cancel" type="object" name="button_cancel" class="oe_highlight" states="Done"/>									
 						<field name="state" widget="statusbar" readonly="1"/>
 					</header>
 					<sheet>
-						<group>							
-							<field name="name" readonly="1"/>
-							<field name="type" readonly="1"/>
-							<field name="picking_id" readonly="1"
-								attrs="{'invisible': [('type', '=', 'Adjustment')]}"/>
-							<field name="location_id"/>
-							<field name="partner_id"
-								attrs="{'invisible': [('type', '=', 'Adjustment')]}"/>
-							<field name="inventory_id" readonly="1"
-								attrs="{'invisible': [('type', '=', 'Receipt')]}"/>
+						<group>
+							<group>
+								<field name="name" readonly="1"/>
+								<field name="type" readonly="1"/>
+								<field name="total_qty"/>								
+								<field name="location_id"/>
+							</group>
+							<group>
+								<field name="picking_id" readonly="1"
+									attrs="{'invisible': [('type', '=', 'Adjustment')]}"/>
+								<field name="partner_id"
+									attrs="{'invisible': [('type', '=', 'Adjustment')]}"/>
+								<field name="inventory_id" readonly="1"
+									attrs="{'invisible': [('type', '=', 'Receipt')]}"/>
+							</group>
 						</group>
 						<group>
 							<notebook>
@@ -240,7 +246,7 @@
 							<notebook>
 								<page string="Packing List Detail">
 									<group>										
-										<button string="Create Coli" type="object" name="create_coli" class="oe_highlight" states="Draft"/>										
+										<button string="Create Coli" type="object" name="create_coli" class="oe_highlight" states="Draft"/>
 									</group>									
 									<group>
 										<group>
@@ -257,9 +263,9 @@
 										<field name="line_ids" nolabel="1">
 											<tree editable="top">												
 												<field name="product_id"/>
-												<field name="qty_picked"/>
-												<field name="qty_remaining"/>	
-												<field name="qty_packed"/>												
+												<field name="qty_picked" sum="Total"/>
+												<field name="qty_remaining" sum="Total"/>
+												<field name="qty_packed" sum="Total"/>
 											</tree>
 										</field>
 									</group>
@@ -269,8 +275,8 @@
 										<field name="coli_ids" nolabel="1" create="false" edit="false">
 											<tree>												
 												<field name="coli"/>												
-												<field name="total_qty"/>		
-												<field name="weight"/>																							
+												<field name="total_qty" sum="Total"/>
+												<field name="weight" sum="Total"/>
 											</tree>
 											<form>
 												<group>
@@ -283,32 +289,32 @@
 														<page string="Barcode">
 															<field name="product_ids" readonly="1">
 																<tree editable="top">
-																	<field name="categ_id"/>																	
-																	<field name="qty_al"/>
-														            <field name="qty_xs"/>
-														            <field name="qty_s"/>
-														            <field name="qty_m"/>
-														            <field name="qty_l"/>
-														            <field name="qty_xl"/>
-														            <field name="qty_x"/>
-														            <field name="qty_y"/>
-														            <field name="qty_z"/>
-														            <field name="qty_25"/>
-														            <field name="qty_26"/>
-														            <field name="qty_27"/>
-														            <field name="qty_28"/>
-														            <field name="qty_29"/>
-														            <field name="qty_30"/>
-														            <field name="qty_31"/>
-														            <field name="qty_32"/>
-														            <field name="qty_33"/>
-														            <field name="qty_34"/>
-														            <field name="qty_35"/>
-														            <field name="qty_36"/>
-														            <field name="qty_38"/>
-														            <field name="qty_40"/>
-														            <field name="qty_42"/>
-														            <field name="total_qty"/>
+																	<field name="categ_id"/>
+																	<field name="qty_al" sum="Total"/>
+														            <field name="qty_xs" sum="Total"/>
+														            <field name="qty_s" sum="Total"/>
+														            <field name="qty_m" sum="Total"/>
+														            <field name="qty_l" sum="Total"/>
+														            <field name="qty_xl" sum="Total"/>
+														            <field name="qty_x" sum="Total"/>
+														            <field name="qty_y" sum="Total"/>
+														            <field name="qty_z" sum="Total"/>
+														            <field name="qty_25" sum="Total"/>
+														            <field name="qty_26" sum="Total"/>
+														            <field name="qty_27" sum="Total"/>
+														            <field name="qty_28" sum="Total"/>
+														            <field name="qty_29" sum="Total"/>
+														            <field name="qty_30" sum="Total"/>
+														            <field name="qty_31" sum="Total"/>
+														            <field name="qty_32" sum="Total"/>
+														            <field name="qty_33" sum="Total"/>
+														            <field name="qty_34" sum="Total"/>
+														            <field name="qty_35" sum="Total"/>
+														            <field name="qty_36" sum="Total"/>
+														            <field name="qty_38" sum="Total"/>
+														            <field name="qty_40" sum="Total"/>
+														            <field name="qty_42" sum="Total"/>
+														            <field name="total_qty" sum="Total"/>
 																</tree>
 															</field>
 														</page>
@@ -356,14 +362,14 @@
 			<field name="type">tree</field>			
 			<field name="arch" type="xml">				
 				<tree string="Picking List">
-					<field name="picker_id"/>
 					<field name="name"/>
-					<field name="picking_id"/>
+					<field name="partner_id"/>
+					<field name="picking_id"/>															
 					<field name="date"/>					
 					<field name="gate_id"/>
+					<field name="picker_id"/>
 					<field name="warehouse_id"/>
-					<field name="location_id"/>	
-					<field name="total_do" invisible="1"/>									
+					<field name="location_id"/>										
 					<field name="total_qty"/>
 					<field name="total_picked"/>
 					<field name="state"/>													
@@ -378,22 +384,23 @@
 			<field name="arch" type="xml">				
 				<form>
 					<header>
-						<button string="Done" type="object" name="button_done" class="oe_highlight" states="Draft"/>
-						<button string="Set to Draft" type="object" name="button_draft" states="Done"/>
+						<button string="Mark as Done" type="object" name="button_done" class="oe_highlight" states="Draft"/>
+						<button string="Cancel" type="object" name="button_draft" states="Done"/>
 						<field name="state" widget="statusbar" readonly="1"/>
 					</header>
 					<sheet>
 						<group>
 							<group>
-								<field name="name" readonly="1"/>
-								<field name="date" readonly="1"/>
+								<field name="name" readonly="1"/>							
 								<field name="picking_id"/>
+								<field name="partner_id"/>
 								<field name="total_qty"/>
-								<field name="total_picked"/>																													
+								<field name="total_picked"/>
 							</group>					
-							<group>						
-								<field name="picker_id" readonly="1"/>
-								<field name="gate_id" readonly="1"/>		
+							<group>
+								<field name="date"/>						
+								<field name="gate_id"/>
+								<field name="picker_id"/>										
 								<field name="warehouse_id"/>
 								<field name="location_id"/>								
 							</group>									
@@ -409,9 +416,9 @@
 											<tree editable="top" create="false" delete="false">
 												<field name="delivery_id"/>
 												<field name="product_id"/>
-												<field name="qty"/>												
+												<field name="qty"/>
 												<field name="qty_scan"/>
-												<field name="rack_id"/>																								
+												<field name="rack_id"/>
 											</tree>
 										</field>
 									</group>
@@ -2530,7 +2537,10 @@
 	        	<field name="origin" position="after">
 	        		<field name="amount_total_qty"/>
 	        		<field name="amount_total_qty_demmand"/>
-	        		<field name="packing_list_id" readonly="True"/>
+	        		<field name="is_picking_list"/>
+	        		<field name="picking_list_id"/>
+	        		<field name="is_packing_list"/>
+	        		<field name="packing_list_id"/>
 	        		<field name="received_date" 
 	        			attrs="{'invisible': [('state', '!=', 'done')]}"/>
 	        	</field>
@@ -2585,7 +2595,7 @@
 	        		<attribute name="string">From</attribute>
 	        	</field>
 	        	<field name="location_id" position="before">
-	        		<field name="partner_id" invisible="1"/>
+	        		<field name="partner_id"/>
 	        		<field name="is_transit"
 	        			attrs="{'readonly': [('state', '=', 'done')]}"/>
 	        	</field>
