@@ -93,7 +93,7 @@ class report_stock_lea_wizard(models.TransientModel):
         fp = StringIO()
         workbook = xlsxwriter.Workbook(fp)
         workbook.add_format()
-        filename = 'Stock Move Per- Toko' + '_' + self.company.name + '.xlsx'
+        filename = 'Stock Move Per- Toko' + '.xlsx'
         workbook.add_format({'bold': 1, 'align': 'center'})
         # worksheet = workbook.add_worksheet('Report')
         worksheet1 = workbook.add_worksheet("Report Excel")
@@ -162,7 +162,7 @@ class report_stock_lea_wizard(models.TransientModel):
         date_to_raw = datetime.strptime(self.date_to, '%Y-%m-%d')
         date_to = datetime.strftime(date_to_raw, '%d-%B-%Y')
 
-        worksheet1.merge_range('A1:J1', self.company.name, center_title)
+        worksheet1.merge_range('A1:J1', 'PT LEA SANENT', center_title)
         worksheet1.merge_range('A2:J2', 'Stock Move Per Toko', center_title)
         worksheet1.merge_range('A3:J3', date_from + ' s/d ' + date_to, center_title)
 
@@ -601,6 +601,7 @@ class report_replenishment_wizard(models.TransientModel):
     is_stock_sale       = fields.Boolean('Stock Sale', default=True)
     is_stock_retur      = fields.Boolean('Stock Retur', default=True)
     is_stock_akhir      = fields.Boolean('Stock Akhir', default=True)
+    is_sell_thru        = fields.Boolean('Sell Thru', default=True)
     is_stock_in         = fields.Boolean('Stock Masuk', default=True)
     is_stock_gudang     = fields.Boolean('Stock Gudang', default=True)
     line_ids            = fields.One2many('replenishment.wizard.line', 'reference', string="Analisa Stock Replenishment")
@@ -649,7 +650,7 @@ class report_replenishment_wizard(models.TransientModel):
         fp = StringIO()
         workbook = xlsxwriter.Workbook(fp)
         workbook.add_format()
-        filename = 'Analisa Stock Replenishment Per - Toko' + '_' + self.company.name + '.xlsx'
+        filename = 'Analisa Stock Replenishment Per - Toko' + '.xlsx'
         workbook.add_format({'bold': 1, 'align': 'center'})
         # worksheet = workbook.add_worksheet('Report')
         worksheet1 = workbook.add_worksheet("Report Excel")
@@ -716,7 +717,7 @@ class report_replenishment_wizard(models.TransientModel):
         date_to_raw = datetime.strptime(self.date_to, '%Y-%m-%d')
         date_to = datetime.strftime(date_to_raw, '%d-%B-%Y')
 
-        worksheet1.merge_range('A1:J1', self.company.name, center_title)
+        worksheet1.merge_range('A1:J1', 'PT LEA SANENT', center_title)
         worksheet1.merge_range('A2:J2', 'Analisa Replenishment Per Toko', center_title)
         worksheet1.merge_range('A3:J3', date_from + ' s/d ' + date_to, center_title)
         ###Header Size#####
@@ -734,6 +735,8 @@ class report_replenishment_wizard(models.TransientModel):
             info_stock.append(['STOCK GUDANG',5])
         if self.is_stock_in == True :
             info_stock.append(['STOCK MASUK',6])
+        if self.is_sell_thru == True :
+            info_stock.append(['SELL THRU',7])
 
         size_ids = self.env['lea.product.size'].search([])
         for s in size_ids:
@@ -789,6 +792,7 @@ class report_replenishment_wizard(models.TransientModel):
                         stock_gudang = stock_awal_gudang
                         stock_awal = stock_awal_toko
                         stock_akhir = stock_awal + stock_in + stock_retur - stock_sale
+                        sell_thru = (stock_sale / (stock_akhir + stock_sale)) / 100
 
                         if inf[1] == 5:
                             worksheet1.write(row, col, stock_gudang, set_border_bold_right)
@@ -807,6 +811,9 @@ class report_replenishment_wizard(models.TransientModel):
 
                         if inf[1] == 4:
                             worksheet1.write(row, col, stock_akhir, set_border_bold_right)
+
+                        if inf[1] == 5:
+                            worksheet1.write(row, col, sell_thru, set_border_bold_right)
 
                         col = col + 1
                     row = row + 1
@@ -840,7 +847,7 @@ class report_replenishment_wizard(models.TransientModel):
         fp = StringIO()
         workbook = xlsxwriter.Workbook(fp)
         workbook.add_format()
-        filename = 'Analisa Stock Replenishment Per - Toko' + '_' + self.company.name + '.xlsx'
+        filename = 'Analisa Stock Replenishment Per - Toko' + '.xlsx'
         workbook.add_format({'bold': 1, 'align': 'center'})
         # worksheet = workbook.add_worksheet('Report')
         worksheet1 = workbook.add_worksheet("Report Excel")
@@ -907,7 +914,7 @@ class report_replenishment_wizard(models.TransientModel):
         date_to_raw = datetime.strptime(self.date_to, '%Y-%m-%d')
         date_to = datetime.strftime(date_to_raw, '%d-%B-%Y')
 
-        worksheet1.merge_range('A1:J1', self.company.name, center_title)
+        worksheet1.merge_range('A1:J1', 'PT LEA SANENT', center_title)
         worksheet1.merge_range('A2:J2', 'Analisa Replenishment Per Toko', center_title)
         worksheet1.merge_range('A3:J3', date_from + ' s/d ' + date_to, center_title)
         cursor = self.env.cr
@@ -926,6 +933,8 @@ class report_replenishment_wizard(models.TransientModel):
             info_stock.append(['RETUR', 3])
         if self.is_stock_akhir == True:
             info_stock.append(['STOCK AKHIR', 4])
+        if self.is_sell_thru == True:
+            info_stock.append(['SELL THRU', 5])
 
 
 
@@ -975,7 +984,14 @@ class report_replenishment_wizard(models.TransientModel):
         row = 8
 
         for wh in self.location_ids2:
-            for ar in self.product_category_ids2:
+            selected_category_ids = []
+            all_category_ids = self.env['lea.product.category'].search([])
+            if self.product_category_ids2:
+                selected_category_ids = self.product_category_ids2
+            else:
+                selected_category_ids = all_category_ids
+                
+            for ar in selected_category_ids:
                 cursor.execute("""
                                     select
                                         c.categ_id
@@ -1014,10 +1030,13 @@ class report_replenishment_wizard(models.TransientModel):
                             stock_awal_toko = self.get_stock_awal_new(article.id, hs[0], [wh.lot_stock_id.id])
                             stock_in = self.get_stock_in_new(article.id, hs[0], [wh.lot_stock_id.id])
                             stock_sale = self.get_stock_out_sale_new(article.id, hs[0], [wh.lot_stock_id.id])
-                            stock_retur = self.get_stock_out_retur_new(article.id, hs[0], [wh.lot_stock_id.id])
+                            stock_retur = self.get_stock_out_retur_new(article.id, hs[0], [wh.lot_stock_id.id])                            
                             stock_gudang = stock_awal_gudang
                             stock_awal = stock_awal_toko + stock_awal_gudang
                             stock_akhir = stock_awal + stock_in - stock_retur - stock_sale
+
+                            # Additional by Samuel
+                            sell_thru = 123
 
                             if inf[1] == 5:
                                 if stock_gudang == 0:
@@ -1054,6 +1073,12 @@ class report_replenishment_wizard(models.TransientModel):
                                     worksheet1.write(row, col, '', set_border_bold_right)
                                 else:
                                     worksheet1.write(row, col, stock_akhir, set_border_bold_right)
+
+                            if inf[1] == 5:
+                                if sell_thru == 0:
+                                    worksheet1.write(row, col, '', set_border_bold_right)
+                                else:
+                                    worksheet1.write(row, col, sell_thru, set_border_bold_right)
 
                             col = col + 1
                         row = row + 1
@@ -1334,7 +1359,14 @@ class report_replenishment_wizard(models.TransientModel):
             all_location.append(wh.lot_stock_id.id)
 
         article = []
-        for a in self.product_category_ids2 :
+        selected_category_ids = []
+        all_category_ids = self.env['lea.product.category'].search([])
+        if self.product_category_ids2:
+            selected_category_ids = self.product_category_ids2
+        else:
+            selected_category_ids = all_category_ids
+
+        for a in selected_category_ids :
             article.append(a.id)
 
         cursor.execute("""
@@ -1371,6 +1403,8 @@ class report_replenishment_wizard(models.TransientModel):
                     stock_retur_wh = self.get_stock_out_retur_new2(prod[0], [wh.lot_stock_id.id])
                     stock_sales_wh = self.get_stock_out_sale_new2(prod[0], [wh.lot_stock_id.id])
                     stock_akhir_wh = stock_awal_wh + stock_in_wh - stock_retur_wh - stock_sales_wh
+                    sell_thru = (stock_sales_wh / (stock_akhir_wh + stock_sales_wh)) / 100
+
                     if stock_awal_wh + stock_in_wh + stock_retur_wh + stock_sales_wh + stock_akhir_wh != 0:
                         line_vals = {
                             'reference': self.id,
@@ -1385,6 +1419,7 @@ class report_replenishment_wizard(models.TransientModel):
                             'stock_sale': stock_sales_wh,
                             'stock_akhir': stock_akhir_wh,
                             'stock_gudang': stock_akhir_gudang,
+                            'sell_thru': sell_thru,
                             'warehouse_id':wh.id,
                             'location_id': wh.lot_stock_id.id,
                         }
@@ -1428,7 +1463,14 @@ class report_replenishment_wizard(models.TransientModel):
             all_location.append(wh.lot_stock_id.id)
 
         article = []
-        for a in self.product_category_ids2:
+        selected_category_ids = []
+        all_category_ids = self.env['lea.product.category'].search([])
+        if self.product_category_ids2:
+            selected_category_ids = self.product_category_ids2
+        else:
+            selected_category_ids = all_category_ids
+
+        for a in selected_category_ids:
             article.append(a.id)
 
         cursor.execute("""
@@ -1464,6 +1506,10 @@ class report_replenishment_wizard(models.TransientModel):
                 stock_retur_wh = self.get_stock_out_retur_new2(prod[0], [wh.lot_stock_id.id])
                 stock_sales_wh = self.get_stock_out_sale_new2(prod[0], [wh.lot_stock_id.id])
                 stock_akhir_wh = stock_awal_wh + stock_in_wh - stock_retur_wh - stock_sales_wh
+
+                sell_thru = 0
+                sell_thru = stock_sales_wh / stock_akhir_wh
+
                 #if stock_awal_wh + stock_in_wh + stock_retur_wh + stock_sales_wh + stock_akhir_gudang != 0:
                 if stock_akhir_wh + stock_akhir_gudang != 0 :
                     line_vals = {
@@ -1479,6 +1525,7 @@ class report_replenishment_wizard(models.TransientModel):
                                         'stock_sale': stock_sales_wh,
                                         'stock_akhir': stock_akhir_wh,
                                         'stock_gudang': stock_akhir_gudang,
+                                        'sell_thru': sell_thru,
                                         'warehouse_id': wh.id,
                                         'location_id': wh.lot_stock_id.id,
                                 }
@@ -1672,7 +1719,7 @@ class report_analisa_level_stock_wizard(models.TransientModel):
         fp = StringIO()
         workbook = xlsxwriter.Workbook(fp)
         workbook.add_format()
-        filename = 'analisa_level_stock' + '_' + self.company.name + '.xlsx'
+        filename = 'analisa_level_stock' + '.xlsx'
         workbook.add_format({'bold': 1, 'align': 'center'})
         # worksheet = workbook.add_worksheet('Report')
         worksheet1 = workbook.add_worksheet("Report Excel")
@@ -1739,7 +1786,7 @@ class report_analisa_level_stock_wizard(models.TransientModel):
         m = r.months + 1
 
 
-        worksheet1.merge_range('A1:J1', self.company.name, center_title)
+        worksheet1.merge_range('A1:J1', 'PT LEA SANENT', center_title)
         worksheet1.merge_range('A2:J2', 'Analisa Level Stock dan Average Penjualan', center_title)
         worksheet1.merge_range('A3:J3', self.period_start.name + ' s/d ' + self.period_stop.name, center_title)
         ###Header Size#####
@@ -2365,7 +2412,7 @@ class report_analisa_product_thru_wizard(models.TransientModel):
         fp = StringIO()
         workbook = xlsxwriter.Workbook(fp)
         workbook.add_format()
-        filename = 'analisa_product_and_sell_thru' + '_' + self.company.name + '.xlsx'
+        filename = 'analisa_product_and_sell_thru' + '.xlsx'
         workbook.add_format({'bold': 1, 'align': 'center'})
         # worksheet = workbook.add_worksheet('Report')
         worksheet1 = workbook.add_worksheet("Report Excel")
@@ -2429,7 +2476,7 @@ class report_analisa_product_thru_wizard(models.TransientModel):
         r = relativedelta.relativedelta(date2, date1)
         m = r.months + 1
 
-        worksheet1.merge_range('A1:K1', self.company.name, center_title)
+        worksheet1.merge_range('A1:K1', 'PT LEA SANENT', center_title)
         worksheet1.merge_range('A2:K2', 'Analisa Product dan Sell Thru', center_title)
         worksheet1.merge_range('A3:K3', self.period_start.name + ' s/d ' + self.period_stop.name, center_title)
         ###Header Size#####
@@ -2738,7 +2785,14 @@ class report_analisa_product_thru_wizard(models.TransientModel):
         #raise Warning(all_location)
 
         article = []
-        for a in self.product_category_ids2:
+        selected_category_ids = []
+        all_category_ids = self.env['lea.product.category'].search([])
+        if self.product_category_ids2:
+            selected_category_ids = self.product_category_ids2
+        else:
+            selected_category_ids = all_category_ids
+
+        for a in selected_category_ids:
             article.append(a.id)
 
         cursor.execute("""
@@ -3205,6 +3259,7 @@ class replenishment_wizard_line(models.TransientModel):
     stock_sale        = fields.Float('Stock Sale', default=True)
     stock_akhir       = fields.Float('Stock Akhir', default=True)
     stock_gudang      = fields.Float('Stock Gudang', default=True)
+    sell_thru         = fields.Float('Sell Thru', default=True)
     warehouse_id      = fields.Many2one(string="Warehouse", comodel_name="stock.warehouse")
     location_id       = fields.Many2one(string="Location", comodel_name="stock.location")
 
@@ -3644,7 +3699,8 @@ class report_inventory_value_acc(models.TransientModel):
     def _get_volume_stock(self):
         for res in self:
             total = 0
-            warehouse_id = self.env['stock.warehouse'].search([('company_id', '=', res.reference.dest_company_id.id)])
+            # warehouse_id = self.env['stock.warehouse'].search([('company_id', '=', res.reference.dest_company_id.id)])
+            warehouse_id = self.env['stock.warehouse'].search([])
             if warehouse_id:
                 location_id = warehouse_id[0].lot_stock_id
                 if location_id:

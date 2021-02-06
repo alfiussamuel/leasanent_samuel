@@ -7,42 +7,85 @@ from odoo.osv import expression
 from odoo.tools.float_utils import float_compare
 import odoo.addons.decimal_precision as dp
 import re
-    
-class LeaReplenishmentLine(models.Model):
-    _name = 'lea.replenishment.line'
+
+class LeaTransferLine(models.Model):
+    _name = 'lea.transfer.line'
             
-    reference = fields.Many2one('lea.replenishment', 'Reference')    
+    reference = fields.Many2one('lea.transfer', 'Reference')    
     product_id = fields.Many2one('product.product', 'Barcode')
     column_from = fields.Many2one('lea.rack.level.column', 'From')
     column_to = fields.Many2one('lea.rack.level.column', 'To')
     qty = fields.Float('Qty', digits=dp.get_precision('Product Unit of Measure'))
     
-class LeaReplenishment(models.Model):
-    _name = 'lea.replenishment'
+class LeaTransfer(models.Model):
+    _name = 'lea.transfer'
             
-    name = fields.Char('Replenishment No.')    
-    date = fields.Date('Created Date')    
-    line_ids = fields.One2many('lea.replenishment.line', 'reference', 'Lines')
+    name = fields.Char('Transfer No.')    
+    date = fields.Date('Transfer Date')    
+    line_ids = fields.One2many('lea.transfer.line', 'reference', 'Lines')
     state = fields.Selection([
         ('Draft','Draft'),
-        ('Progress','Progress'),
         ('Done','Done')],
         string='Status', default='Draft')
 
     @api.multi
-    def button_confirm(self):
+    def button_draft(self):
         for res in self:
-            res.state = "Progress"
+            if res.line_ids:
+                for line in res.line_ids:
+                    if line.product_id == line.column_to.product_id and line.column_to.available_stock >= line.qty:
+                        self.env['lea.rack.level.column.detail'].create({
+                           'reference': line.column_from.id,
+                           'qty': line.qty,
+                           'type': "Incoming",
+                           'date': fields.Date.today(),
+                        })
+
+                        # Create Incoming for Destination Column
+                        self.env['lea.rack.level.column.detail'].create({
+                           'reference': line.column_to.id,
+                           'qty': line.qty,
+                           'type': "Outgoing",
+                           'date': fields.Date.today(),
+                        })
+
+                        res.state = "Draft"
         
     @api.multi
     def button_done(self):
         for res in self:
-            res.state = "Done"
+            if res.line_ids:
+                for line in res.line_ids:
+                    if line.product_id == line.column_from.product_id and line.column_from.available_stock >= line.qty:
+                        if line.column_to.product_id:
+                            raise Warning('Destionation Location already assigned to another Products')   
+
+                        # Create Outgoing for Source Column
+                        self.env['lea.rack.level.column.detail'].create({
+                           'reference': line.column_from.id,
+                           'qty': line.qty,
+                           'type': "Outgoing",
+                           'date': fields.Date.today(),
+                        })
+
+                        # Create Incoming for Destination Column
+                        self.env['lea.rack.level.column.detail'].create({
+                           'reference': line.column_to.id,
+                           'qty': line.qty,
+                           'type': "Incoming",
+                           'date': fields.Date.today(),
+                        })
+
+                        line.column_to.product_id = line.product_id.id
+                        res.state = "Done"
+
+                    else:
+                        raise Warning('Product are note available in Source Location')            
                 
     @api.model
     def create(self, vals):        
-        vals['name'] = self.env['ir.sequence'].next_by_code('lea.replenishment') or '/'
-        return super(LeaReplenishment, self).create(vals)
+        vals['name'] = self.env['ir.sequence'].next_by_code('lea.transfer') or '/'
+        return super(LeaTransfer, self).create(vals)
     
 class LeaProductColumn(models.Model):
     _name = 'lea.product.column'

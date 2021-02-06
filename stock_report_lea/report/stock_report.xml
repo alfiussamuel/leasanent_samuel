@@ -58,13 +58,13 @@
                             <div>
                                 <field name="date_from" required="1" class="oe_inline"/> s/d <field name="date_to" required="1" class="oe_inline"/>
                             </div>
-                            <field name="product_category_ids2" options="{'no_create': True}" widget="many2many_tags" required="1"/>
+                            <field name="product_category_ids2" options="{'no_create': True}" widget="many2many_tags"/>
                             <field name="article_ids" options="{'no_create': True}" widget="many2many_tags" invisible="1"/>
                             <field name="location_main_wh_ids2" widget="many2many_tags" domain="[('is_main_wh_location','=', True)]" options="{'no_create': True}" />
                             <field name="wh_type" invisible="1"/>
                             <field name="user_pds_id"/>
                             <field name="location_ids2" options="{'no_create': True}"/>
-                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                            <field name="company"  invisible="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
                         </group>
                         <group string="Detail Info" invisible="1">
                             <field name="is_stock_gudang"/>
@@ -242,6 +242,7 @@
                     <field name="stock_sale"/>
                     <field name="stock_akhir"/>
                     <field name="stock_gudang"/>
+                    <!-- <field name="sell_thru"/> -->
 				</tree>
 			</field>
 		</record>
@@ -261,6 +262,7 @@
                     <field name="stock_sale" type="measure"/>
                     <field name="stock_akhir" type="measure"/>
                     <field name="stock_gudang" type="measure" disable_linking="True"/>
+                    <field name="sell_thru" type="measure"/>
 	            </pivot>
 	        </field>
 	    </record>
@@ -283,7 +285,7 @@
                             <field name="stock_type" required="1" class="oe_inline"/>
                             <field name="location_main_wh_ids2" domain="[('is_main_wh_location','=', True)]" options="{'no_create': True}" attrs="{'invisible':[('stock_type','=','ST')]}"/>
                             <field name="location_ids3" options="{'no_create': True}" attrs="{'invisible':[('stock_type','!=','ST')]}"/>
-                            <field name="company"  required="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
+                            <field name="company"  invisible="1" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
                         </group>
                         <newline/>
                         <group>

@@ -59,10 +59,10 @@
             </field>                                                                 
         </record>
         
-		<!-- Menu Replenishment -->
-		<record id="action_lea_replenishment" model="ir.actions.act_window">
-			<field name="name">Replenishment</field>
-			<field name="res_model">lea.replenishment</field>
+		<!-- Menu Transfer -->
+		<record id="action_lea_transfer" model="ir.actions.act_window">
+			<field name="name">Transfer</field>
+			<field name="res_model">lea.transfer</field>
 			<field name="view_mode">tree,form</field>
 			<field name="help" type="html">
               	<p class="oe_view_nocontent_create">
@@ -833,9 +833,9 @@
 				name="Putaway" 			
 				sequence="5" 
 				parent="v10_lea.menu_lea_racking_system"/>
-			<menuitem id="menu_lea_racking_system_replenishment"
-				action="action_lea_replenishment" 
-				name="Replenishment" 			
+			<menuitem id="menu_lea_racking_system_transfer"
+				action="action_lea_transfer" 
+				name="Transfer"
 				sequence="6" 
 				parent="v10_lea.menu_lea_racking_system"/>
 				
